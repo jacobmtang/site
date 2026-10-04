@@ -1,4 +1,3 @@
-/* Placeholder styling until the visual direction is decided. Tokens first, so a redesign is a token change. */
 /* Newsreader (Production Type, SIL Open Font License — see /assets/fonts/OFL.txt).
    Variable: weight 200–800, optical size 6–72. Latin subset. Masters in Design/_brand/fonts/newsreader/. */
 @font-face {
@@ -16,36 +15,320 @@
   font-display: swap;
 }
 
+/* Portfolio styles — ONE stylesheet for every page. Tokens first, so a redesign is a token change.
+   TYPE FOLLOWS THE APPLE HIG SCALE (--text-* / --leading-*); never set a raw font-size or line-height.
+   SPACING IS ON A 4PT GRID: every margin, padding, gap and line-height is a multiple of 4px.
+   Use the --space-* tokens; never type a raw spacing value. */
 :root {
-  --bg: #ffffff;
+  /* colour (placeholder palette) */
+  --bg: #f7f7f7;        /* page: neutral near-white (no warm tint), so white cards still lift */
+  --surface: #ffffff;   /* cards */
+  --chip: #f2f2f2;      /* tag pills on a card — neutral grey */
+
+  /* hero sky — sampled from Jacob's reference (2026-10-03); deep at the top, lifting toward the fade */
+  --sky-top: #034da5;
+  --sky-mid: #1e74d4;    /* behind the subtext: still dark enough for white body text */
+  --sky-low: #89c0f5;
+  --sky-pale: #d6e9fc;   /* last tint before the page colour */
+  --sky-glow: ellipse 150% 75% at 50% 100%;  /* curved horizon glow rising from the bottom centre */
+  --sky-fade: min(384px, 40svh);  /* bottom stretch of the hero where the sky dissolves into --bg (long = soft) */
+  --sky-fade: min(384px, round(down, 40svh, 4px));  /* same, snapped to the 4pt grid where round() is supported */
+  --grain: .4;           /* noise strength (0–1) */
+  --on-sky: #ffffff;
+  --on-sky-muted: rgb(255 255 255 / .86);
   --text: #1a1a1a;
   --muted: #6b6b6b;
   --line: #e6e6e6;
   --accent: #1a1a1a;
+
+  /* type */
   --font-body: system-ui, -apple-system, "Segoe UI", sans-serif;
   --font-display: "Newsreader", Georgia, serif;
-  --space: clamp(16px, 4vw, 32px);
-  --max: 760px;
+  /* Type scale: Apple HIG text styles (iOS, Large/default), with each leading rounded to the 4pt grid.
+     HIG size/leading → ours:  Large Title 34/41 → 34/40 · Title 1 28/34 → 28/36 · Title 2 22/28 → 22/28
+     Title 3 20/25 → 20/24 · Body 17/22 → 17/24 · Callout 16/21 → 16/20 · Subhead 15/20 → 15/20
+     Footnote 13/18 → 13/20 · Caption 1 12/16 → 12/16
+     The web hero goes past Large Title on bigger screens (Display), still on the grid. */
+  --text-display-l: 48px; --leading-display-l: 56px;
+  --text-display: 40px;   --leading-display: 48px;
+  --text-large-title: 34px; --leading-large-title: 40px;
+  --text-title1: 28px;  --leading-title1: 36px;
+  --text-title2: 22px;  --leading-title2: 28px;
+  --text-title3: 20px;  --leading-title3: 24px;
+  --text-body: 17px;    --leading-body: 24px;
+  --text-callout: 16px; --leading-callout: 20px;
+  --text-subhead: 15px; --leading-subhead: 20px;
+  --text-footnote: 13px; --leading-footnote: 20px;
+  --text-caption: 12px; --leading-caption: 16px;
+  /* aliases used by components */
+  --text-sm: var(--text-footnote); --leading-sm: var(--leading-footnote);
+  --text-h2: var(--text-title1);   --leading-h2: var(--leading-title1);
+  --text-h3: var(--text-title2);   --leading-h3: var(--leading-title2);
+
+  /* spacing — 4pt grid */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
+  --space-60: 240px;
+  --space-64: 256px;
+  --space-72: 288px;
+  --space-80: 320px;
+
+  /* layout — stepped, not fluid, so they stay on the grid */
+  --gutter: var(--space-4);          /* page side padding */
+  --section-gap: var(--space-16);    /* between major sections */
+  --max: 800px;
+  /* card shape — generous and stepped per breakpoint, like maureen.care's cards */
+  --radius-card: 32px;
+  --pad-card: var(--space-6);
 }
+@media (min-width: 600px) { :root { --gutter: var(--space-6); --section-gap: var(--space-20); --radius-card: 40px; --pad-card: var(--space-8); } }
+@media (min-width: 900px) { :root { --gutter: var(--space-8); --section-gap: var(--space-24); --radius-card: 48px; --pad-card: var(--space-10); } }
 @media (prefers-color-scheme: dark) {
-  :root { --bg: #111; --text: #eee; --muted: #999; --line: #2a2a2a; --accent: #eee; }
+  :root { --bg: #111; --surface: #1c1c1c; --chip: #2a2a2a; --text: #eee; --muted: #999; --line: #2a2a2a; --accent: #eee;
+          --sky-top: #021f45; --sky-mid: #0a3a78; --sky-low: #12305a; --sky-pale: #141c28; }
 }
+
+/* base */
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--bg); color: var(--text); font: 17px/1.6 var(--font-body); }
+body {
+  margin: 0; background: var(--bg); color: var(--text);
+  font-family: var(--font-body); font-size: var(--text-body); line-height: var(--leading-body);
+}
+h1, h2, h3, p, dl, dd { margin: 0; }   /* no browser-default margins: spacing comes from tokens only */
 a { color: inherit; }
-.site-header, .site-footer, main { max-width: var(--max); margin: 0 auto; padding: var(--space); }
-.site-header { display: flex; justify-content: space-between; align-items: baseline; }
-.site-header nav a { margin-left: 1rem; text-decoration: none; color: var(--muted); }
-.wordmark { font-weight: 600; text-decoration: none; }
-h1, h2, h3 { font-family: var(--font-display); font-optical-sizing: auto; font-weight: 500; line-height: 1.2; }
-h1 { font-size: clamp(2rem, 6vw, 3rem); margin: 0 0 1rem; }
-.intro p { color: var(--muted); max-width: 36ch; }
-.card { display: block; padding: var(--space); border: 1px solid var(--line); border-radius: 12px; text-decoration: none; }
-.card:hover { border-color: var(--muted); }
-.card h3 { margin: .25rem 0; font-size: 1.5rem; }
-.card p { margin: 0; color: var(--muted); }
-.card-tags { font-size: .8rem; letter-spacing: .04em; color: var(--muted); }
-.cs-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 1rem; margin: 1.5rem 0; }
-.cs-meta dt { font-size: .8rem; color: var(--muted); }
-.cs-meta dd { margin: 0; }
-.site-footer { color: var(--muted); border-top: 1px solid var(--line); }
+h1, h2, h3 { font-family: var(--font-display); font-optical-sizing: auto; font-weight: 500; }
+h2 { font-size: var(--text-h2); line-height: var(--leading-h2); font-weight: 400; }  /* softer than the hero's 500 */
+h3 { font-size: var(--text-h3); line-height: var(--leading-h3); }
+
+/* layout */
+.site-header, .site-footer, main, .container { max-width: var(--max); margin: 0 auto; padding: var(--space-6) var(--gutter); }
+.site-header { display: flex; justify-content: flex-end; align-items: baseline; gap: var(--space-4); }
+.site-header nav { display: flex; gap: var(--space-4); }
+.site-header nav a { text-decoration: none; color: var(--muted); }
+main > section + section { margin-top: var(--section-gap); }
+.container { padding-top: 0; padding-bottom: 0; }
+.site-footer { margin-top: var(--section-gap); color: var(--muted); border-top: 1px solid var(--line); }
+
+/* hero — CSS sky (gradient + SVG grain), no image. Text is white on it.
+   The sky layer extends --sky-fade below the hero and dissolves into --bg there, so there's no edge.
+   Clouds go on top as their own layer later. */
+.hero {
+  position: relative; isolation: isolate; color: var(--on-sky);
+  display: flex; flex-direction: column;
+  min-height: 100vh; min-height: 100svh;   /* always one full screen; svh ignores the mobile browser bar */
+  padding-bottom: var(--sky-fade);         /* keeps the text above the fade zone */
+}
+.hero .intro, .hero .site-header { width: 100%; }  /* flex items with auto margins would otherwise shrink and centre */
+.hero .intro { margin-block: auto; }  /* centres the intro in the sky above the fade */
+.hero::before, .hero::after {
+  content: ""; position: absolute; z-index: -1;
+  inset: 0;
+  pointer-events: none;
+}
+/* The softness comes from the COLOUR, not transparency: the sky lightens through pale blue
+   to near-white on its own, so it never passes through a muddy grey band. The mask only hides
+   the last stretch. Grain fades out earlier so the page below stays clean. */
+.hero::before {
+  /* The fade into the page is an EASED gradient: eleven stops along a smoothstep curve, mixed in oklab.
+     A plain two-stop fade has visible start and end lines; easing makes it start and land imperceptibly.
+     The glow only bends it into a subtle arc. */
+  --sky-stops:
+    var(--sky-top) 0%,
+    color-mix(in oklab, var(--bg) 0%, var(--sky-mid)) calc(100% - var(--sky-fade) * 1.00),
+    color-mix(in oklab, var(--bg) 3%, var(--sky-mid)) calc(100% - var(--sky-fade) * 0.90),
+    color-mix(in oklab, var(--bg) 10%, var(--sky-mid)) calc(100% - var(--sky-fade) * 0.80),
+    color-mix(in oklab, var(--bg) 22%, var(--sky-mid)) calc(100% - var(--sky-fade) * 0.70),
+    color-mix(in oklab, var(--bg) 35%, var(--sky-mid)) calc(100% - var(--sky-fade) * 0.60),
+    color-mix(in oklab, var(--bg) 50%, var(--sky-mid)) calc(100% - var(--sky-fade) * 0.50),
+    color-mix(in oklab, var(--bg) 65%, var(--sky-mid)) calc(100% - var(--sky-fade) * 0.40),
+    color-mix(in oklab, var(--bg) 78%, var(--sky-mid)) calc(100% - var(--sky-fade) * 0.30),
+    color-mix(in oklab, var(--bg) 90%, var(--sky-mid)) calc(100% - var(--sky-fade) * 0.20),
+    color-mix(in oklab, var(--bg) 97%, var(--sky-mid)) calc(100% - var(--sky-fade) * 0.10),
+    color-mix(in oklab, var(--bg) 100%, var(--sky-mid)) 100%;
+  --glow-strength: 30%;  /* how much the curved glow shows over the base blue */
+  --glow-stops:
+    color-mix(in oklab, var(--sky-pale) var(--glow-strength), transparent) 0%,
+    color-mix(in oklab, var(--sky-low) var(--glow-strength), transparent) 36%,
+    transparent 72%;   /* wider falloff = softer edge */
+  /* vertical base for depth + a soft radial glow rising from the bottom centre (no diagonal slope) */
+  background:
+    radial-gradient(var(--sky-glow), var(--glow-stops)),
+    linear-gradient(to bottom, var(--sky-stops));
+  background:
+    radial-gradient(var(--sky-glow) in oklab, var(--glow-stops)),
+    linear-gradient(to bottom in oklab, var(--sky-stops));  /* oklab: smoother blue→white, no grey dip */
+  /* fades the glow out before the hero's bottom edge so nothing tints the page below; eased so it leaves no line */
+  --glow-fade: linear-gradient(to bottom, #000 calc(100% - var(--sky-fade) * .4),
+    rgb(0 0 0 / .85) calc(100% - var(--sky-fade) * .3), rgb(0 0 0 / .5) calc(100% - var(--sky-fade) * .2),
+    rgb(0 0 0 / .15) calc(100% - var(--sky-fade) * .1), transparent 100%);
+  -webkit-mask-image: var(--glow-fade);
+          mask-image: var(--glow-fade);
+}
+.hero::after {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--sky-fade)), transparent calc(100% - var(--sky-fade) * .3));
+          mask-image: linear-gradient(to bottom, #000 calc(100% - var(--sky-fade)), transparent calc(100% - var(--sky-fade) * .3));
+}
+.hero::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: var(--grain);
+  mix-blend-mode: overlay;
+}
+.hero .site-header nav a { color: var(--on-sky-muted); }
+.hero .site-header nav a:hover { color: var(--on-sky); }
+.hero + main { padding-top: var(--space-6); }  /* the sky has fully dissolved by the hero's bottom edge */
+
+/* flight — a Cessna towing a banner across the sky, behind the text.
+   Plane art: assets/img/plane-*.webp (masters in portfolio/_source/). Both images share one canvas,
+   so the propeller sits on the nose by itself; it sits behind the body so the spinner hides the root. */
+:root {
+  --plane-w: clamp(120px, 18vw, 224px);
+  --plane-h: calc(var(--plane-w) * 273 / 677);
+  --flight-start: 64%;   /* starting height in the hero: below the intro text */
+  --climb: 8deg;         /* nose-up angle of the whole plane + banner */
+  --climb-slope: .1405;  /* tan(--climb): how much it rises per unit across — keep the two in step */
+  --flight-dur: 24s;     /* one crossing */
+}
+.hero .site-header, .hero .intro { position: relative; z-index: 1; }
+.flight {
+  position: absolute; z-index: 0; inset: 0;
+  overflow: hidden;          /* no sideways scrollbar while the plane is off-screen */
+  pointer-events: none;
+}
+.flight-path {
+  pointer-events: auto;
+  position: absolute; left: 0; top: var(--flight-start);
+  display: block; text-decoration: none;
+  animation: fly var(--flight-dur) linear 1s infinite both;
+}
+.flight-bob { display: flex; align-items: flex-start; animation: bob 4s ease-in-out infinite alternate; }
+.flight-path:hover, .flight-path:focus-visible,
+.flight-path:hover .flight-bob, .flight-path:focus-visible .flight-bob { animation-play-state: paused; }
+/* climbs from the lower left to the upper right, nose up, like a takeoff */
+@keyframes fly {
+  from { transform: translate(-100%, 0) rotate(calc(var(--climb) * -1)); }
+  to   { transform: translate(100vw, calc(100vw * var(--climb-slope) * -1)) rotate(calc(var(--climb) * -1)); }
+}
+@keyframes bob { from { transform: translateY(calc(var(--space-1) * -1)); } to { transform: translateY(var(--space-1)); } }
+
+/* tow line meets the tail tie-down: 6.8% in from the canvas's left edge, 65.9% down (measured on the art) */
+.tow {
+  --banner-h: calc(var(--leading-sm) + 2 * var(--space-1));   /* 28px: footnote leading + 4px padding top and bottom */
+  display: flex; align-items: center; height: var(--banner-h);
+  margin-top: calc(var(--plane-h) * .659 - var(--banner-h) / 2); /* centre the line on the attach point */
+  margin-right: calc(var(--plane-w) * -.068);                  /* run the line under the tail to the attach point */
+}
+.banner {
+  padding: var(--space-1) var(--space-3);
+  background: var(--surface); color: var(--text);
+  border-radius: 2px;
+  font: 600 var(--text-sm) / var(--leading-sm) var(--font-body);
+  text-transform: uppercase; letter-spacing: .06em; white-space: nowrap;
+}
+.rope { width: calc(var(--space-12) + var(--plane-w) * .068); height: 1px; background: var(--on-sky-muted); }
+.plane { position: relative; z-index: 1; display: block; flex: none; width: var(--plane-w); aspect-ratio: 677 / 273; }
+.plane img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.plane-prop {
+  transform-origin: 95.1% 52%;   /* the propeller hub, measured on the 677×273 canvas */
+  animation: prop 80ms linear infinite;  /* seen side-on, a spinning prop flickers rather than rotates */
+}
+@keyframes prop { 0% { transform: scaleY(1); } 50% { transform: scaleY(-1); } 100% { transform: scaleY(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  /* parked in the sky: no flight, no bob, no flicker */
+  .flight-path { animation: none; left: auto; right: var(--gutter); transform: rotate(calc(var(--climb) * -1)); }
+  .flight-bob, .plane-prop { animation: none; }
+}
+
+/* intro — two lines: Large Title on phones, stepping up to Display sizes on wider screens. */
+.intro h1 {
+  display: flex; flex-direction: column;
+  font-size: var(--text-large-title); line-height: var(--leading-large-title);
+}
+/* Steps, not fluid, so size and leading stay on the scale and the grid.
+   The longer line ("I pilot ideas from sketch to takeoff") is ~14.8em: it is kept whole only where it fits. */
+@media (min-width: 600px)  { .intro-line { white-space: nowrap; } }                       /* 34px × 14.8 ≈ 503 ≤ 552 */
+@media (min-width: 768px)  { .intro h1 { font-size: var(--text-display);   line-height: var(--leading-display); } }    /* 40 → ≈ 592 ≤ 720 */
+@media (min-width: 1024px) { .intro h1 { font-size: var(--text-display-l); line-height: var(--leading-display-l); } }  /* 48 → ≈ 710 ≤ 736 */
+.intro p { margin-top: var(--space-6); font-size: var(--text-body); line-height: var(--leading-body); color: var(--on-sky-muted); max-width: 60ch; text-wrap: balance; }  /* balance: when it wraps, lines come out even instead of leaving one word hanging */
+
+/* work — heading sits tight to its cards, far from the hero */
+.work h2 { margin-bottom: var(--space-4); }
+.card {
+  display: block; padding: var(--pad-card);
+  overflow: hidden;   /* clips the centred phone image's empty side and the hover tint to the card's corners */
+  background: var(--surface); border-radius: var(--radius-card);
+  text-decoration: none;
+}
+/* Hover: the image area's colour tint (below) is the only hover signal — no lift, no shadow. */
+
+/* card media — the whole phone above the title; only the bottom of the image (the hand below the phone)
+   dissolves into the card. The fade is an eased mask, so it blends into whatever is behind it. */
+.card-media {
+  --phone-w: var(--space-64);
+  position: relative; isolation: isolate;
+  display: flex; justify-content: center;
+  margin-bottom: var(--space-6);
+}
+/* Hover tint: the project's colour fills the image area out to the card edges and dissolves downward
+   with the same eased fade as the phone. Each card sets --card-brand (top) and optionally --card-brand-light
+   (bottom); without the second, the top colour is lightened toward the surface. */
+.card-media::before {
+  content: ""; position: absolute; z-index: -1;
+  inset: calc(var(--pad-card) * -1) calc(var(--pad-card) * -1) 0;
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+  /* the project colour at the top, lightening toward the bottom, then dissolving with the fade mask */
+  background: linear-gradient(to bottom in oklab,
+    var(--card-brand, var(--chip)),
+    var(--card-brand-light, color-mix(in oklab, var(--card-brand, var(--chip)) 45%, var(--surface))));
+  -webkit-mask-image: var(--media-fade);
+          mask-image: var(--media-fade);
+  opacity: 0;
+  transition: opacity 300ms cubic-bezier(.22, 1, .36, 1);
+}
+.card:hover .card-media::before, .card:focus-visible .card-media::before { opacity: 1; }
+.card-media img {
+  width: var(--phone-w); height: auto;
+  translate: var(--media-shift, 0) 0;   /* centre the PHONE, not the image (the hand enters from the left) */
+  -webkit-mask-image: var(--media-fade);
+          mask-image: var(--media-fade);
+}
+.card-media {
+  --media-fade: linear-gradient(to bottom, #000 64%,
+    rgb(0 0 0 / .9) 70%, rgb(0 0 0 / .7) 76%, rgb(0 0 0 / .45) 82%,
+    rgb(0 0 0 / .2) 88%, rgb(0 0 0 / .06) 94%, transparent 100%);
+}
+@media (min-width: 600px) { .card-media { --phone-w: var(--space-80); } }
+
+/* tags — neutral pills under a card's description */
+.tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-4) 0 0; padding: 0; list-style: none; }
+.tags li {
+  padding: var(--space-1) var(--space-3); border-radius: 999px;
+  background: var(--chip); color: var(--muted);
+  font-size: var(--text-sm); line-height: var(--leading-sm);
+}
+
+/* case study */
+.cs-header h1 { font-size: var(--text-large-title); line-height: var(--leading-large-title); }
+.cs-header .tags { margin-top: var(--space-4); }
+@media (min-width: 768px) { .cs-header h1 { font-size: var(--text-display); line-height: var(--leading-display); } }
+.cs-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--space-4); margin: var(--space-6) 0 0; }
+.cs-meta dt { font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--muted); }
+.case-study section h2 { margin-bottom: var(--space-4); }
+
+/* utilities */
+.keep { white-space: nowrap; }   /* phrase that must never split across lines, e.g. "sketch to takeoff" */
+.visually-hidden {
+  position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
