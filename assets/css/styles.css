@@ -395,6 +395,7 @@ html, body { overflow-x: clip; }   /* the escaping plane must never cause sidewa
   background: var(--surface); border-radius: var(--radius-card);
   text-decoration: none;
 }
+.card h3 + p { margin-top: var(--space-2); }   /* 8px from the project title to its description */
 /* Hover: the image area's colour tint (below) is the only hover signal — no lift, no shadow. */
 
 /* card media — the whole phone above the title; only the bottom of the image (the hand below the phone)
@@ -490,7 +491,13 @@ html, body { overflow-x: clip; }   /* the escaping plane must never cause sidewa
 .cs-header h1 { font-size: var(--text-large-title); line-height: var(--leading-large-title); }
 .cs-header .tags { margin-top: var(--space-4); }
 @media (min-width: 768px) { .cs-header h1 { font-size: var(--text-display); line-height: var(--leading-display); } }
-.cs-meta { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--space-4); margin: var(--space-6) 0 0; }
+.cs-meta {   /* Role, Timeline, Status in a white card, matching the project cards */
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--space-6);
+  margin: var(--space-8) 0 0; padding: var(--pad-card);
+  background: var(--surface); border-radius: var(--radius-card);
+}
+.cs-meta dd { margin: var(--space-1) 0 0; }
+.cs-header + section { margin-top: var(--section-gap); }   /* the same gap as between sections, so the meta card doesn't crowd the first heading */
 .cs-meta dt { font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--muted); }
 .case-study section h2 { margin-bottom: var(--space-4); }
 
@@ -510,7 +517,7 @@ html, body { overflow-x: clip; }   /* the escaping plane must never cause sidewa
 @media (prefers-reduced-motion: reduce) { .rotator-word, .rotator-word.is-on, .rotator-word.is-off { transition: none; translate: none; } }
 .keep { white-space: nowrap; }   /* phrase that must never split across lines, e.g. "sketch to takeoff" */
 .phone-only { display: none; }
-@media (max-width: 599px) { br.phone-only { display: inline; } }   /* a line break used on phones only, e.g. after "Solo founder," */
+@media (max-width: 599px) { br.phone-only { display: inline; } }   /* a line break used on phones only, e.g. after "Founder," */
 .visually-hidden {
   position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
