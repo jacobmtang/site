@@ -22,7 +22,7 @@
       <div class="flight-path">
         <span class="flight-bob">
           <span class="tow">
-            <span class="banner"><span class="banner-text" data-messages="He does brand too|He edits video too|He tinkers with 3D modeling too|He likes planes too|He's for hire too">He does brand too</span></span>
+            <span class="banner"><span class="banner-text" data-messages="He does branding too|He edits video too|He tinkers with 3D modeling too|He likes planes too|He's for hire too">He does branding too</span></span>
             <span class="rope"></span>
           </span>
           <span class="plane">
@@ -45,7 +45,7 @@
   <main>
 
     <section id="work" class="work">
-      <h2>What I've been building</h2>
+      <h2 aria-label="What I've been designing, building, developing and iterating">What I've been <span class="rotator" aria-hidden="true"><span class="rotator-word is-on">designing</span><span class="rotator-word">building</span><span class="rotator-word">developing</span><span class="rotator-word">iterating</span></span></h2>
       <div class="work-grid">
       <!-- Desktop: a black card spans the full width; the white project card sits on its left edge, and the
            exposed black area holds supporting details. Phones: just the white card. -->
@@ -64,7 +64,7 @@
       <a class="card-details" href="/work/maureen-care/" aria-label="What I did on Maureen Care: designed, built and shipped. Read the case study">
         <!-- the brief: what Jacob did, stage by stage -->
         <dl>
-          <div><dt>Role</dt><dd>Solo founder, May 2026 — present</dd></div>
+          <div><dt>Role</dt><dd>Solo founder,<br class="phone-only"> <span class="keep">May 2026 — present</span></dd></div>
           <div><dt>Designed</dt><dd>The full product experience: brand identity, UI system and user flows</dd></div>
           <div><dt>Built</dt><dd>In React Native and Expo, with Supabase and the RevenueCat SDK</dd></div>
           <div><dt>Shipped</dt><dd>To the App Store, alongside a Webflow marketing site</dd></div>
@@ -91,5 +91,6 @@
   </div>
   <script src="/assets/js/flight.js" defer></script>
   <script src="/assets/js/nav-tone.js" defer></script>
+  <script src="/assets/js/rotator.js" defer></script>
 </body>
 </html>
