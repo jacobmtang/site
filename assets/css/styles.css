@@ -1,29 +1,11 @@
-/* Newsreader (Production Type, SIL Open Font License — see /assets/fonts/OFL.txt).
-   Variable: weight 200–800, optical size 6–72. Latin subset. Masters in Design/_brand/fonts/newsreader/. */
-@font-face {
-  font-family: "Newsreader";
-  src: url("/assets/fonts/newsreader-variable.woff2") format("woff2");
-  font-weight: 200 800;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Newsreader";
-  src: url("/assets/fonts/newsreader-italic-variable.woff2") format("woff2");
-  font-weight: 200 800;
-  font-style: italic;
-  font-display: swap;
-}
-
-/* Portfolio styles — ONE stylesheet for every page. Tokens first, so a redesign is a token change.
-   TYPE FOLLOWS THE APPLE HIG SCALE (--text-* / --leading-*); never set a raw font-size or line-height.
-   SPACING IS ON A 4PT GRID: every margin, padding, gap and line-height is a multiple of 4px.
-   Use the --space-* tokens; never type a raw spacing value. */
 :root {
   /* colour (placeholder palette) */
   --bg: #f7f7f7;        /* page: neutral near-white (no warm tint), so white cards still lift */
   --surface: #ffffff;   /* cards */
   --chip: #f2f2f2;      /* tag pills on a card — neutral grey */
+  --stack: #000000;      /* the black card behind a project card */
+  --on-stack: #ffffff;
+  --on-stack-muted: rgb(255 255 255 / .6);
 
   /* hero sky — sampled from Jacob's reference (2026-10-03); deep at the top, lifting toward the fade */
   --sky-top: #034da5;
@@ -42,7 +24,7 @@
 
   /* type */
   --font-body: system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-display: "Newsreader", Georgia, serif;
+  --font-display: var(--font-body);   /* one sans family site-wide (serif Newsreader dropped 2026-10-04) */
   /* Type scale: Apple HIG text styles (iOS, Large/default), with each leading rounded to the 4pt grid.
      HIG size/leading → ours:  Large Title 34/41 → 34/40 · Title 1 28/34 → 28/36 · Title 2 22/28 → 22/28
      Title 3 20/25 → 20/24 · Body 17/22 → 17/24 · Callout 16/21 → 16/20 · Subhead 15/20 → 15/20
@@ -78,6 +60,7 @@
   --space-20: 80px;
   --space-24: 96px;
   --space-32: 128px;
+  --space-40: 160px;
   --space-60: 240px;
   --space-64: 256px;
   --space-72: 288px;
@@ -97,6 +80,8 @@
 @media (prefers-color-scheme: dark) {
   :root { --bg: #111; --surface: #1c1c1c; --chip: #2a2a2a; --text: #eee; --muted: #999; --line: #2a2a2a; --accent: #eee; --nav: #ffffff;
           --sky-top: #021f45; --sky-mid: #0a3a78; --sky-low: #12305a; --sky-pale: #141c28; }
+  /* dark mode: only the resting fill changes, to the Instagram button's grey (the near-black --surface barely read); hover still inverts as normal */
+  .site-header .icon-link, .contact-pill .contact-pill-icon { background: var(--line); }   /* the two mail circles; two-class selectors beat the later base rules and lose to their :hover */
 }
 
 /* base */
@@ -118,21 +103,97 @@ main.case-study { max-width: var(--max); }
   display: flex; justify-content: space-between; align-items: center; gap: var(--space-4);  /* centred: top-aligning read too high (tried 2026-10-04) */
   padding-block: var(--space-4);   /* 16 + 40px signature + 16 = 72px, the same header height as before */
 }
-/* Jacob's signature, top left. One black file used as a MASK and filled with --nav, so it recolours from
+/* Jacob's signature, top left. One vector file (the same SVG as the footer) used as a MASK and filled with --nav, so it recolours from
    a token (black on the page, white in dark mode) with no edge residue. Master: portfolio/_source/signature-*.png */
 .signature {
   --sig-h: var(--space-10);   /* 40px tall */
   display: block; flex: none;
-  height: var(--sig-h); width: calc(var(--sig-h) * 568 / 213);   /* the artwork's aspect ratio */
+  height: var(--sig-h); width: calc(var(--sig-h) * 273.88 / 116.18);   /* the SVG's viewBox */
   translate: 0 6px;   /* optical nudge down (an artwork offset, so off-grid by design): the long J and g tails make it look higher */
-  background-color: var(--nav);
-  -webkit-mask: url("/assets/img/signature.webp") center / contain no-repeat;
-          mask: url("/assets/img/signature.webp") center / contain no-repeat;
+  background-color: var(--nav);   /* black on the page, white in dark mode */
+  -webkit-mask: url("/assets/img/signature.svg") center / contain no-repeat;
+          mask: url("/assets/img/signature.svg") center / contain no-repeat;
 }
 .site-header nav { display: flex; gap: var(--space-4); }
 .site-header nav a { text-decoration: none; color: var(--nav); }
+/* icons are inline SVG filled with currentColor, so their colour comes from the link's token — no separate white/black files */
+.icon { display: block; width: var(--space-6); height: var(--space-6); }
+.icon-link {
+  display: grid; place-items: center; width: var(--space-10); height: var(--space-10);  /* 40px circle = tap target */
+  border-radius: 999px; background: var(--surface); color: var(--nav);   /* white circle, black icon — the same wherever it appears */
+}
+.icon-link .icon { width: var(--space-5); height: var(--space-5); }   /* 20px icon inside the 40px circle */
+.icon-link { transition: background-color 200ms, color 200ms; }
+.icon-link:hover, .icon-link:focus-visible { background: var(--nav); color: var(--surface); }   /* inverts on hover: clearly a button */
 main > section + section { margin-top: var(--section-gap); }
-.site-footer { margin-top: var(--section-gap); color: var(--muted); border-top: 1px solid var(--line); }
+/* mail button below the footer card, at the very bottom of the page, right-aligned on the content edge */
+/* a quieter circle for secondary links (Instagram): neutral grey fill, muted glyph, so the Contact pill keeps the weight */
+.icon-link-quiet { background: var(--line); color: var(--muted); }
+.icon-link-quiet:hover, .icon-link-quiet:focus-visible { background: color-mix(in oklab, var(--line), var(--text) 8%); color: var(--text); }   /* circle dims a touch, glyph darkens */
+/* Instagram circle on the left content edge, Contact pill on the right */
+.footer-contact { display: flex; justify-content: space-between; align-items: center; max-width: var(--container); margin: 0 auto; padding: var(--space-6) var(--gutter); }
+
+/* contact pill: a longer black pill with the word "Contact", holding the mail icon in a circle styled exactly like the nav
+   mail button (white circle, black glyph), so the two mail buttons always match. Everything inverts on hover. */
+.contact-pill {
+  display: inline-flex; align-items: center; gap: var(--space-3);
+  padding: var(--space-1) var(--space-1) var(--space-1) var(--space-5);   /* a 4px gap rings the 40px circle at the pill's right end */
+  border-radius: 999px; background: var(--nav); color: var(--surface);
+  font-weight: 600; text-decoration: none;
+  transition: background-color 200ms, color 200ms;
+}
+.contact-pill-icon {
+  display: grid; place-items: center; width: var(--space-10); height: var(--space-10);
+  border-radius: 999px; background: var(--surface); color: var(--nav);
+  transition: background-color 200ms, color 200ms;
+}
+.contact-pill-icon .icon { width: var(--space-5); height: var(--space-5); }
+.contact-pill:hover, .contact-pill:focus-visible { background: var(--surface); color: var(--nav); }
+.contact-pill:hover .contact-pill-icon, .contact-pill:focus-visible .contact-pill-icon { background: var(--nav); color: var(--surface); }
+
+/* footer — the hero card in reverse: a shorter rounded card whose sky rises out of the page (eased fade at the
+   top, rounded bottom corners, same insets as the hero). The signature sits on it in white; the mail button sits below it on the page. */
+.site-footer {
+  --foot-fade: var(--space-60);   /* 240px eased fade in from the page */
+  position: relative; isolation: isolate;
+  max-width: none; margin: var(--section-gap) var(--hero-inset) 0;
+  display: flex; flex-direction: column; align-items: flex-end;
+  /* % here is the page width (the footer's containing block), so subtract the card's own inset to land on the content edges */
+  padding: var(--foot-fade) max(var(--hero-pad), calc((100% - var(--container)) / 2 + var(--gutter) - var(--hero-inset))) var(--space-12);
+  color: var(--on-sky);
+}
+.site-footer::before, .site-footer::after { content: ""; position: absolute; inset: 0; z-index: -1; border-radius: 0 0 var(--hero-radius) var(--hero-radius); pointer-events: none; }
+.site-footer::before {
+  /* subtle: the lighter end of the sky palette, eased in from the page colour at the top */
+  background: linear-gradient(to top, var(--sky-mid) 0%,
+    color-mix(in oklab, var(--bg) 22%, var(--sky-mid)) calc(100% - var(--foot-fade) * .7),
+    color-mix(in oklab, var(--bg) 50%, var(--sky-mid)) calc(100% - var(--foot-fade) * .5),
+    color-mix(in oklab, var(--bg) 78%, var(--sky-mid)) calc(100% - var(--foot-fade) * .3),
+    color-mix(in oklab, var(--bg) 97%, var(--sky-mid)) calc(100% - var(--foot-fade) * .1),
+    var(--bg) 100%);
+  background: linear-gradient(to top in oklab, var(--sky-mid) 0%,
+    color-mix(in oklab, var(--bg) 22%, var(--sky-mid)) calc(100% - var(--foot-fade) * .7),
+    color-mix(in oklab, var(--bg) 50%, var(--sky-mid)) calc(100% - var(--foot-fade) * .5),
+    color-mix(in oklab, var(--bg) 78%, var(--sky-mid)) calc(100% - var(--foot-fade) * .3),
+    color-mix(in oklab, var(--bg) 97%, var(--sky-mid)) calc(100% - var(--foot-fade) * .1),
+    var(--bg) 100%);
+}
+.site-footer::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  opacity: var(--grain); mix-blend-mode: overlay;
+  -webkit-mask-image: linear-gradient(to top, #000 calc(100% - var(--foot-fade)), transparent 100%);
+          mask-image: linear-gradient(to top, #000 calc(100% - var(--foot-fade)), transparent 100%);
+}
+/* the signature as a sign-off: vector, spanning the full content width, recoloured by token (mask + --on-sky) */
+.footer-signature {
+  display: block; width: 100%; aspect-ratio: 273.88 / 116.18;   /* the SVG's viewBox */
+  margin-top: var(--space-12);
+  background-color: var(--on-sky);   /* white on the footer sky */
+  -webkit-mask: url("/assets/img/signature.svg") center / contain no-repeat;
+          mask: url("/assets/img/signature.svg") center / contain no-repeat;
+}
+.site-footer a { text-decoration: none; text-underline-offset: .2em; }
+.site-footer a:hover, .site-footer a:focus-visible { text-decoration: underline; }   /* underline only on hover */
 
 /* hero — a rounded card holding a CSS sky (gradient + SVG grain, no image). Text on it is white.
    Two layers: .hero-sky is clipped to the card's rounded shape; .flight is NOT, so the plane takes off
@@ -290,9 +351,8 @@ html, body { overflow-x: clip; }   /* the escaping plane must never cause sidewa
 
 /* work — heading sits tight to its cards, far from the hero */
 .work h2 { margin-bottom: var(--space-4); }
-/* cards sit in a grid: one column on phones, two from 900px, so each card keeps a comfortable width */
+/* one project per row; on desktop each project is a card stack (white card + black details card) */
 .work-grid { display: grid; gap: var(--space-6); }
-@media (min-width: 900px) { .work-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .card {
   display: block; padding: var(--pad-card);
   overflow: hidden;   /* clips the centred phone image's empty side and the hover tint to the card's corners */
@@ -338,6 +398,48 @@ html, body { overflow-x: clip; }   /* the escaping plane must never cause sidewa
     rgb(0 0 0 / .2) 88%, rgb(0 0 0 / .06) 94%, transparent 100%);
 }
 @media (min-width: 600px) { .card-media { --phone-w: var(--space-80); } }
+
+/* Card stack (desktop): a black card spans the full width; the white project card sits flush on its left
+   edge at full height, so it reads as one card resting on another. The exposed black area holds details.
+   Phones: no black card, no details — just the white card. */
+.card-details { display: none; }
+@media (min-width: 900px) {
+  .card-stack {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));   /* white card keeps the half width it had before */
+  }
+  .card-stack .card { position: relative; z-index: 1; }
+  /* The black card starts UNDER the white card's right edge (by one radius), so black shows only in the
+     white card's right-hand corner curves — never at its left edge, where the shared curve would leave a
+     dark anti-aliased fringe. */
+  .card-details {
+    display: flex; flex-direction: column;
+    background: var(--stack); color: var(--on-stack);
+    border-radius: 0 var(--radius-card) var(--radius-card) 0;
+    margin-left: calc(var(--radius-card) * -1);
+    padding: var(--pad-card); padding-left: calc(var(--pad-card) + var(--radius-card));
+  }
+  /* one column of rows spread over the full height, divided by hairlines, so the panel is filled top to bottom */
+  .card-details dl { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
+  .card-details dl > div { padding-block: var(--space-4); border-top: 1px solid rgb(255 255 255 / .16); }
+  .card-details dl > div:first-child { border-top: 0; padding-top: 0; padding-right: calc(var(--space-12) + var(--space-4)); }   /* room for the arrow button */
+  .card-details dl > div:last-child { padding-bottom: 0; }
+  .card-details dt { font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--on-stack-muted); }
+  .card-details dd { margin-top: var(--space-1); font-size: var(--text-title3); line-height: var(--leading-title3); }
+  /* a second way in: a white circle with a ↗ arrow in the panel's TOP-right corner — a card-level 'open' cue,
+     apart from the rows so it isn't read as part of any one of them. Matches the mail button. */
+  .card-details { position: relative; }
+  .arrow-link {
+    position: absolute; right: var(--space-4); top: var(--space-4);   /* nestled into the card's corner curve, outside the rows' grid */
+    width: var(--space-12); height: var(--space-12);   /* 48px */
+    background: var(--surface); color: var(--nav);
+  }
+  .arrow-link .icon { width: var(--space-5); height: var(--space-5); rotate: -45deg; }   /* → becomes ↗ */
+  .card-details { text-decoration: none; }   /* the whole black panel is a link to the case study, not just the arrow */
+  /* hovering anywhere on the stack (white card or black panel) fills the arrow too, so the whole unit reacts as one */
+  .card-stack:hover .arrow-link, .card-stack:focus-within .arrow-link { background: var(--card-brand, var(--nav)); color: var(--on-stack); }
+  /* hovering anywhere on the stack tints the white card's image area, so the two halves act as one */
+  .card-stack:hover .card-media::before { opacity: 1; }
+}
 
 /* tags — neutral pills under a card's description */
 .tags { display: flex; flex-wrap: wrap; gap: var(--space-2); margin: var(--space-4) 0 0; padding: 0; list-style: none; }

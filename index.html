@@ -10,7 +10,7 @@
 <body>
   <header class="site-header">
     <a class="signature" href="/" aria-label="Jacob Tang, home"></a>
-    <nav><a href="/#work">Work</a> <a href="mailto:jacobmtang@yahoo.com">Contact</a></nav>
+    <nav><a class="icon-link" href="mailto:jacobmtang@yahoo.com" aria-label="Email Jacob"><!-- mail icon: Ionicons (MIT), master portfolio/_source/mail.svg --><svg class="icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M424 80H88a56.06 56.06 0 0 0-56 56v240a56.06 56.06 0 0 0 56 56h336a56.06 56.06 0 0 0 56-56V136a56.06 56.06 0 0 0-56-56m-14.18 92.63-144 112a16 16 0 0 1-19.64 0l-144-112a16 16 0 1 1 19.64-25.26L256 251.73l134.18-104.36a16 16 0 0 1 19.64 25.26"/></svg></a></nav>
   </header>
 
   <!-- Hero card: the sky is clipped to the rounded card; the plane flies on an unclipped layer and escapes past the right edge. -->
@@ -47,24 +47,47 @@
     <section id="work" class="work">
       <h2>What I've been building</h2>
       <div class="work-grid">
-      <a class="card" href="/work/maureen-care/" style="--card-brand: #37727e; --card-brand-light: #4f8894;"><!-- Maureen teal → mint: tints the image area on hover -->
+      <!-- Desktop: a black card spans the full width; the white project card sits on its left edge, and the
+           exposed black area holds supporting details. Phones: just the white card. -->
+      <div class="card-stack" style="--card-brand: #37727e; --card-brand-light: #4f8894;">
+      <a class="card" href="/work/maureen-care/"><!-- Maureen teal: tints the image area on hover -->
         <!-- Whole phone in hand; only the bottom (below the phone) dissolves into the card. Master: Maureen/_library/device-mockups/dashboard/hand-mockup-dashboard-v01.png -->
         <div class="card-media" style="--media-shift: -19.3%;"><!-- phone centre sits at 69.3% of the image width, measured -->
           <img src="/assets/img/maureen-dashboard.webp" alt="A hand holding an iPhone showing the Maureen Care home screen" width="880" height="1233" loading="lazy">
         </div>
         <h3>Maureen Care</h3>
-        <p>Designing, building and shipping an iOS app for binge eating recovery as a solo founder.</p>
+        <p>A freemium iOS app for binge eating recovery, with lifestyle tools for dietary structure and therapeutic practices like urge surfing and breathwork.</p>
         <ul class="tags" aria-label="Disciplines">
-          <li>UX/UI</li><li>React Native</li><li>Brand</li>
+          <li>Product</li><li>UX/UI</li><li>Brand</li>
         </ul>
       </a>
+      <a class="card-details" href="/work/maureen-care/" aria-label="What I did on Maureen Care: designed, built and shipped. Read the case study">
+        <!-- the brief: what Jacob did, stage by stage -->
+        <dl>
+          <div><dt>Role</dt><dd>Solo founder, May 2026 — present</dd></div>
+          <div><dt>Designed</dt><dd>The full product experience: brand identity, UI system and user flows</dd></div>
+          <div><dt>Built</dt><dd>In React Native and Expo, with Supabase and the RevenueCat SDK</dd></div>
+          <div><dt>Shipped</dt><dd>To the App Store, alongside a Webflow marketing site</dd></div>
+        </dl>
+        <!-- arrow: Ionicons arrow-forward (MIT), master portfolio/_source/arrow-forward.svg -->
+        <span class="icon-link arrow-link" aria-hidden="true">
+          <svg class="icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M268 112l144 144-144 144M392 256H100"/></svg>
+        </span>
+      </a>
+      </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <a href="mailto:jacobmtang@yahoo.com">jacobmtang@yahoo.com</a>
+    <!-- signature sign-off, full content width. Vector master: portfolio/_source/signature.svg -->
+    <span class="footer-signature" role="img" aria-label="Jacob Tang"></span>
   </footer>
+
+  <div class="footer-contact">
+    <a class="icon-link icon-link-quiet" href="https://www.instagram.com/jacobmtang/" aria-label="Jacob on Instagram"><svg class="icon" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M349.33 69.33a93.62 93.62 0 0 1 93.34 93.34v186.66a93.62 93.62 0 0 1-93.34 93.34H162.67a93.62 93.62 0 0 1-93.34-93.34V162.67a93.62 93.62 0 0 1 93.34-93.34zm0-37.33H162.67C90.8 32 32 90.8 32 162.67v186.66C32 421.2 90.8 480 162.67 480h186.66C421.2 480 480 421.2 480 349.33V162.67C480 90.8 421.2 32 349.33 32"/><path d="M377.33 162.67a28 28 0 1 1 28-28 27.94 27.94 0 0 1-28 28M256 181.33A74.67 74.67 0 1 1 181.33 256 74.75 74.75 0 0 1 256 181.33m0-37.33a112 112 0 1 0 112 112 112 112 0 0 0-112-112"/></svg></a>
+    <a class="contact-pill" href="mailto:jacobmtang@yahoo.com">Contact<span class="contact-pill-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M424 80H88a56.06 56.06 0 0 0-56 56v240a56.06 56.06 0 0 0 56 56h336a56.06 56.06 0 0 0 56-56V136a56.06 56.06 0 0 0-56-56m-14.18 92.63-144 112a16 16 0 0 1-19.64 0l-144-112a16 16 0 1 1 19.64-25.26L256 251.73l134.18-104.36a16 16 0 0 1 19.64 25.26"/></svg></span></a>
+  </div>
   <script src="/assets/js/flight.js" defer></script>
 </body>
 </html>
