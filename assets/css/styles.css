@@ -103,6 +103,21 @@ main.case-study { max-width: var(--max); }
   display: flex; justify-content: space-between; align-items: center; gap: var(--space-4);  /* centred: top-aligning read too high (tried 2026-10-04) */
   padding-block: var(--space-4);   /* 16 + 40px signature + 16 = 72px, the same header height as before */
 }
+/* Fixed header (pattern from maureen.care): stays put while the page scrolls under a soft blur band.
+   nav-tone.js sets html.tone-light / html.tone-dark from whatever is under the signature, and the
+   signature and the band's tint follow, so the signature always reads. */
+.site-header { position: fixed; inset: 0 0 auto; z-index: 100; }
+body { padding-top: var(--header-h); }   /* the header no longer takes up room in the flow */
+.site-header::before {
+  content: ""; position: absolute; z-index: -1; pointer-events: none;
+  top: 0; left: calc(50% - 50vw); width: 100vw; height: calc(100% + var(--space-3));   /* full bleed, a little past the header */
+  background-color: rgb(247 247 247 / .3);
+  -webkit-backdrop-filter: blur(16px); backdrop-filter: blur(16px);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / .9) 25%, rgb(0 0 0 / .6) 55%, rgb(0 0 0 / .25) 80%, transparent 100%);
+          mask-image: linear-gradient(to bottom, #000 0%, rgb(0 0 0 / .9) 25%, rgb(0 0 0 / .6) 55%, rgb(0 0 0 / .25) 80%, transparent 100%);
+  transition: background-color .35s ease;
+}
+html.tone-dark .site-header::before { background-color: rgb(0 0 0 / .14); }
 /* Jacob's signature, top left. One vector file (the same SVG as the footer) used as a MASK and filled with --nav, so it recolours from
    a token (black on the page, white in dark mode) with no edge residue. Master: portfolio/_source/signature-*.png */
 .signature {
@@ -110,10 +125,13 @@ main.case-study { max-width: var(--max); }
   display: block; flex: none;
   height: var(--sig-h); width: calc(var(--sig-h) * 273.88 / 116.18);   /* the SVG's viewBox */
   translate: 0 6px;   /* optical nudge down (an artwork offset, so off-grid by design): the long J and g tails make it look higher */
-  background-color: var(--nav);   /* black on the page, white in dark mode */
+  background-color: var(--nav);   /* before the script runs: black on the page, white in dark mode */
+  transition: background-color .35s ease;
   -webkit-mask: url("/assets/img/signature.svg") center / contain no-repeat;
           mask: url("/assets/img/signature.svg") center / contain no-repeat;
 }
+html.tone-light .signature { background-color: #000; }   /* over light backgrounds */
+html.tone-dark .signature { background-color: #fff; }    /* over the sky, the black panel, dark mode */
 .site-header nav { display: flex; gap: var(--space-4); }
 .site-header nav a { text-decoration: none; color: var(--nav); }
 /* icons are inline SVG filled with currentColor, so their colour comes from the link's token — no separate white/black files */
@@ -186,7 +204,7 @@ main > section + section { margin-top: var(--section-gap); }
 }
 /* the pilot emoji, centred and standing on the footer card's bottom edge (decorative) */
 .footer-pilot {
-  position: absolute; left: 50%; bottom: 0; translate: -50% .5px;   /* the glyph's ink stops .5px above its line box (measured at 2x), so its feet land exactly on the edge */
+  position: absolute; left: 50%; bottom: 0; translate: -50% 0;   /* no vertical nudge: at line-height 1 the feet already rest on the edge */
   font-size: var(--space-12); line-height: 1;   /* 48px */
 }
 /* the signature as a sign-off: vector, spanning the full content width, recoloured by token (mask + --on-sky) */
@@ -421,15 +439,15 @@ html, body { overflow-x: clip; }   /* the escaping plane must never cause sidewa
 /* one column of rows divided by hairlines */
 .card-details dl { flex: 1; display: flex; flex-direction: column; justify-content: space-between; margin: 0; }
 .card-details dl > div { padding-block: var(--space-4); border-top: 1px solid rgb(255 255 255 / .16); }
-.card-details dl > div:first-child { border-top: 0; padding-top: 0; padding-right: calc(var(--space-12) + var(--space-4)); }   /* room for the arrow button */
+.card-details dl > div:first-child { border-top: 0; padding-top: 0; }
 .card-details dl > div:last-child { padding-bottom: 0; }
 .card-details dd { margin: var(--space-1) 0 0; }
 .card-details dt { font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--on-stack-muted); }
 .card-details dd { font-size: var(--text-body); line-height: var(--leading-body); }
-/* a second way in: a white circle with a ↗ arrow in the panel's top-right corner (just below the white card on phones).
+/* a second way in: a white circle with a ↗ arrow on its own row at the panel's bottom right, clear of the rows' text.
    Matches the mail button. */
 .arrow-link {
-  position: absolute; right: var(--space-4); top: calc(var(--radius-card) + var(--space-4));
+  flex: none; align-self: flex-end; margin-top: var(--space-6);
   width: var(--space-12); height: var(--space-12);   /* 48px */
   background: var(--surface); color: var(--nav);
 }
@@ -445,7 +463,6 @@ html, body { overflow-x: clip; }   /* the escaping plane must never cause sidewa
     padding: var(--pad-card); padding-left: calc(var(--pad-card) + var(--radius-card));
   }
   .card-details dd { font-size: var(--text-title3); line-height: var(--leading-title3); }
-  .arrow-link { top: var(--space-4); }   /* nestled into the card's corner curve */
 }
 
 /* tags — neutral pills under a card's description */

@@ -14,7 +14,7 @@
   </header>
 
   <!-- Hero card: the sky is clipped to the rounded card; the plane flies on an unclipped layer and escapes past the right edge. -->
-  <div class="hero">
+  <div class="hero" data-tone="dark" data-tone-fade="bottom" data-tone-fade-var="--sky-fade">
     <div class="hero-sky" aria-hidden="true"></div>
 
     <!-- Plane towing a banner across the sky. Banner text changes each pass (assets/js/flight.js). -->
@@ -79,7 +79,7 @@
     </section>
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer" data-tone="dark" data-tone-fade="top" data-tone-fade-var="--foot-fade">
     <!-- signature sign-off, full content width. Vector master: portfolio/_source/signature.svg -->
     <span class="footer-signature" role="img" aria-label="Jacob Tang"></span>
     <span class="footer-pilot" aria-hidden="true">🧑🏻‍✈️</span>
@@ -90,5 +90,6 @@
     <a class="contact-pill" href="mailto:jacobmtang@yahoo.com">Contact<span class="contact-pill-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M424 80H88a56.06 56.06 0 0 0-56 56v240a56.06 56.06 0 0 0 56 56h336a56.06 56.06 0 0 0 56-56V136a56.06 56.06 0 0 0-56-56m-14.18 92.63-144 112a16 16 0 0 1-19.64 0l-144-112a16 16 0 1 1 19.64-25.26L256 251.73l134.18-104.36a16 16 0 0 1 19.64 25.26"/></svg></span></a>
   </div>
   <script src="/assets/js/flight.js" defer></script>
+  <script src="/assets/js/nav-tone.js" defer></script>
 </body>
 </html>
