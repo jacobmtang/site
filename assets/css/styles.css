@@ -81,7 +81,7 @@
   :root { --bg: #111; --surface: #1c1c1c; --chip: #2a2a2a; --text: #eee; --muted: #999; --line: #2a2a2a; --accent: #eee; --nav: #ffffff;
           --sky-top: #021f45; --sky-mid: #0a3a78; --sky-low: #12305a; --sky-pale: #141c28; }
   /* dark mode: only the resting fill changes, to the Instagram button's grey (the near-black --surface barely read); hover still inverts as normal */
-  .site-header .icon-link, .contact-pill .contact-pill-icon { background: var(--line); }   /* the two mail circles; two-class selectors beat the later base rules and lose to their :hover */
+  .site-header .icon-link, .site-header .nav-pill, .contact-pill .contact-pill-icon { background: var(--line); }   /* the two mail circles; two-class selectors beat the later base rules and lose to their :hover */
 }
 
 /* base */
@@ -131,7 +131,15 @@ html.tone-dark .site-header::before { background-color: rgb(0 0 0 / .14); }
 }
 html.tone-light .signature { background-color: #000; }   /* over light backgrounds */
 html.tone-dark .signature { background-color: #fff; }    /* over the sky, the black panel, dark mode */
-.site-header nav { display: flex; gap: var(--space-4); }
+.site-header nav { display: flex; align-items: center; gap: var(--space-2); }
+/* Resume: a text pill beside the mail button, same height and colours (white, black text), inverts on hover. Opens the PDF in a new tab. */
+.nav-pill {
+  display: inline-flex; align-items: center; height: var(--space-10); padding-inline: var(--space-4);
+  border-radius: 999px; background: var(--surface); color: var(--nav);
+  font-size: var(--text-subhead); line-height: var(--leading-subhead); font-weight: 500; text-decoration: none;
+  transition: background-color 200ms, color 200ms;
+}
+.nav-pill:hover, .nav-pill:focus-visible { background: var(--nav); color: var(--surface); }
 .site-header nav a { text-decoration: none; color: var(--nav); }
 /* icons are inline SVG filled with currentColor, so their colour comes from the link's token — no separate white/black files */
 .icon { display: block; width: var(--space-6); height: var(--space-6); }
@@ -147,7 +155,10 @@ main > section + section { margin-top: var(--section-gap); }
 /* a quieter circle for secondary links (Instagram): neutral grey fill, muted glyph, so the Contact pill keeps the weight */
 .icon-link-quiet { background: var(--line); color: var(--muted); }
 .icon-link-quiet:hover, .icon-link-quiet:focus-visible { background: color-mix(in oklab, var(--line), var(--text) 8%); color: var(--text); }   /* circle dims a touch, glyph darkens */
-/* Instagram circle on the left content edge, Contact pill on the right */
+/* bottom row: © on the left content edge; Instagram circle and Contact pill together on the right */
+.copyright { margin: 0; font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--muted); }
+.footer-actions { display: flex; align-items: center; gap: var(--space-3); }
+.footer-actions .icon-link { width: var(--space-12); height: var(--space-12); }   /* 48px: the same height as the Contact pill beside it */
 .footer-contact { display: flex; justify-content: space-between; align-items: center; max-width: var(--container); margin: 0 auto; padding: var(--space-6) var(--gutter); }
 
 /* contact pill: a longer black pill with the word "Contact", holding the mail icon in a circle styled exactly like the nav
@@ -490,6 +501,11 @@ html, body { overflow-x: clip; }   /* the escaping plane must never cause sidewa
 /* case study */
 .cs-header h1 { font-size: var(--text-large-title); line-height: var(--leading-large-title); }
 .cs-header .tags { margin-top: var(--space-4); }
+/* inline icons in the brief: the Maureen app icon after "iOS app", and grey tool logos after each tool's name.
+   Sized to the text (about cap height + a bit), sitting on the baseline; logos are muted so they don't compete. */
+.inline-app-icon { display: inline-block; width: 1.2em; height: 1.2em; vertical-align: -0.25em; border-radius: 22.5%; }
+.inline-logo { display: inline-block; width: .9em; height: .9em; vertical-align: -0.1em; color: var(--muted); }
+.nowrap { white-space: nowrap; }   /* a name never splits from its logo */
 .cs-brief { margin-top: var(--space-6); max-width: var(--measure); font-size: var(--text-title3); line-height: var(--leading-title2); }   /* the lead: a step up from body. 28px leading, not Title 3's 24, because it runs several lines */
 @media (min-width: 768px) { .cs-header h1 { font-size: var(--text-display); line-height: var(--leading-display); } }
 .cs-meta {   /* Role, Timeline, Status in a black card, matching the home page's details panel */
@@ -498,6 +514,12 @@ html, body { overflow-x: clip; }   /* the escaping plane must never cause sidewa
   background: var(--stack); color: var(--on-stack); border-radius: var(--radius-card);
 }
 .cs-meta dd { margin: var(--space-1) 0 0; }
+/* a fact with a link (Status → the App Store): the text, then a small white circle with a ↗ arrow (the home card's
+   arrow button, smaller). On the black card it fills with Maureen's teal on hover, since the usual black would vanish. */
+.meta-link { display: flex; align-items: center; gap: var(--space-3); }
+.store-link { flex: none; width: var(--space-8); height: var(--space-8); }   /* 32px */
+.store-link .icon { width: var(--space-4); height: var(--space-4); rotate: -45deg; }   /* → becomes ↗ */
+.store-link:hover, .store-link:focus-visible { background: #37727e; color: var(--on-stack); }
 /* header: the lead (title, pills, brief) and the facts card. Phones and tablets: stacked, the card's facts
    side by side. 900px+: the card condenses to a right column, top-aligned with the TITLE, so it sits beside
    the whole lead instead of hanging down past the brief into the page body. */
@@ -573,6 +595,47 @@ html, body { overflow-x: clip; }   /* the escaping plane must never cause sidewa
 .back-link:hover, .back-link:focus-visible { opacity: .75; }
 /* a project card targeted by a back link lands below the fixed header, not under it */
 .card-stack { scroll-margin-top: calc(var(--header-h) + var(--space-6)); }
+@property --fade-l { syntax: '<length>'; inherits: true; initial-value: 0px; }
+@property --fade-r { syntax: '<length>'; inherits: true; initial-value: 0px; }
+.shots-wrap { position: relative; grid-column: 1 / -1; }   /* spans both section columns on desktop */
+.case-study section > .shots-wrap { grid-column: 1 / -1; }   /* beats the sections' column-1 rule */
+.shots-btn { display: none; }   /* arrows are desktop only; touch screens swipe */
+/* App Store screenshot carousel (What shipped): a horizontal row that scrolls / swipes and snaps to each shot.
+   Phones: a tight carousel that bleeds to the screen edges, about 1.5 shots visible so it's clearly swipeable.
+   600px+: about 2.5. 900px+: four across the full content width, the rest a scroll away. */
+.shots {
+  margin: var(--space-8) calc(var(--gutter) * -1) 0;   /* bleed to the screen edges on small screens… */
+  padding-inline: var(--gutter);                        /* …while the first shot still lines up with the text */
+  scroll-padding-inline: var(--gutter);
+  overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory; scrollbar-width: none;
+}
+.shots::-webkit-scrollbar { display: none; }
+.shots:focus-visible { outline: 2px solid var(--text); outline-offset: 4px; }
+.shots ul { display: flex; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.shots li { flex: 0 0 62%; scroll-snap-align: start; }
+.shots img { display: block; width: 100%; height: auto; border-radius: var(--space-5); }
+@media (min-width: 600px) {
+  .shots li { flex-basis: 38%; }
+}
+@media (min-width: 900px) {
+  .shots { margin-inline: 0; padding-inline: 0; scroll-padding-inline: 0;
+    /* fade the edges that have more to see (the row doesn't bleed off the screen here, so it would otherwise cut hard) */
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent 100%);
+    transition: --fade-l 250ms ease, --fade-r 250ms ease;
+  }
+  .shots-wrap { --fade-l: var(--space-16); --fade-r: var(--space-16); }
+  .shots-wrap.at-start { --fade-l: 0px; }
+  .shots-wrap.at-end { --fade-r: 0px; }
+  /* arrows: the nav's white circle, centred on each edge over the fade; hidden when there's nowhere to go */
+  .shots-btn { display: grid; position: absolute; top: calc(50% + var(--space-4)); translate: 0 -50%;   /* +16px: half the carousel's 32px top margin, which sits inside the wrapper */ z-index: 1; border: 0; cursor: pointer;
+    width: var(--space-12); height: var(--space-12); transition: background-color 200ms, color 200ms, opacity 200ms; }
+  .shots-prev { left: calc(var(--space-6) * -1); }
+  .shots-next { right: calc(var(--space-6) * -1); }
+  .shots-wrap.at-start .shots-prev, .shots-wrap.at-end .shots-next { opacity: 0; pointer-events: none; }
+  .shots li { flex-basis: calc((100% - 3 * var(--space-2)) / 4); }   /* four across, 8px gaps */
+}
 .cs-media { margin: var(--space-8) 0 0; }   /* a figure: an image, video or infographic, full content width */
 .cs-media img, .cs-media video, .cs-media svg { display: block; width: 100%; height: auto; border-radius: var(--radius-card); }
 .cs-media figcaption { margin-top: var(--space-3); max-width: var(--measure); font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--muted); }
