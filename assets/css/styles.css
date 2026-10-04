@@ -184,6 +184,11 @@ main > section + section { margin-top: var(--section-gap); }
   -webkit-mask-image: linear-gradient(to top, #000 calc(100% - var(--foot-fade)), transparent 100%);
           mask-image: linear-gradient(to top, #000 calc(100% - var(--foot-fade)), transparent 100%);
 }
+/* the pilot emoji, centred and standing on the footer card's bottom edge (decorative) */
+.footer-pilot {
+  position: absolute; left: 50%; bottom: 0; translate: -50% .5px;   /* the glyph's ink stops .5px above its line box (measured at 2x), so its feet land exactly on the edge */
+  font-size: var(--space-12); line-height: 1;   /* 48px */
+}
 /* the signature as a sign-off: vector, spanning the full content width, recoloured by token (mask + --on-sky) */
 .footer-signature {
   display: block; width: 100%; aspect-ratio: 273.88 / 116.18;   /* the SVG's viewBox */
@@ -399,46 +404,48 @@ html, body { overflow-x: clip; }   /* the escaping plane must never cause sidewa
 }
 @media (min-width: 600px) { .card-media { --phone-w: var(--space-80); } }
 
-/* Card stack (desktop): a black card spans the full width; the white project card sits flush on its left
-   edge at full height, so it reads as one card resting on another. The exposed black area holds details.
-   Phones: no black card, no details — just the white card. */
-.card-details { display: none; }
+/* Card stack: the white project card rests on a black details card.
+   Desktop (900px+): side by side, the black card to the right. Phones and tablets: stacked, the black card below.
+   Either way the black card starts UNDER the white card (by one radius), so black shows only in the white card's
+   corner curves on the joining side, never along a shared edge where the curve would leave a dark anti-aliased fringe. */
+.card-stack { display: grid; }
+.card-stack .card { position: relative; z-index: 1; }
+.card-details {
+  position: relative; display: flex; flex-direction: column;
+  background: var(--stack); color: var(--on-stack); text-decoration: none;   /* the whole black panel is a link to the case study */
+  /* phones: below the white card */
+  border-radius: 0 0 var(--radius-card) var(--radius-card);
+  margin-top: calc(var(--radius-card) * -1);
+  padding: var(--pad-card); padding-top: calc(var(--pad-card) + var(--radius-card));
+}
+/* one column of rows divided by hairlines */
+.card-details dl { flex: 1; display: flex; flex-direction: column; justify-content: space-between; margin: 0; }
+.card-details dl > div { padding-block: var(--space-4); border-top: 1px solid rgb(255 255 255 / .16); }
+.card-details dl > div:first-child { border-top: 0; padding-top: 0; padding-right: calc(var(--space-12) + var(--space-4)); }   /* room for the arrow button */
+.card-details dl > div:last-child { padding-bottom: 0; }
+.card-details dd { margin: var(--space-1) 0 0; }
+.card-details dt { font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--on-stack-muted); }
+.card-details dd { font-size: var(--text-body); line-height: var(--leading-body); }
+/* a second way in: a white circle with a ↗ arrow in the panel's top-right corner (just below the white card on phones).
+   Matches the mail button. */
+.arrow-link {
+  position: absolute; right: var(--space-4); top: calc(var(--radius-card) + var(--space-4));
+  width: var(--space-12); height: var(--space-12);   /* 48px */
+  background: var(--surface); color: var(--nav);
+}
+.arrow-link .icon { width: var(--space-5); height: var(--space-5); rotate: -45deg; }   /* → becomes ↗ */
+/* hovering anywhere on the stack fills the arrow and tints the white card's image area, so the unit reacts as one */
+.card-stack:hover .arrow-link, .card-stack:focus-within .arrow-link { background: var(--card-brand, var(--nav)); color: var(--on-stack); }
+.card-stack:hover .card-media::before { opacity: 1; }
 @media (min-width: 900px) {
-  .card-stack {
-    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));   /* white card keeps the half width it had before */
-  }
-  .card-stack .card { position: relative; z-index: 1; }
-  /* The black card starts UNDER the white card's right edge (by one radius), so black shows only in the
-     white card's right-hand corner curves — never at its left edge, where the shared curve would leave a
-     dark anti-aliased fringe. */
+  .card-stack { grid-template-columns: repeat(2, minmax(0, 1fr)); }   /* white card keeps the half width it had before */
   .card-details {
-    display: flex; flex-direction: column;
-    background: var(--stack); color: var(--on-stack);
     border-radius: 0 var(--radius-card) var(--radius-card) 0;
-    margin-left: calc(var(--radius-card) * -1);
+    margin-top: 0; margin-left: calc(var(--radius-card) * -1);
     padding: var(--pad-card); padding-left: calc(var(--pad-card) + var(--radius-card));
   }
-  /* one column of rows spread over the full height, divided by hairlines, so the panel is filled top to bottom */
-  .card-details dl { flex: 1; display: flex; flex-direction: column; justify-content: space-between; }
-  .card-details dl > div { padding-block: var(--space-4); border-top: 1px solid rgb(255 255 255 / .16); }
-  .card-details dl > div:first-child { border-top: 0; padding-top: 0; padding-right: calc(var(--space-12) + var(--space-4)); }   /* room for the arrow button */
-  .card-details dl > div:last-child { padding-bottom: 0; }
-  .card-details dt { font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--on-stack-muted); }
-  .card-details dd { margin-top: var(--space-1); font-size: var(--text-title3); line-height: var(--leading-title3); }
-  /* a second way in: a white circle with a ↗ arrow in the panel's TOP-right corner — a card-level 'open' cue,
-     apart from the rows so it isn't read as part of any one of them. Matches the mail button. */
-  .card-details { position: relative; }
-  .arrow-link {
-    position: absolute; right: var(--space-4); top: var(--space-4);   /* nestled into the card's corner curve, outside the rows' grid */
-    width: var(--space-12); height: var(--space-12);   /* 48px */
-    background: var(--surface); color: var(--nav);
-  }
-  .arrow-link .icon { width: var(--space-5); height: var(--space-5); rotate: -45deg; }   /* → becomes ↗ */
-  .card-details { text-decoration: none; }   /* the whole black panel is a link to the case study, not just the arrow */
-  /* hovering anywhere on the stack (white card or black panel) fills the arrow too, so the whole unit reacts as one */
-  .card-stack:hover .arrow-link, .card-stack:focus-within .arrow-link { background: var(--card-brand, var(--nav)); color: var(--on-stack); }
-  /* hovering anywhere on the stack tints the white card's image area, so the two halves act as one */
-  .card-stack:hover .card-media::before { opacity: 1; }
+  .card-details dd { font-size: var(--text-title3); line-height: var(--leading-title3); }
+  .arrow-link { top: var(--space-4); }   /* nestled into the card's corner curve */
 }
 
 /* tags — neutral pills under a card's description */
