@@ -70,7 +70,7 @@
   --gutter: var(--space-4);          /* page side padding */
   --section-gap: var(--space-16);    /* between major sections */
   --container: 1120px;  /* site width: header, hero card, work grid and footer all share these edges (as on maureen.care) */
-  --max: 800px;         /* reading measure: long-form text such as case studies */
+  --measure: 68ch;      /* reading measure: a paragraph never runs wider than this, even in a wide layout */
   /* card shape — generous and stepped per breakpoint, like maureen.care's cards */
   --radius-card: 32px;
   --pad-card: var(--space-6);
@@ -98,7 +98,6 @@ h3 { font-size: var(--text-h3); line-height: var(--leading-h3); }
 
 /* layout */
 .site-header, .site-footer, main { max-width: var(--container); margin: 0 auto; padding: var(--space-6) var(--gutter); }
-main.case-study { max-width: var(--max); }
 .site-header {
   display: flex; justify-content: space-between; align-items: center; gap: var(--space-4);  /* centred: top-aligning read too high (tried 2026-10-04) */
   padding-block: var(--space-4);   /* 16 + 40px signature + 16 = 72px, the same header height as before */
@@ -336,7 +335,8 @@ html, body { overflow-x: clip; }   /* the escaping plane must never cause sidewa
   display: block;
   animation: fly var(--flight-dur) linear 1s infinite both;
 }
-.flight-bob { display: flex; align-items: flex-start; animation: bob 4s ease-in-out infinite alternate; }
+.flight-bob { display: flex; align-items: flex-start; justify-content: flex-end;   /* banner hugs the plane; flight.js sizes the box to the longest message, spare room sits on the left */
+  animation: bob 4s ease-in-out infinite alternate; }
 /* climbs from the lower left to the upper right, nose up, like a takeoff */
 @keyframes fly {
   from { transform: translate(-100%, 0) rotate(calc(var(--climb) * -1)); }
@@ -490,16 +490,96 @@ html, body { overflow-x: clip; }   /* the escaping plane must never cause sidewa
 /* case study */
 .cs-header h1 { font-size: var(--text-large-title); line-height: var(--leading-large-title); }
 .cs-header .tags { margin-top: var(--space-4); }
+.cs-brief { margin-top: var(--space-6); max-width: var(--measure); font-size: var(--text-title3); line-height: var(--leading-title2); }   /* the lead: a step up from body. 28px leading, not Title 3's 24, because it runs several lines */
 @media (min-width: 768px) { .cs-header h1 { font-size: var(--text-display); line-height: var(--leading-display); } }
-.cs-meta {   /* Role, Timeline, Status in a white card, matching the project cards */
+.cs-meta {   /* Role, Timeline, Status in a black card, matching the home page's details panel */
   display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--space-6);
-  margin: var(--space-8) 0 0; padding: var(--pad-card);
-  background: var(--surface); border-radius: var(--radius-card);
+  margin: 0; padding: var(--pad-card);
+  background: var(--stack); color: var(--on-stack); border-radius: var(--radius-card);
 }
 .cs-meta dd { margin: var(--space-1) 0 0; }
+/* header: the lead (title, pills, brief) and the facts card. Phones and tablets: stacked, the card's facts
+   side by side. 900px+: the card condenses to a right column, top-aligned with the TITLE, so it sits beside
+   the whole lead instead of hanging down past the brief into the page body. */
+.cs-header { display: grid; gap: var(--space-8); }
+.cs-meta { row-gap: var(--space-4); }
+@media (min-width: 900px) {
+  .cs-header { grid-template-columns: minmax(0, 1fr) var(--space-80); column-gap: var(--space-16); align-items: start; }
+  .cs-header .cs-meta { grid-template-columns: 1fr; padding: var(--space-8); }
+}
 .cs-header + section { margin-top: var(--section-gap); }   /* the same gap as between sections, so the meta card doesn't crowd the first heading */
-.cs-meta dt { font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--muted); }
+.cs-meta dt { font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--on-stack-muted); }
 .case-study section h2 { margin-bottom: var(--space-4); }
+/* Case studies use the full content width (--container), like the rest of the site. Running text keeps a
+   comfortable measure; images, infographics and other media take the whole width. */
+.case-study p, .case-study section > ul, .case-study section > ol { max-width: var(--measure); }
+.case-study p + p { margin-top: var(--space-4); }
+/* footnotes: a superscript number after the claim; the section's sources sit together in an aside for the
+   section as a whole (not tied to one paragraph). 900px+: a right column beside the body text (the same 320px
+   column and 64px gap as the header's facts card). Smaller screens: below the body text. Small muted type. */
+.fn-ref { font-size: .65em; line-height: 0; vertical-align: super; margin-left: 1px; }
+.fn-ref a { color: var(--muted); text-decoration: none; }
+.cs-notes { margin-top: var(--space-6); }
+.cs-note { font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--muted); }
+.cs-note + .cs-note { margin-top: var(--space-2); }
+.cs-note a { color: inherit; }
+.fn-num { margin-right: var(--space-1); }
+/* side content (diagrams, small figures): right column from 900px, below the body text on smaller screens */
+.cs-side { margin: var(--space-8) 0 0; }   /* fills its column: the 320px right column from 900px, the full content width below that */
+/* Venn (Who it's for): Maureen's teal and the site's sky blue, translucent so the overlap reads darker */
+.cs-venn svg { display: block; width: 100%; height: auto; overflow: visible; }
+.venn-a { fill: #37727e; fill-opacity: .22; }
+.venn-b { fill: var(--sky-mid); fill-opacity: .18; }
+.venn-centre { fill: var(--text); font: 600 var(--text-subhead) / 1 var(--font-body); }
+.venn-label { fill: var(--muted); font: 400 var(--text-sm) / 1 var(--font-body); }
+@media (min-width: 900px) {
+  .case-study section { display: grid; grid-template-columns: minmax(0, 1fr) var(--space-80); column-gap: var(--space-16); align-items: start; }
+  .case-study section > * { grid-column: 1; }
+  .case-study section > .cs-notes, .case-study section > .cs-side { grid-column: 2; grid-row: 2; margin-top: 0; padding-top: var(--space-1); }   /* level with the top of the body text */
+}
+/* Case study hero: the home page's landing hero reused (.hero-sky: same sky, glow, grain, top-rounded corners,
+   eased fade into the page), shorter and without the plane. The phone is centred and rises from the bottom,
+   dissolving with the same mask as the home card. data-tone tells nav-tone.js it's dark above the fade. */
+.cs-hero {
+  --sky-fade: var(--space-40);   /* 160px: a shorter card gets a shorter fade */
+  /* Maureen's brand gradient, the same teal as the home card's hover tint (#37727e at the top to #4f8894),
+     fed into the home hero's sky layers: base, horizon glow and fade */
+  --sky-top: #37727e; --sky-mid: #4f8894; --sky-low: #8fb5bd; --sky-pale: #d9e7ea;
+  position: relative; isolation: isolate;
+  display: flex; justify-content: center; align-items: flex-end;
+  margin: 0 var(--hero-inset);   /* same insets as the home hero: full width on phones, page gutter from 600px */
+  height: clamp(var(--space-80), 56vw, 600px);   /* 320px on phones, up to 600px on wide screens */
+  padding-top: var(--space-12);
+}
+.cs-hero img {
+  display: block; height: 100%; width: auto;
+  translate: var(--media-shift, 0) 0;   /* centre the PHONE, not the image (the hand enters from the left) */
+  -webkit-mask-image: linear-gradient(to bottom, #000 64%, rgb(0 0 0 / .9) 70%, rgb(0 0 0 / .7) 76%, rgb(0 0 0 / .45) 82%, rgb(0 0 0 / .2) 88%, rgb(0 0 0 / .06) 94%, transparent 100%);
+          mask-image: linear-gradient(to bottom, #000 64%, rgb(0 0 0 / .9) 70%, rgb(0 0 0 / .7) 76%, rgb(0 0 0 / .45) 82%, rgb(0 0 0 / .2) 88%, rgb(0 0 0 / .06) 94%, transparent 100%);
+}
+.cs-hero + main { padding-top: var(--space-6); }
+/* Back link on the case study hero: chevron + text, no pill, white on the sky, on the content's left edge
+   (inside the inset card: the content edge, never closer than --hero-pad to the card edge, like the home hero text). */
+.back-link {
+  position: absolute; z-index: 1; top: var(--space-6);
+  left: max(var(--hero-pad), calc((100% - var(--container)) / 2 + var(--gutter)));   /* same rule as the home hero text */
+  display: inline-flex; align-items: center; gap: var(--space-1);
+  padding-block: var(--space-2);   /* a taller tap target without a visible box */
+  color: var(--on-sky); text-decoration: none;
+  font-size: var(--text-body); line-height: var(--leading-body); font-weight: 500;
+  transition: opacity 200ms;
+}
+.back-link .icon { width: var(--space-5); height: var(--space-5); margin-left: -4px; }   /* optical: the chevron's stroke sits inside its box */
+.back-link:hover, .back-link:focus-visible { opacity: .75; }
+/* a project card targeted by a back link lands below the fixed header, not under it */
+.card-stack { scroll-margin-top: calc(var(--header-h) + var(--space-6)); }
+.cs-media { margin: var(--space-8) 0 0; }   /* a figure: an image, video or infographic, full content width */
+.cs-media img, .cs-media video, .cs-media svg { display: block; width: 100%; height: auto; border-radius: var(--radius-card); }
+.cs-media figcaption { margin-top: var(--space-3); max-width: var(--measure); font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--muted); }
+/* two figures side by side from 768px (e.g. before / after, two screens) */
+.cs-media-pair { display: grid; gap: var(--space-4); margin: var(--space-8) 0 0; }
+@media (min-width: 768px) { .cs-media-pair { grid-template-columns: 1fr 1fr; } }
+.cs-media-pair .cs-media { margin: 0; }
 
 /* utilities */
 /* word rotator (Work heading): every word stacked in ONE grid cell, so the slot is as wide as the longest word and
@@ -521,4 +601,21 @@ html, body { overflow-x: clip; }   /* the escaping plane must never cause sidewa
 .visually-hidden {
   position: absolute; width: 1px; height: 1px; margin: -1px; padding: 0;
   overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+/* Page transitions (Swup, assets/js/site.js).
+   Browsers with View Transitions: the page crossfades and shared elements glide. The Maureen phone has
+   view-transition-name: maureen-phone on both the home card and the case study hero, so it moves and scales
+   from one to the other (and back). Other browsers: the #swup container fades out and in.
+   Reduced motion: no glide, no fade. */
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 250ms; }
+::view-transition-group(maureen-phone) { animation-duration: 500ms; animation-timing-function: cubic-bezier(.2, .8, .2, 1); }
+::view-transition-old(maureen-phone), ::view-transition-new(maureen-phone) { height: 100%; }   /* keep the phone's proportions while it scales */
+@supports not (view-transition-name: none) {
+  html.is-changing .transition-fade { transition: opacity 250ms ease-out; }
+  html.is-animating .transition-fade { opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html.is-changing .transition-fade { transition: none; }
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
 }

@@ -2,7 +2,8 @@
 // Looks at the page under the signature, finds the first solid background, and sets html.tone-light or
 // html.tone-dark. The sky cards (hero, footer) are gradients, so they carry data-tone="dark" and say
 // which edge fades into the page: past the middle of that fade, the page's own tone takes over.
-(() => {
+// Registered as a mount (see site.js): runs on every page view; the cleanup removes every global listener.
+(window.siteMounts ||= []).push(() => {
   const root = document.documentElement;
   const header = document.querySelector('.site-header');
   const sig = header && header.querySelector('.signature');
@@ -42,8 +43,17 @@
     }
   }
   const ask = () => { if (!raf) raf = requestAnimationFrame(tone); };
+  const scheme = matchMedia('(prefers-color-scheme: dark)');
+
   tone();
   addEventListener('scroll', ask, { passive: true });
   addEventListener('resize', ask);
-  matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', ask);
-})();
+  scheme.addEventListener('change', ask);
+
+  return () => {
+    removeEventListener('scroll', ask);
+    removeEventListener('resize', ask);
+    scheme.removeEventListener('change', ask);
+    cancelAnimationFrame(raf); raf = 0;
+  };
+});

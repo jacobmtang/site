@@ -3,8 +3,11 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Maureen Care — Jacob Tang</title>
+  <title>Jacob Tang — Maureen Care</title>
   <meta name="description" content="Case study: designing, building and shipping Maureen Care, an iOS app for binge eating recovery.">
+  <!-- favicon: the pilot emoji on the hero sky, one 180px PNG (master: portfolio/_source/favicon.psd) -->
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/favicon.png">
   <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
 <body>
@@ -13,13 +16,30 @@
     <nav><a class="icon-link" href="mailto:jacobmtang@yahoo.com" aria-label="Email Jacob"><!-- mail icon: Ionicons (MIT), master portfolio/_source/mail.svg --><svg class="icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M424 80H88a56.06 56.06 0 0 0-56 56v240a56.06 56.06 0 0 0 56 56h336a56.06 56.06 0 0 0 56-56V136a56.06 56.06 0 0 0-56-56m-14.18 92.63-144 112a16 16 0 0 1-19.64 0l-144-112a16 16 0 1 1 19.64-25.26L256 251.73l134.18-104.36a16 16 0 0 1 19.64 25.26"/></svg></a></nav>
   </header>
 
+  <!-- Swup swaps only this container between pages; the header above stays put. -->
+  <div id="swup" class="transition-fade">
+
+  <!-- Hero: the home page's landing hero (same sky card, top-rounded, dissolving into the page), shorter and
+       without the plane. The phone is centred and rises from the bottom; it's a placeholder for the real hero image. -->
+  <div class="cs-hero" data-tone="dark" data-tone-fade="bottom" data-tone-fade-var="--sky-fade">
+    <div class="hero-sky" aria-hidden="true"></div>
+    <!-- Back: returns to this project's card on the home page (/#maureen-care), not just the top -->
+    <a class="back-link" href="/#maureen-care"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 18l-6-6 6-6"/></svg>Back</a>
+    <img src="/assets/img/maureen-dashboard.webp" alt="A hand holding an iPhone showing the Maureen Care home screen" width="880" height="1233" style="--media-shift: -19.3%; view-transition-name: maureen-phone;">
+  </div>
+
   <main class="case-study">
     <!-- Hub page: the main app case study. Deep dives link from "More from this project". -->
     <header class="cs-header">
-      <h1>Maureen Care</h1>
-      <ul class="tags" aria-label="Disciplines">
-        <li>Product</li><li>UX/UI</li><li>Brand</li>
-      </ul>
+      <!-- Lead (left): title, disciplines, brief. Facts card (right column from 900px, below on smaller screens). -->
+      <div class="cs-lead">
+        <h1>Maureen Care</h1>
+        <ul class="tags" aria-label="Disciplines">
+          <li>Product</li><li>UX/UI</li><li>Brand</li>
+        </ul>
+        <!-- Brief: what I built, in two sentences, about me. -->
+        <p class="cs-brief">I designed, built and shipped a full-fledged iOS app for binge eating recovery, made to look and feel native. I owned every layer, from the brand and UI system to the React Native codebase, the Supabase backend and RevenueCat configuration.</p>
+      </div>
       <dl class="cs-meta">
         <div><dt>Role</dt><dd>Founder — product, design, engineering</dd></div>
         <div><dt>Timeline</dt><dd>May 2026 — present</dd></div>
@@ -27,12 +47,43 @@
       </dl>
     </header>
 
-    <section><h2>The problem</h2></section>
-    <section><h2>Who it's for</h2></section>
+    <section>
+      <h2>The problem</h2>
+      <div class="cs-body">
+        <p>Binge eating disorder (BED) is the most common eating disorder in the U.S., affecting about 1.2% of American adults in a given year.<sup class="fn-ref"><a href="#fn-bed" aria-label="Source 1">1</a></sup></p>
+        <p>Yet the coping strategies people are given are hard to use in the moment. Therapeutic advice usually comes as static paper worksheets, or as general guidance from a dietitian or therapist: follow a breathing pattern or slow down your eating. When an urge hits, there's nothing dynamic or all-in-one to guide them through it. The tools are disconnected, and rarely within reach when they're needed.</p>
+      </div>
+      <!-- Sources for the section as a whole: right column from 900px, below the body text on smaller screens -->
+      <aside class="cs-notes" aria-label="Sources">
+        <p class="cs-note" id="fn-bed"><span class="fn-num">1</span> <a href="https://www.nimh.nih.gov/health/statistics/eating-disorders">National Institute of Mental Health, “Eating Disorders”</a>, from the National Comorbidity Survey Replication (Hudson et al., 2007).</p>
+      </aside>
+    </section>
+    <section>
+      <h2>Who it's for</h2>
+      <div class="cs-body">
+        <p>Maureen is built for users with two overlapping needs.</p>
+        <p><strong>Therapeutic support, in the moment.</strong> People who can't afford therapy, or need help between sessions, get research-validated coping techniques from Acceptance and Commitment Therapy (ACT) and Cognitive Behavioral Therapy (CBT) right when they need them.</p>
+        <p><strong>Dietary structure, without the numbers.</strong> People who need structure around food, but for whom calorie counting and macro calculations are inappropriate, as they invite hypervigilance and restrictive behaviors.</p>
+      </div>
+      <!-- Venn: the two needs, Maureen in the overlap. Right column from 900px, below the body text on smaller screens. -->
+      <figure class="cs-side cs-venn">
+        <svg viewBox="0 0 360 200" role="img" aria-labelledby="venn-title">
+          <title id="venn-title">Venn diagram: therapeutic support on the left, moderated dietary tools on the right, and Maureen where they overlap.</title>
+          <circle class="venn-a" cx="128" cy="100" r="92"/>
+          <circle class="venn-b" cx="232" cy="100" r="92"/>
+          <text class="venn-label" x="88" y="96" text-anchor="middle"><tspan x="88">Therapeutic</tspan><tspan x="88" dy="18">support</tspan></text>
+          <text class="venn-centre" x="180" y="105" text-anchor="middle">Maureen</text>
+          <text class="venn-label" x="272" y="96" text-anchor="middle"><tspan x="272">Moderated</tspan><tspan x="272" dy="18">dietary tools</tspan></text>
+        </svg>
+      </figure>
+    </section>
     <section><h2>Early ideas</h2></section>
     <section><h2>Key decisions</h2></section>
-    <section><h2>What shipped</h2></section>
-    <section><h2>Results and what I'd change</h2></section>
+    <section>
+      <h2>What shipped</h2>
+      <p>A full suite of frictionless, interactive therapeutic tools, like guided breathing, urge surfing and a meal pacer, always a tap away. Alongside them are lifestyle support tools, like a meal planner, a recipe library and a cook mode.</p>
+    </section>
+    <section><h2>Outcomes and future plans</h2></section>
 
     <section class="more">
       <h2>More from this project</h2>
@@ -50,6 +101,13 @@
     <a class="icon-link icon-link-quiet" href="https://www.instagram.com/jacobmtang/" aria-label="Jacob on Instagram"><svg class="icon" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M349.33 69.33a93.62 93.62 0 0 1 93.34 93.34v186.66a93.62 93.62 0 0 1-93.34 93.34H162.67a93.62 93.62 0 0 1-93.34-93.34V162.67a93.62 93.62 0 0 1 93.34-93.34zm0-37.33H162.67C90.8 32 32 90.8 32 162.67v186.66C32 421.2 90.8 480 162.67 480h186.66C421.2 480 480 421.2 480 349.33V162.67C480 90.8 421.2 32 349.33 32"/><path d="M377.33 162.67a28 28 0 1 1 28-28 27.94 27.94 0 0 1-28 28M256 181.33A74.67 74.67 0 1 1 181.33 256 74.75 74.75 0 0 1 256 181.33m0-37.33a112 112 0 1 0 112 112 112 112 0 0 0-112-112"/></svg></a>
     <a class="contact-pill" href="mailto:jacobmtang@yahoo.com">Contact<span class="contact-pill-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M424 80H88a56.06 56.06 0 0 0-56 56v240a56.06 56.06 0 0 0 56 56h336a56.06 56.06 0 0 0 56-56V136a56.06 56.06 0 0 0-56-56m-14.18 92.63-144 112a16 16 0 0 1-19.64 0l-144-112a16 16 0 1 1 19.64-25.26L256 251.73l134.18-104.36a16 16 0 0 1 19.64 25.26"/></svg></span></a>
   </div>
+  </div>
+  <!-- Swup (page transitions), pinned versions. Every page loads every script, so a swap never misses one. -->
+  <script src="https://cdn.jsdelivr.net/npm/swup@4.10.0/dist/Swup.umd.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@swup/preload-plugin@3.2.12/dist/index.umd.js" defer></script>
   <script src="/assets/js/nav-tone.js" defer></script>
+  <script src="/assets/js/flight.js" defer></script>
+  <script src="/assets/js/rotator.js" defer></script>
+  <script src="/assets/js/site.js" defer></script>
 </body>
 </html>
