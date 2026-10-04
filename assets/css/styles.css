@@ -31,8 +31,6 @@
   --sky-low: #89c0f5;
   --sky-pale: #d6e9fc;   /* last tint before the page colour */
   --sky-glow: ellipse 150% 75% at 50% 100%;  /* curved horizon glow rising from the bottom centre */
-  --sky-fade: min(384px, 40svh);  /* bottom stretch of the hero where the sky dissolves into --bg (long = soft) */
-  --sky-fade: min(384px, round(down, 40svh, 4px));  /* same, snapped to the 4pt grid where round() is supported */
   --grain: .4;           /* noise strength (0–1) */
   --on-sky: #ffffff;
   --on-sky-muted: rgb(255 255 255 / .86);
@@ -40,6 +38,7 @@
   --muted: #6b6b6b;
   --line: #e6e6e6;
   --accent: #1a1a1a;
+  --nav: #000000;        /* nav links */
 
   /* type */
   --font-body: system-ui, -apple-system, "Segoe UI", sans-serif;
@@ -87,7 +86,8 @@
   /* layout — stepped, not fluid, so they stay on the grid */
   --gutter: var(--space-4);          /* page side padding */
   --section-gap: var(--space-16);    /* between major sections */
-  --max: 800px;
+  --container: 1120px;  /* site width: header, hero card, work grid and footer all share these edges (as on maureen.care) */
+  --max: 800px;         /* reading measure: long-form text such as case studies */
   /* card shape — generous and stepped per breakpoint, like maureen.care's cards */
   --radius-card: 32px;
   --pad-card: var(--space-6);
@@ -95,7 +95,7 @@
 @media (min-width: 600px) { :root { --gutter: var(--space-6); --section-gap: var(--space-20); --radius-card: 40px; --pad-card: var(--space-8); } }
 @media (min-width: 900px) { :root { --gutter: var(--space-8); --section-gap: var(--space-24); --radius-card: 48px; --pad-card: var(--space-10); } }
 @media (prefers-color-scheme: dark) {
-  :root { --bg: #111; --surface: #1c1c1c; --chip: #2a2a2a; --text: #eee; --muted: #999; --line: #2a2a2a; --accent: #eee;
+  :root { --bg: #111; --surface: #1c1c1c; --chip: #2a2a2a; --text: #eee; --muted: #999; --line: #2a2a2a; --accent: #eee; --nav: #ffffff;
           --sky-top: #021f45; --sky-mid: #0a3a78; --sky-low: #12305a; --sky-pale: #141c28; }
 }
 
@@ -112,37 +112,73 @@ h2 { font-size: var(--text-h2); line-height: var(--leading-h2); font-weight: 400
 h3 { font-size: var(--text-h3); line-height: var(--leading-h3); }
 
 /* layout */
-.site-header, .site-footer, main, .container { max-width: var(--max); margin: 0 auto; padding: var(--space-6) var(--gutter); }
-.site-header { display: flex; justify-content: flex-end; align-items: baseline; gap: var(--space-4); }
+.site-header, .site-footer, main { max-width: var(--container); margin: 0 auto; padding: var(--space-6) var(--gutter); }
+main.case-study { max-width: var(--max); }
+.site-header {
+  display: flex; justify-content: space-between; align-items: center; gap: var(--space-4);  /* centred: top-aligning read too high (tried 2026-10-04) */
+  padding-block: var(--space-4);   /* 16 + 40px signature + 16 = 72px, the same header height as before */
+}
+/* Jacob's signature, top left. One black file used as a MASK and filled with --nav, so it recolours from
+   a token (black on the page, white in dark mode) with no edge residue. Master: portfolio/_source/signature-*.png */
+.signature {
+  --sig-h: var(--space-10);   /* 40px tall */
+  display: block; flex: none;
+  height: var(--sig-h); width: calc(var(--sig-h) * 568 / 213);   /* the artwork's aspect ratio */
+  translate: 0 6px;   /* optical nudge down (an artwork offset, so off-grid by design): the long J and g tails make it look higher */
+  background-color: var(--nav);
+  -webkit-mask: url("/assets/img/signature.webp") center / contain no-repeat;
+          mask: url("/assets/img/signature.webp") center / contain no-repeat;
+}
 .site-header nav { display: flex; gap: var(--space-4); }
-.site-header nav a { text-decoration: none; color: var(--muted); }
+.site-header nav a { text-decoration: none; color: var(--nav); }
 main > section + section { margin-top: var(--section-gap); }
-.container { padding-top: 0; padding-bottom: 0; }
 .site-footer { margin-top: var(--section-gap); color: var(--muted); border-top: 1px solid var(--line); }
 
-/* hero — CSS sky (gradient + SVG grain), no image. Text is white on it.
-   The sky layer extends --sky-fade below the hero and dissolves into --bg there, so there's no edge.
-   Clouds go on top as their own layer later. */
+/* hero — a rounded card holding a CSS sky (gradient + SVG grain, no image). Text on it is white.
+   Two layers: .hero-sky is clipped to the card's rounded shape; .flight is NOT, so the plane takes off
+   inside the card and escapes past its right edge over the page. The nav sits above the card on --bg.
+   Only the TOP corners are rounded; the bottom dissolves into the page with the eased fade.
+   Phones: no side margins. 600px+: inset by the gutter. */
+:root {
+  --hero-inset: 0px;
+  /* dramatic and fluid: grows with the screen, from 40px on phones to 96px on wide screens */
+  --hero-radius: clamp(40px, 6.5vw, 96px);
+  --hero-radius: clamp(40px, round(6.5vw, 4px), 96px);   /* snapped to 4px where round() is supported */
+  --sky-fade: min(384px, 40svh);  /* bottom stretch where the sky dissolves into --bg (long = soft) */
+  --sky-fade: min(384px, round(down, 40svh, 4px));
+  --header-h: calc(var(--space-4) * 2 + var(--space-10));   /* header: 16px padding top and bottom + the 40px signature */
+  --hero-pad: var(--gutter);      /* text inset inside the card */
+}
+@media (min-width: 600px) { :root { --hero-inset: var(--gutter); } }
+@media (min-width: 900px) { :root { --hero-pad: var(--space-16); } }
+
+html, body { overflow-x: clip; }   /* the escaping plane must never cause sideways scrolling */
 .hero {
   position: relative; isolation: isolate; color: var(--on-sky);
   display: flex; flex-direction: column;
-  min-height: 100vh; min-height: 100svh;   /* always one full screen; svh ignores the mobile browser bar */
-  padding-bottom: var(--sky-fade);         /* keeps the text above the fade zone */
+  margin: 0 var(--hero-inset);   /* the card stays wide: page gutter on each side, full width on phones */
+  min-height: calc(100vh - var(--header-h) - var(--hero-inset));
+  min-height: calc(100svh - var(--header-h) - var(--hero-inset));   /* fills the screen below the nav */
+  padding-top: var(--space-16);
+  padding-bottom: var(--sky-fade);   /* keeps the text above the fade */
 }
-.hero .intro, .hero .site-header { width: 100%; }  /* flex items with auto margins would otherwise shrink and centre */
-.hero .intro { margin-block: auto; }  /* centres the intro in the sky above the fade */
-.hero::before, .hero::after {
-  content: ""; position: absolute; z-index: -1;
-  inset: 0;
-  pointer-events: none;
+.hero .intro {
+  width: 100%; margin-block: auto;   /* centred vertically in the card */
+  /* text lines up with the content edges (signature, nav, Work) on wide screens; never closer than --hero-pad to the card edge */
+  padding-inline: max(var(--hero-pad), calc((100% - var(--container)) / 2 + var(--gutter)));
 }
-/* The softness comes from the COLOUR, not transparency: the sky lightens through pale blue
-   to near-white on its own, so it never passes through a muddy grey band. The mask only hides
-   the last stretch. Grain fades out earlier so the page below stays clean. */
-.hero::before {
-  /* The fade into the page is an EASED gradient: eleven stops along a smoothstep curve, mixed in oklab.
-     A plain two-stop fade has visible start and end lines; easing makes it start and land imperceptibly.
-     The glow only bends it into a subtle arc. */
+.hero-sky {
+  position: absolute; inset: 0; z-index: -1; overflow: hidden;
+  border-radius: var(--hero-radius) var(--hero-radius) 0 0;
+}
+.hero-sky::before, .hero-sky::after { content: ""; position: absolute; inset: 0; pointer-events: none; }
+.hero-sky::before {
+  --glow-strength: 30%;  /* how much the curved glow shows over the base blue */
+  --glow-stops:
+    color-mix(in oklab, var(--sky-pale) var(--glow-strength), transparent) 0%,
+    color-mix(in oklab, var(--sky-low) var(--glow-strength), transparent) 36%,
+    transparent 72%;
+  /* eased fade into the page: eleven stops on a smoothstep curve, mixed in oklab — no visible start or end line */
   --sky-stops:
     var(--sky-top) 0%,
     color-mix(in oklab, var(--bg) 0%, var(--sky-mid)) calc(100% - var(--sky-fade) * 1.00),
@@ -156,36 +192,27 @@ main > section + section { margin-top: var(--section-gap); }
     color-mix(in oklab, var(--bg) 90%, var(--sky-mid)) calc(100% - var(--sky-fade) * 0.20),
     color-mix(in oklab, var(--bg) 97%, var(--sky-mid)) calc(100% - var(--sky-fade) * 0.10),
     color-mix(in oklab, var(--bg) 100%, var(--sky-mid)) 100%;
-  --glow-strength: 30%;  /* how much the curved glow shows over the base blue */
-  --glow-stops:
-    color-mix(in oklab, var(--sky-pale) var(--glow-strength), transparent) 0%,
-    color-mix(in oklab, var(--sky-low) var(--glow-strength), transparent) 36%,
-    transparent 72%;   /* wider falloff = softer edge */
-  /* vertical base for depth + a soft radial glow rising from the bottom centre (no diagonal slope) */
+  /* vertical depth + a subtle curved glow rising from the bottom centre */
   background:
     radial-gradient(var(--sky-glow), var(--glow-stops)),
     linear-gradient(to bottom, var(--sky-stops));
   background:
     radial-gradient(var(--sky-glow) in oklab, var(--glow-stops)),
-    linear-gradient(to bottom in oklab, var(--sky-stops));  /* oklab: smoother blue→white, no grey dip */
-  /* fades the glow out before the hero's bottom edge so nothing tints the page below; eased so it leaves no line */
+    linear-gradient(to bottom in oklab, var(--sky-stops));
+  /* the glow fades out before the bottom edge so it never tints the page */
   --glow-fade: linear-gradient(to bottom, #000 calc(100% - var(--sky-fade) * .4),
     rgb(0 0 0 / .85) calc(100% - var(--sky-fade) * .3), rgb(0 0 0 / .5) calc(100% - var(--sky-fade) * .2),
     rgb(0 0 0 / .15) calc(100% - var(--sky-fade) * .1), transparent 100%);
   -webkit-mask-image: var(--glow-fade);
           mask-image: var(--glow-fade);
 }
-.hero::after {
+.hero-sky::after {
   -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - var(--sky-fade)), transparent calc(100% - var(--sky-fade) * .3));
           mask-image: linear-gradient(to bottom, #000 calc(100% - var(--sky-fade)), transparent calc(100% - var(--sky-fade) * .3));
-}
-.hero::after {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='240'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   opacity: var(--grain);
   mix-blend-mode: overlay;
 }
-.hero .site-header nav a { color: var(--on-sky-muted); }
-.hero .site-header nav a:hover { color: var(--on-sky); }
 .hero + main { padding-top: var(--space-6); }  /* the sky has fully dissolved by the hero's bottom edge */
 
 /* flight — a Cessna towing a banner across the sky, behind the text.
@@ -199,21 +226,20 @@ main > section + section { margin-top: var(--section-gap); }
   --climb-slope: .1405;  /* tan(--climb): how much it rises per unit across — keep the two in step */
   --flight-dur: 24s;     /* one crossing */
 }
-.hero .site-header, .hero .intro { position: relative; z-index: 1; }
+.hero .intro { position: relative; z-index: 1; }
 .flight {
-  position: absolute; z-index: 0; inset: 0;
-  overflow: hidden;          /* no sideways scrollbar while the plane is off-screen */
+  position: absolute; z-index: 2; inset: 0;   /* above the text and the card edge, so it visibly breaks out */
+  /* clip only the LEFT: the plane appears from the card's left edge, but is free to leave past the right */
+  clip-path: inset(-100vh -100vw -100vh 0);
   pointer-events: none;
 }
+/* decorative only: no link, no hover, hidden from screen readers */
 .flight-path {
-  pointer-events: auto;
   position: absolute; left: 0; top: var(--flight-start);
-  display: block; text-decoration: none;
+  display: block;
   animation: fly var(--flight-dur) linear 1s infinite both;
 }
 .flight-bob { display: flex; align-items: flex-start; animation: bob 4s ease-in-out infinite alternate; }
-.flight-path:hover, .flight-path:focus-visible,
-.flight-path:hover .flight-bob, .flight-path:focus-visible .flight-bob { animation-play-state: paused; }
 /* climbs from the lower left to the upper right, nose up, like a takeoff */
 @keyframes fly {
   from { transform: translate(-100%, 0) rotate(calc(var(--climb) * -1)); }
@@ -231,11 +257,11 @@ main > section + section { margin-top: var(--section-gap); }
 .banner {
   padding: var(--space-1) var(--space-3);
   background: var(--surface); color: var(--text);
-  border-radius: 2px;
+  border-radius: 2px; box-shadow: inset 0 0 0 1px rgb(0 0 0 / .08);  /* hairline so it still reads once it's over the page */
   font: 600 var(--text-sm) / var(--leading-sm) var(--font-body);
   text-transform: uppercase; letter-spacing: .06em; white-space: nowrap;
 }
-.rope { width: calc(var(--space-12) + var(--plane-w) * .068); height: 1px; background: var(--on-sky-muted); }
+.rope { width: calc(var(--space-12) + var(--plane-w) * .068); height: 1px; background: rgb(0 0 0 / .35); }  /* reads on the sky and on the page */
 .plane { position: relative; z-index: 1; display: block; flex: none; width: var(--plane-w); aspect-ratio: 677 / 273; }
 .plane img { position: absolute; inset: 0; width: 100%; height: 100%; }
 .plane-prop {
@@ -264,6 +290,9 @@ main > section + section { margin-top: var(--section-gap); }
 
 /* work — heading sits tight to its cards, far from the hero */
 .work h2 { margin-bottom: var(--space-4); }
+/* cards sit in a grid: one column on phones, two from 900px, so each card keeps a comfortable width */
+.work-grid { display: grid; gap: var(--space-6); }
+@media (min-width: 900px) { .work-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
 .card {
   display: block; padding: var(--pad-card);
   overflow: hidden;   /* clips the centred phone image's empty side and the hover tint to the card's corners */

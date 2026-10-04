@@ -8,14 +8,18 @@
   <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
 <body>
-  <div class="hero">
   <header class="site-header">
+    <a class="signature" href="/" aria-label="Jacob Tang, home"></a>
     <nav><a href="/#work">Work</a> <a href="mailto:jacobmtang@yahoo.com">Contact</a></nav>
   </header>
 
+  <!-- Hero card: the sky is clipped to the rounded card; the plane flies on an unclipped layer and escapes past the right edge. -->
+  <div class="hero">
+    <div class="hero-sky" aria-hidden="true"></div>
+
     <!-- Plane towing a banner across the sky. Banner text changes each pass (assets/js/flight.js). -->
-    <div class="flight">
-      <a class="flight-path" href="mailto:jacobmtang@yahoo.com" aria-label="Email Jacob">
+    <div class="flight" aria-hidden="true">
+      <div class="flight-path">
         <span class="flight-bob">
           <span class="tow">
             <span class="banner"><span class="banner-text" data-messages="He does brand too|He edits video too|He tinkers with 3D modeling too|He likes planes too|He's for hire too">He does brand too</span></span>
@@ -26,10 +30,10 @@
             <img class="plane-body" src="/assets/img/plane-body.webp" alt="" width="677" height="273">
           </span>
         </span>
-      </a>
+      </div>
     </div>
 
-    <section class="intro container">
+    <section class="intro">
       <h1>
         <span class="intro-line">Hi <span class="wave" aria-hidden="true">👋🏼</span> I'm Jacob</span>
         <span class="intro-line">I pilot ideas from <span class="keep">sketch to takeoff</span></span>
@@ -42,6 +46,7 @@
 
     <section id="work" class="work">
       <h2>What I've been building</h2>
+      <div class="work-grid">
       <a class="card" href="/work/maureen-care/" style="--card-brand: #37727e; --card-brand-light: #4f8894;"><!-- Maureen teal → mint: tints the image area on hover -->
         <!-- Whole phone in hand; only the bottom (below the phone) dissolves into the card. Master: Maureen/_library/device-mockups/dashboard/hand-mockup-dashboard-v01.png -->
         <div class="card-media" style="--media-shift: -19.3%;"><!-- phone centre sits at 69.3% of the image width, measured -->
@@ -53,6 +58,7 @@
           <li>UX/UI</li><li>React Native</li><li>Brand</li>
         </ul>
       </a>
+      </div>
     </section>
   </main>
 
