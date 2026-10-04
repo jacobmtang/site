@@ -1,4 +1,21 @@
 /* Placeholder styling until the visual direction is decided. Tokens first, so a redesign is a token change. */
+/* Newsreader (Production Type, SIL Open Font License — see /assets/fonts/OFL.txt).
+   Variable: weight 200–800, optical size 6–72. Latin subset. Masters in Design/_brand/fonts/newsreader/. */
+@font-face {
+  font-family: "Newsreader";
+  src: url("/assets/fonts/newsreader-variable.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Newsreader";
+  src: url("/assets/fonts/newsreader-italic-variable.woff2") format("woff2");
+  font-weight: 200 800;
+  font-style: italic;
+  font-display: swap;
+}
+
 :root {
   --bg: #ffffff;
   --text: #1a1a1a;
@@ -6,7 +23,7 @@
   --line: #e6e6e6;
   --accent: #1a1a1a;
   --font-body: system-ui, -apple-system, "Segoe UI", sans-serif;
-  --font-display: Georgia, serif;
+  --font-display: "Newsreader", Georgia, serif;
   --space: clamp(16px, 4vw, 32px);
   --max: 760px;
 }
@@ -20,7 +37,7 @@ a { color: inherit; }
 .site-header { display: flex; justify-content: space-between; align-items: baseline; }
 .site-header nav a { margin-left: 1rem; text-decoration: none; color: var(--muted); }
 .wordmark { font-weight: 600; text-decoration: none; }
-h1, h2, h3 { font-family: var(--font-display); font-weight: 500; line-height: 1.2; }
+h1, h2, h3 { font-family: var(--font-display); font-optical-sizing: auto; font-weight: 500; line-height: 1.2; }
 h1 { font-size: clamp(2rem, 6vw, 3rem); margin: 0 0 1rem; }
 .intro p { color: var(--muted); max-width: 36ch; }
 .card { display: block; padding: var(--space); border: 1px solid var(--line); border-radius: 12px; text-decoration: none; }
