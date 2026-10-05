@@ -160,10 +160,116 @@
         <p>I set up the foundations every screen would share. A token layer defines colours by role in both light and dark mode, so one change updates the whole app. Spacing follows a 4-point grid, and layouts are capped at a readable width so they hold their shape on iPad.</p>
         <p>On top of that, I built about 60 reusable components, from buttons and sheet rows to switches, so every screen looks and behaves the same.</p>
       </div>
+      <!-- Design library stage (lib-stage.js): real components rebuilt from the app's values, shown one at a
+           time inside a Figma-style selection frame that shrinks and grows between them. Decorative demo:
+           the controls aren't focusable. -->
+      <figure class="slide-visual lib-stage grid-card" aria-label="Components from Maureen's design library: carousel dots and the primary button, the lens switch and selection pills, a sheet row, a notice, the selection dot and the success check">
+        <div class="lib-canvas">
+          <!-- first step: the carousel dots above the primary button, stacked as they sit in onboarding; two
+               components at once, so both frames are in Figma's component purple -->
+          <div class="lib-item is-on" data-stack="column">
+            <div class="lib-target" data-name="Carousel Dots" data-demo="carousel" data-zoom="2" data-color="purple">
+              <div class="lib-part"><div class="m-carousel" aria-hidden="true"></div></div>
+              <div class="lib-frame" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><span class="lib-tag"><b class="lib-name">Carousel Dots</b><span class="lib-size"></span></span></div>
+            </div>
+            <div class="lib-target" data-name="Primary CTA" data-demo="press" data-color="purple">
+              <div class="lib-part"><button class="m-cta" type="button" tabindex="-1" aria-hidden="true"><span>Continue</span></button></div>
+              <div class="lib-frame" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><span class="lib-tag"><b class="lib-name">Primary CTA</b><span class="lib-size">346 × 52</span></span></div>
+            </div>
+          </div>
+          <!-- the Pacer's lens switch above the selection pills: two at once, purple -->
+          <div class="lib-item" data-stack="column">
+            <div class="lib-target" data-name="Lens Switch" data-demo="lens" data-color="purple">
+              <div class="lib-part"><div class="m-lens" aria-hidden="true"><span class="is-a">Meal Pacer</span><span class="is-b">Task Timer</span></div></div>
+              <div class="lib-frame" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><span class="lib-tag"><b class="lib-name">Lens Switch</b><span class="lib-size"></span></span></div>
+            </div>
+            <div class="lib-target" data-name="Selection Pills" data-demo="select" data-color="purple">
+              <div class="lib-part"><div class="m-pills" aria-hidden="true"><span class="m-pill">she/her</span><span class="m-pill">he/him</span><span class="m-pill is-on">they/them</span><span class="m-pill">+</span></div></div>
+              <div class="lib-frame" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><span class="lib-tag"><b class="lib-name">Selection Pills</b><span class="lib-size"></span></span></div>
+            </div>
+          </div>
+          <div class="lib-item">
+            <div class="lib-target" data-name="Sheet Row" data-demo="rows">
+              <div class="lib-part"><div class="m-sheet" aria-hidden="true">
+                <div class="m-sheet-title">Breakfasts</div>
+                <span class="m-row"><svg class="m-row-icon" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M364.13 125.25L87 403l-23 45 44.99-23 277.76-277.13-22.62-22.62zM420.69 68.69l-22.62 22.62 22.62 22.63 22.62-22.63a16 16 0 000-22.62h0a16 16 0 00-22.62 0z"/></svg><span>Rename folder</span></span>
+                <div class="m-divider"></div>
+                <span class="m-row"><svg class="m-row-icon" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M430.11 347.9c-6.6-6.1-16.3-7.6-24.6-9-11.5-1.9-15.9-4-22.6-10-14.3-12.7-14.3-31.1 0-43.8l30.3-26.9c46.4-41 46.4-108.2 0-149.2-34.2-30.1-80.1-45-127.8-45-55.7 0-113.9 20.3-158.8 60.1-83.5 73.8-83.5 194.7 0 268.5 41.5 36.7 97.5 55 152.9 55.4h1.7c55.4 0 110-17.9 148.8-52.4 14.4-12.7 11.99-36.6.1-47.7z" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><circle cx="144" cy="208" r="32"/><circle cx="152" cy="311" r="32"/><circle cx="224" cy="144" r="32"/><circle cx="256" cy="367" r="48"/><circle cx="328" cy="144" r="32"/></svg><span>Change color</span></span>
+                <div class="m-divider"></div>
+                <span class="m-row is-danger"><svg class="m-row-icon" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M112 112l20 320c.95 18.49 14.4 32 32 32h184c17.67 0 30.87-13.51 32-32l20-320" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path stroke="currentColor" stroke-linecap="round" stroke-miterlimit="10" stroke-width="32" d="M80 112h352"/><path d="M192 112V72h0a23.93 23.93 0 0124-24h80a23.93 23.93 0 0124 24h0v40M256 176v224M184 176l8 224M328 176l-8 224" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg><span>Delete folder</span></span>
+              </div></div>
+              <div class="lib-frame" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><span class="lib-tag"><b class="lib-name">Sheet Row</b><span class="lib-size"></span></span></div>
+            </div>
+          </div>
+          <div class="lib-item">
+            <div class="lib-target" data-name="Notice" data-demo="notice">
+              <div class="lib-part"><div class="m-notice" aria-hidden="true">
+                <svg class="m-notice-icon" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M350.54 148.68l-26.62-42.06C318.31 100.08 310.62 96 302 96h-92c-8.62 0-16.31 4.08-21.92 10.62l-26.62 42.06C155.85 155.23 148.62 160 140 160H80a32 32 0 00-32 32v192a32 32 0 0032 32h352a32 32 0 0032-32V192a32 32 0 00-32-32h-59c-8.65 0-16.85-4.77-22.46-11.32z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><circle cx="256" cy="272" r="80" fill="none" stroke="currentColor" stroke-miterlimit="10" stroke-width="32"/><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M124 158v-22h-24v22"/></svg>
+                <div class="m-notice-title">Camera access is off</div>
+                <div class="m-notice-body">Turn on Camera for Maureen in Settings, or choose a photo from your library below.</div>
+                <span class="m-notice-action">Open Settings</span>
+              </div></div>
+              <div class="lib-frame" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><span class="lib-tag"><b class="lib-name">Notice</b><span class="lib-size"></span></span></div>
+            </div>
+          </div>
+          <!-- two small components at once, each with its own frame, in Figma's component purple -->
+          <div class="lib-item">
+            <div class="lib-target" data-name="Selection Dot" data-demo="dot" data-zoom="2" data-color="purple">
+              <div class="lib-part"><div class="m-dot" style="width:34px;height:34px" aria-hidden="true"><svg viewBox="0 0 34 34" width="34" height="34"><circle class="ring" cx="17" cy="17" r="12.2" fill="none" stroke-width="1.6"/><circle class="disc" cx="17" cy="17" r="0" fill="#45818E"/></svg></div></div>
+              <div class="lib-frame" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><span class="lib-tag"><b class="lib-name">Selection Dot</b><span class="lib-size"></span></span></div>
+            </div>
+            <div class="lib-target" data-name="Success Check" data-demo="check" data-color="purple">
+              <div class="lib-part"><div class="m-check" style="width:92px;height:92px" aria-hidden="true"></div></div>
+              <div class="lib-frame" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><span class="lib-tag"><b class="lib-name">Success Check</b><span class="lib-size"></span></span></div>
+            </div>
+          </div>
+        </div>
+      </figure>
+    </section>
+    <!-- 05: the system at scale. Screen wall (screen-wall.js): two rows of real screens drifting in
+         opposite directions, light on top and dark below (assets/img/screens/, built by
+         ../_source/build-screen-wall.py). Copy to come. -->
+    <section class="slide center">
+      <div class="slide-text">
+        <p class="slide-label">05</p>
+        <h2>Unifying every screen</h2>
+        <p>Because every screen is built from the same library, I can iterate quickly: a change to a token or component updates the whole app at once. New features start from parts that already work, so the app stays cohesive in light mode and dark.</p>
+      </div>
+      <figure class="slide-visual screen-wall" aria-label="A wall of Maureen's screens, in light and dark mode" hidden>
+        <!-- the screens: one <img> per screenshot here; screen-wall.js deals them into the rows -->
+        <template class="wall-screens">
+          <img src="/assets/img/screens/light-01.webp" data-row="0" width="300" height="652" alt="">
+          <img src="/assets/img/screens/light-02.webp" data-row="0" width="300" height="652" alt="">
+          <img src="/assets/img/screens/light-03.webp" data-row="0" width="300" height="652" alt="">
+          <img src="/assets/img/screens/light-04.webp" data-row="0" width="300" height="652" alt="">
+          <img src="/assets/img/screens/light-05.webp" data-row="0" width="300" height="652" alt="">
+          <img src="/assets/img/screens/light-06.webp" data-row="0" width="300" height="652" alt="">
+          <img src="/assets/img/screens/light-07.webp" data-row="0" width="300" height="652" alt="">
+          <img src="/assets/img/screens/light-08.webp" data-row="0" width="300" height="652" alt="">
+          <img src="/assets/img/screens/light-09.webp" data-row="0" width="300" height="652" alt="">
+          <img src="/assets/img/screens/light-10.webp" data-row="0" width="300" height="652" alt="">
+          <img src="/assets/img/screens/light-11.webp" data-row="0" width="300" height="652" alt="">
+          <img src="/assets/img/screens/light-12.webp" data-row="0" width="300" height="652" alt="">
+          <img src="/assets/img/screens/light-13.webp" data-row="0" width="300" height="652" alt="">
+          <img src="/assets/img/screens/light-14.webp" data-row="0" width="300" height="652" alt="">
+          <img src="/assets/img/screens/dark-01.webp" data-row="1" width="300" height="652" alt="">
+          <img src="/assets/img/screens/dark-02.webp" data-row="1" width="300" height="652" alt="">
+          <img src="/assets/img/screens/dark-03.webp" data-row="1" width="300" height="652" alt="">
+          <img src="/assets/img/screens/dark-04.webp" data-row="1" width="300" height="652" alt="">
+          <img src="/assets/img/screens/dark-05.webp" data-row="1" width="300" height="652" alt="">
+          <img src="/assets/img/screens/dark-06.webp" data-row="1" width="300" height="652" alt="">
+          <img src="/assets/img/screens/dark-07-v2.webp" data-row="1" width="300" height="652" alt="">
+          <img src="/assets/img/screens/dark-08.webp" data-row="1" width="300" height="652" alt="">
+        </template>
+        <div class="wall-tilt">
+          <div class="wall-row"></div>
+          <div class="wall-row"></div>
+        </div>
+      </figure>
     </section>
     <section class="slide flip">
       <div class="slide-text">
-        <p class="slide-label">05</p>
+        <p class="slide-label">06</p>
         <h2>Designing with restraint</h2>
           <p>Using AI tooling made it fast to prototype features, so the MVP grew quickly, until it was too much to maintain, features repeated each other and the app's core use case got muddled. After weighing which features brought users the most utility, I ultimately trimmed the core product offering from 17 to 11.</p>
       </div>
@@ -196,7 +302,7 @@
     </section>
     <section class="slide">
       <div class="slide-text">
-        <p class="slide-label">06</p>
+        <p class="slide-label">07</p>
         <h2>Show, don't narrate</h2>
         <p>My first onboarding sequence opened with voice-over steps explaining Maureen's purpose, expecting users to sit and listen. I cut them.</p>
         <p>Rather than invent new patterns, I leaned on ones people are already familiar with:</p>
@@ -221,7 +327,7 @@
          (custom → native Liquid Glass, native buttons; native clip in), and a custom bottom sheet beside the native form sheet. -->
     <section class="slide flip">
       <div class="slide-text">
-        <p class="slide-label">07</p>
+        <p class="slide-label">08</p>
         <h2>Good design has already been done</h2>
         <p>An important lesson was that I didn't need to reinvent iOS. Referencing Mobbin and Apple's Human Interface Guidelines enabled me to keep every screen grounded in best practices. As the app matured, I moved it closer and closer to native.</p>
         <p>For example, the bottom tab bar progressed from a custom build to a fully native Liquid Glass bar, native buttons included. It also brought progressive blurs at the top, which were previously made with custom masked gradient fades. Custom bottom sheets became native form sheets, which were more performant and behave the way iOS users already expect.</p>
@@ -305,7 +411,7 @@
     </section>
     <section class="slide center">
       <div class="slide-text">
-        <p class="slide-label">08</p>
+        <p class="slide-label">09</p>
         <h2>Cleared for takeoff</h2>
         <p>For the listing, I led with benefits, not feature names, and wrote in possessive terms to reinforce the app as the user's own. The first three slides, displayed prominently on the App Store, share Maureen's brand teal: one introduces the toolkit, and one speaks to each of the two overlapping user needs, therapeutic support and dietary structure. Later slides add variety, with mockups set in real-world scenes and held in human hands.</p>
       </div>
@@ -331,23 +437,20 @@
     </section>
     <section class="slide center">
       <div class="slide-text">
-        <p class="slide-label">09</p>
+        <p class="slide-label">10</p>
         <h2>Outcomes and future plans</h2>
         <!-- DRAFT: first pass for Jacob to rewrite. No ratings on purpose (only two so far). -->
         <p>Maureen is live on the App Store, with 60 to 100 active users. Most features are free; premium unlocks extras like recipe imports, room for more recipes, richer insights and cloud backup.</p>
         <p>Next, I'm focused on:</p>
         <ul>
-          <li>Strengthening the premium offer, so upgrading feels worth it rather than required</li>
+          <li>Strengthening the value proposition of the premium offer</li>
           <li>Asking for reviews, which it doesn't do yet: Apple's native review prompt, shown after a successful action once someone has used the app a few times</li>
         </ul>
       </div>
     </section>
 
     <div class="scroll-cue" aria-hidden="true"><span class="cue-count"></span><svg viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M112 184l144 144 144-144"/></svg></div>
-    <section class="more">
-      <h2>More from this project</h2>
-      <!-- /work/maureen-care/app-store-review/ and /work/maureen-care/ecosystem/ once written -->
-    </section>
+    <!-- "More from this project" (deep-dive pages: engineering, brand & launch) goes here once they're written -->
   </main>
 
   <footer class="site-footer" data-tone="dark" data-tone-fade="top" data-tone-fade-var="--foot-fade">
@@ -378,6 +481,8 @@
   <script src="/assets/js/venn.js" defer></script>
   <script src="/assets/js/examples.js" defer></script>
   <script src="/assets/js/video.js" defer></script>
+  <script src="/assets/js/lib-stage.js" defer></script>
+  <script src="/assets/js/screen-wall.js" defer></script>
   <script src="/assets/js/site.js" defer></script>
 </body>
 </html>

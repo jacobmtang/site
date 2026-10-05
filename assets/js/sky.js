@@ -8,7 +8,7 @@
   const main = document.querySelector('main.case-study');
   const slides = main ? [...main.querySelectorAll('.slide')] : [];
   if (!slides.length) return;
-  const end = main.querySelector('.more');
+  const end = main.querySelector('.more') || document.querySelector('.site-footer');   // the story's end: the deep-dive links, or the footer
 
   const sky = document.createElement('div');
   sky.className = 'slide-sky';

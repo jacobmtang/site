@@ -4,7 +4,8 @@
 // way back up. Registered as a mount (see site.js); the cleanup disconnects both observers.
 (window.siteMounts ||= []).push(() => {
   const cue = document.querySelector('.scroll-cue');
-  const end = document.querySelector('.case-study .more') || document.querySelector('.more');
+  // the end of the story: a "More from this project" section if there is one, otherwise the footer
+  const end = document.querySelector('.case-study .more') || document.querySelector('.site-footer');
   if (!cue || !end) return;
   const count = cue.querySelector('.cue-count');
   const slides = [...document.querySelectorAll('.case-study .slide')];

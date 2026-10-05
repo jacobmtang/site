@@ -283,32 +283,35 @@
 .ex-panel { grid-area: 1 / 1; align-self: start;   /* every example starts right under the pills */ opacity: 0; visibility: hidden; transition: opacity 250ms ease, visibility 0s linear 250ms; }
 .ex-panel.is-active { opacity: 1; visibility: visible; transition: opacity 250ms ease 100ms, visibility 0s; }
 @media (prefers-reduced-motion: reduce) { .ex-panel, .ex-panel.is-active { transition: none; } }
-/* Slide skies (sky.js): a fixed layer behind the page, one soft gradient per slide in the Maureen family, near
-   white so cards, pills and clips keep their contrast. Each fades in over the last (700ms); the layer is clear
+/* Slide skies (sky.js): a fixed layer behind the page, one gradient per slide in the Maureen family. Plain
+   page colour for the top third of the screen (where headings and text sit), the tint gathering towards the
+   bottom edge, so it's clearly visible without sitting behind the copy. Each fades in over the last (700ms); the layer is clear
    outside the slides. Add a .sky-N here when a slide is added; a slide without one just keeps the previous tint. */
 .slide-sky { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0; transition: opacity 700ms ease; }
 .slide-sky.is-on { opacity: 1; }
 .sky-layer { position: absolute; inset: 0; opacity: 0; transition: opacity 700ms ease; }
 .sky-layer.is-on { opacity: 1; }
-.sky-1 { background: linear-gradient(to bottom, #e8f0f2, #f5f7f7 70%); }   /* 01 the market: cool teal mist */
-.sky-2 { background: linear-gradient(to bottom, #edf2ea, #f6f7f3 70%); }   /* 02 the ideal user: soft sage */
-.sky-3 { background: linear-gradient(to bottom, #f4ece8, #f8f5f3 70%); }   /* 03 the core interactions: soft blush */
-.sky-4 { background: linear-gradient(to bottom, #ecedf3, #f6f6f8 70%); }   /* 04 the design library: cool grey-lavender */
-.sky-5 { background: linear-gradient(to bottom, #f5f0e7, #f8f6f2 70%); }   /* 05 restraint: warm cream */
-.sky-6 { background: linear-gradient(to bottom, #e6eff1, #f4f7f7 70%); }   /* 06 onboarding: Maureen teal, a touch deeper */
-.sky-7 { background: linear-gradient(to bottom, #e9eef5, #f5f6f8 70%); }   /* 07 native: pale iOS blue */
-.sky-8 { background: linear-gradient(to bottom, #f3eee7, #f7f5f2 70%); }   /* 08 the listing: sand */
-.sky-9 { background: linear-gradient(to bottom, #eef1f1, #f7f7f7 70%); }   /* 09 outcomes: settling back to the page */
+.sky-1 { background: linear-gradient(to bottom, #f7f7f7 0%, #f7f7f7 35%, #daeaee 100%); }   /* 01 the market: teal mist */
+.sky-2 { background: linear-gradient(to bottom, #f7f7f7 0%, #f7f7f7 35%, #d8ebe7 100%); }   /* 02 the ideal user: sea glass */
+.sky-3 { background: linear-gradient(to bottom, #f7f7f7 0%, #f7f7f7 35%, #d6ebf0 100%); }   /* 03 the core interactions: aqua */
+.sky-4 { background: linear-gradient(to bottom, #f7f7f7 0%, #f7f7f7 35%, #dfe6ee 100%); }   /* 04 the design library: blue-grey */
+.sky-5 { background: linear-gradient(to bottom, #f7f7f7 0%, #f7f7f7 35%, #d8e7ee 100%); }   /* 05 every screen: harbour blue */
+.sky-6 { background: linear-gradient(to bottom, #f7f7f7 0%, #f7f7f7 35%, #d9ecee 100%); }   /* 06 restraint: pale teal */
+.sky-7 { background: linear-gradient(to bottom, #f7f7f7 0%, #f7f7f7 35%, #d7e8ec 100%); }   /* 07 onboarding: Maureen teal */
+.sky-8 { background: linear-gradient(to bottom, #f7f7f7 0%, #f7f7f7 35%, #dce6f3 100%); }   /* 08 native: pale iOS blue */
+.sky-9 { background: linear-gradient(to bottom, #f7f7f7 0%, #f7f7f7 35%, #d9e8f2 100%); }   /* 09 the listing: sky blue */
+.sky-10 { background: linear-gradient(to bottom, #f7f7f7 0%, #f7f7f7 35%, #e6ecec 100%); }   /* 10 outcomes: settling back to the page */
 @media (prefers-color-scheme: dark) {
-  .sky-1 { background: linear-gradient(to bottom, #13201f, #111 70%); }
-  .sky-2 { background: linear-gradient(to bottom, #161d15, #111 70%); }
-  .sky-3 { background: linear-gradient(to bottom, #1f1817, #111 70%); }
-  .sky-4 { background: linear-gradient(to bottom, #17171d, #111 70%); }
-  .sky-5 { background: linear-gradient(to bottom, #1f1b15, #111 70%); }
-  .sky-6 { background: linear-gradient(to bottom, #102022, #111 70%); }
-  .sky-7 { background: linear-gradient(to bottom, #141a22, #111 70%); }
-  .sky-8 { background: linear-gradient(to bottom, #1e1a15, #111 70%); }
-  .sky-9 { background: linear-gradient(to bottom, #151818, #111 70%); }
+  .sky-1 { background: linear-gradient(to bottom, #111 0%, #111 35%, #152c2a 100%); }
+  .sky-2 { background: linear-gradient(to bottom, #111 0%, #111 35%, #13291f 100%); }
+  .sky-3 { background: linear-gradient(to bottom, #111 0%, #111 35%, #0f282d 100%); }
+  .sky-4 { background: linear-gradient(to bottom, #111 0%, #111 35%, #1a2129 100%); }
+  .sky-5 { background: linear-gradient(to bottom, #111 0%, #111 35%, #12262e 100%); }
+  .sky-6 { background: linear-gradient(to bottom, #111 0%, #111 35%, #122a2c 100%); }
+  .sky-7 { background: linear-gradient(to bottom, #111 0%, #111 35%, #0f2c30 100%); }
+  .sky-8 { background: linear-gradient(to bottom, #111 0%, #111 35%, #162130 100%); }
+  .sky-9 { background: linear-gradient(to bottom, #111 0%, #111 35%, #13233a 100%); }
+  .sky-10 { background: linear-gradient(to bottom, #111 0%, #111 35%, #181e1e 100%); }
 }
 @media (prefers-reduced-motion: reduce) { .slide-sky, .sky-layer { transition: none; } }
 /* Form sheets example (05): phone screens side by side (custom → native), each with the iPhone screen's corners
@@ -366,7 +369,7 @@
 }
 /* the grid lives on its own layer so it can fade out softly at every edge (no outline); the mask is static,
    painted once, so it costs nothing while scrolling */
-.examples.ex-card::before {
+.examples.ex-card::before, .grid-card::before {
   content: ""; position: absolute; inset: calc(var(--space-12) * -1); z-index: -1; pointer-events: none;   /* 48px past the frame on every side; absolute, so it adds no spacing */
   border-radius: var(--space-16);   /* 64px: the grid area reads as a rounded card; the background is clipped to it */
   --grid: color-mix(in oklab, var(--text) 7%, transparent);
@@ -397,3 +400,152 @@
 .examples.ex-card.ex-card-wide { width: 100%; }
 .ex-card .bar-clips, .ex-card .blur-pair { margin-inline: 0; }
 .ex-card .bar-clip figcaption, .ex-card .blur-clip figcaption, .ex-card .sheet-shot figcaption { text-align: center; }
+
+/* Design library stage (slide 04, lib-stage.js): Maureen's real components, rebuilt from the app's values
+   (portfolio/_source/maureen-design-library), shown a step at a time on the faded grid. Each component is a
+   "target" with its own Figma-style selection frame: outline, square handles, a name/size tag. Between steps
+   every frame shrinks to a point, clipping its component away, then grows out around the next. A step can
+   hold one big component or two small ones side by side. --fw / --fh (a target's frame content size) are
+   animated custom properties; the component clips to them while they move. --sel is the outline colour:
+   Figma's selection blue, or its component purple (data-color="purple"). */
+.grid-card { position: relative; isolation: isolate; }
+@property --fw { syntax: '<length>'; inherits: true; initial-value: 0px; }
+@property --fh { syntax: '<length>'; inherits: true; initial-value: 0px; }
+.lib-stage { justify-self: center; width: 100%; padding: var(--space-6); margin: 0; }
+.lib-canvas { display: grid; place-items: center; height: var(--space-80); }
+.lib-item { grid-area: 1 / 1; display: flex; align-items: center; justify-content: center; gap: var(--space-32); visibility: hidden; }   /* 128px: room for each frame's tag, which can be wider than a small component */
+.lib-item.is-on { visibility: visible; }
+.lib-item[data-stack="column"] { flex-direction: column; gap: var(--space-16); }   /* stacked steps: 64px between frames, room for the lower tag */
+.lib-target {
+  position: relative; display: grid; place-items: center;
+  --pad: var(--space-2); --sel: #0d99ff;   /* frame sits 8px outside the component */
+  transition: --fw 380ms cubic-bezier(.65, 0, .35, 1), --fh 380ms cubic-bezier(.65, 0, .35, 1);
+}
+.lib-target[data-color="purple"] { --sel: #9747ff; }
+.lib-part { transform: scale(var(--s, 1));
+  clip-path: inset(calc((100% - var(--fh) / var(--s, 1)) / 2) calc((100% - var(--fw) / var(--s, 1)) / 2)); }   /* clips exactly to the component's edge, so at 0 nothing is left (no padded sliver); shadows return once settled */
+.lib-canvas.is-settled .lib-part { clip-path: none; }   /* at rest nothing is clipped, so shadows show in full */
+.lib-frame {
+  position: absolute; left: 50%; top: 50%; pointer-events: none;
+  width: calc(var(--fw) + var(--pad) * 2); height: calc(var(--fh) + var(--pad) * 2); translate: -50% -50%;
+  box-shadow: inset 0 0 0 1px var(--sel);
+}
+.lib-frame i {   /* 8 resize handles: corners and edge midpoints */
+  position: absolute; width: 7px; height: 7px; margin: -3.5px; background: #fff; box-shadow: inset 0 0 0 1px var(--sel);
+  transition: opacity 150ms ease;
+}
+.lib-frame i:nth-child(1) { left: 0; top: 0; }    .lib-frame i:nth-child(2) { left: 50%; top: 0; }
+.lib-frame i:nth-child(3) { left: 100%; top: 0; } .lib-frame i:nth-child(4) { left: 100%; top: 50%; }
+.lib-frame i:nth-child(5) { left: 100%; top: 100%; } .lib-frame i:nth-child(6) { left: 50%; top: 100%; }
+.lib-frame i:nth-child(7) { left: 0; top: 100%; } .lib-frame i:nth-child(8) { left: 0; top: 50%; }
+.lib-tag {
+  position: absolute; left: -1px; bottom: calc(100% + var(--space-2)); white-space: nowrap;
+  padding: 2px 6px; border-radius: 3px; background: var(--sel); color: #fff;
+  font: 500 11px / 16px var(--font-body); font-variant-numeric: tabular-nums;
+  transition: opacity 150ms ease;
+}
+.lib-tag .lib-size { opacity: .75; margin-left: 4px; }
+/* deselect, swap, select: while the frames shrink and regrow, the whole selection (outline, handles, tag) is
+   hidden, so only the clip wipes the component; it fades back in once the next component is fully revealed */
+.lib-frame { transition: opacity 120ms ease; }
+.lib-canvas:not(.is-settled) .lib-frame { opacity: 0; }
+.lib-canvas.is-settled .lib-frame { transition: opacity 200ms ease 60ms; }
+
+/* The components, scoped to the stage. Values from the app via the exported recreations. */
+.lib-stage { --m-page: #F4F4F4; --m-label: #F4F4F4; --m-rest: rgb(255 255 255 / .80); --m-on: #E3ECEE; --m-on-border: #45818E; --m-pill-label: #2C2C2A; }
+@media (prefers-color-scheme: dark) {
+  .lib-stage { --m-page: #1C1A18; --m-rest: rgb(255 255 255 / .09); --m-on: rgb(255 255 255 / .09); --m-pill-label: #F0EDE8; }
+}
+.lib-stage .m-cta {
+  position: relative; display: block; width: 346px; padding: 16px 0; overflow: hidden;
+  border: 0; border-radius: 100px; cursor: default; background: #45818E;
+  font-family: -apple-system, system-ui, "SF Pro Text", sans-serif; font-size: 16px; line-height: 20px; font-weight: 500; letter-spacing: .2px; color: var(--m-label); text-align: center;
+  box-shadow: 0 3px 20px rgb(26 49 54 / .18);
+  transition: transform 320ms cubic-bezier(.22, 1, .36, 1), opacity 200ms cubic-bezier(.45, 0, .55, 1);
+}
+.lib-stage .m-cta::before {
+  content: ""; position: absolute; inset: 0;
+  background:
+    linear-gradient(rgb(255 255 255 / .30), rgb(255 255 255 / 0)) top / 100% 50% no-repeat,
+    linear-gradient(rgb(0 0 0 / 0), rgb(0 0 0 / .16)) bottom / 100% 34% no-repeat,
+    linear-gradient(rgb(91 144 156), rgb(61 114 125));
+}
+.lib-stage .m-cta::after { content: ""; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgb(255 255 255 / .2); }
+.lib-stage .m-cta span { position: relative; }
+.lib-stage .m-cta.is-pressing { transform: scale(.97); opacity: .4; transition: transform 100ms cubic-bezier(.45, 0, .55, 1), opacity 100ms cubic-bezier(.45, 0, .55, 1); }
+.lib-stage .m-pills { display: flex; gap: 6px; }
+.lib-stage .m-pill {
+  padding: 8px 14px; border: 1.5px solid transparent; border-radius: 999px;
+  background: var(--m-rest); color: var(--m-pill-label);
+  font-family: -apple-system, system-ui, "SF Pro Text", sans-serif; font-size: 14px; line-height: 18px; font-weight: 500;
+  transition: transform 320ms cubic-bezier(.22, 1, .36, 1);
+}
+.lib-stage .m-pill.is-pressing { transform: scale(.96); transition: transform 120ms cubic-bezier(.45, 0, .55, 1); }
+.lib-stage .m-pill.is-on { background: var(--m-on); border-color: var(--m-on-border); }
+.lib-stage { --m-soft: #8A8A84; --m-text: #2C2C2A; --m-danger: #D8564A; --m-divider: rgb(0 0 0 / .07); --m-highlight: rgb(0 0 0 / .055); }
+@media (prefers-color-scheme: dark) { .lib-stage { --m-soft: #6A6660; --m-text: #F0EDE8; --m-danger: #F2857A; --m-divider: rgb(255 255 255 / .10); --m-highlight: rgb(255 255 255 / .08); } }
+/* Carousel dots (CarouselIndicator.tsx): at most 5 pills, the active one stretched to 18 holding the centre,
+   edge dots shrunk to 4; positions and lengths spring (lib-stage.js) */
+.lib-stage .m-carousel { position: relative; width: 78px; height: 6px; }
+.lib-stage .m-carousel span { position: absolute; top: 50%; left: 50%; height: 6px; border-radius: 3px; background: var(--m-soft); }
+/* Lens switch (LensSwitch.tsx, the Pacer's title): the active word in the left slot; choosing the other swaps
+   them, both sliding to each other's slot (460ms) and dipping to nothing as they cross. System font here;
+   the app uses Merriweather. lib-stage.js drives position, opacity and colour. */
+.lib-stage { --m-active: #2C2C2A; }
+@media (prefers-color-scheme: dark) { .lib-stage { --m-active: #F0EDE8; } }
+.lib-stage .m-lens { position: relative; height: 34px; }
+.lib-stage .m-lens span { position: absolute; left: 0; top: 50%; white-space: nowrap; font: 300 26px / 34px -apple-system, system-ui, "SF Pro Display", sans-serif; }
+.lib-stage .m-lens span.is-active { font-weight: 400; }
+/* Notice (Notice.tsx): the shared empty / permission-off state, in iOS's own text styles (17 semibold
+   Headline, 15 Subheadline); the outlined action fills while held */
+.lib-stage { --m-heading: #383838; --m-border: rgb(138 158 140 / .2); --m-pressed: rgb(0 0 0 / .06); }
+@media (prefers-color-scheme: dark) { .lib-stage { --m-heading: #C8C6BC; --m-border: rgb(255 255 255 / .07); --m-pressed: rgb(255 255 255 / .12); } }
+.lib-stage .m-notice { display: flex; flex-direction: column; align-items: center; gap: 8px; width: 402px; box-sizing: border-box; padding: 0 40px; text-align: center; font-family: -apple-system, system-ui, "SF Pro Text", sans-serif; }
+.lib-stage .m-notice-icon { width: 32px; height: 32px; margin-bottom: 8px; color: var(--m-soft); }
+.lib-stage .m-notice-title { font-size: 17px; line-height: 22px; font-weight: 600; color: var(--m-heading); }
+.lib-stage .m-notice-body { margin: 0 0 4px; font-size: 15px; line-height: 20px; color: var(--m-soft); }
+.lib-stage .m-notice-action { padding: 10px 20px; border: 1px solid var(--m-border); border-radius: 20px; font-size: 15px; line-height: 20px; font-weight: 600; color: var(--m-heading); }
+.lib-stage .m-notice-action.is-pressed { background: var(--m-pressed); }
+/* Sheet row (SheetRow.tsx, shown in the Meal Plan folder menu): iOS's own press, no scale, a grey fill laid
+   down instantly on touch and faded out over 260ms; the fill sits behind the content */
+.lib-stage .m-sheet { width: 362px; padding: 20px 0 12px; font-family: -apple-system, system-ui, "SF Pro Text", sans-serif; }
+.lib-stage .m-sheet-title { margin: 0 0 8px; text-align: center; font-size: 15px; line-height: 20px; font-weight: 600; color: var(--m-text); }
+.lib-stage .m-divider { height: 1px; transform: scaleY(.5); background: var(--m-divider); }
+.lib-stage .m-row {
+  position: relative; display: flex; align-items: center; gap: 12px; width: calc(100% + 20px); margin: 0 -10px;
+  padding: 15px 10px; font-size: 15px; line-height: 20px; color: var(--m-text);
+}
+.lib-stage .m-row::before {
+  content: ""; position: absolute; inset: 0; border-radius: 12px; background: var(--m-highlight);
+  opacity: 0; transition: opacity 260ms cubic-bezier(.33, 1, .68, 1);
+}
+.lib-stage .m-row.is-pressed::before { opacity: 1; transition: none; }
+.lib-stage .m-row > * { position: relative; }
+.lib-stage .m-row-icon { flex: none; width: 20px; height: 20px; color: var(--m-soft); }
+.lib-stage .m-row.is-danger, .lib-stage .m-row.is-danger .m-row-icon { color: var(--m-danger); }
+.lib-stage .m-dot svg, .lib-stage .m-check { display: block; }
+@media (prefers-reduced-motion: reduce) { .lib-target { transition: none; } .lib-stage .m-cta, .lib-stage .m-pill { transition: none; } }
+
+/* Screen wall (slide 05, screen-wall.js): real screens in straight rows, alternate rows drifting in
+   opposite directions, edges fading out. Each row holds its screens twice and slides by exactly one set, so
+   the loop is seamless. Transform-only CSS animation; paused off screen (.is-paused) and for reduced motion.
+   Two rows everywhere: light screens on top, dark below. Desktop up to 170px screens; phones up to 110px. */
+.screen-wall { position: relative; justify-self: stretch; overflow: hidden;
+  /* the screens are sized so both rows fit whole: about 64% of the screen height, never above 170px wide
+     (phone shape 1 : 2.17); the wall is exactly the rows plus a little room for the fades */
+  --wall-gap: var(--space-4); --wall-w: clamp(100px, calc((64svh - var(--wall-gap)) / 4.34), 170px);
+  height: calc(var(--wall-w) * 2.17 * 2 + var(--wall-gap) + var(--space-12));
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent), linear-gradient(to bottom, transparent, #000 var(--space-6), #000 calc(100% - var(--space-6)), transparent);
+  -webkit-mask-composite: source-in;
+          mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent), linear-gradient(to bottom, transparent, #000 var(--space-6), #000 calc(100% - var(--space-6)), transparent);
+          mask-composite: intersect; }
+.wall-tilt { display: grid; gap: var(--wall-gap); width: max-content; position: relative; left: 50%; top: 50%; translate: -50% -50%; }
+.wall-row { display: flex; gap: var(--wall-gap); width: max-content; animation: wall-drift var(--wall-dur, 60s) linear infinite; }
+.wall-row:nth-child(even) { animation-direction: reverse; }
+.wall-row img { display: block; width: var(--wall-w); height: auto; aspect-ratio: 590 / 1282; border-radius: 13.7% / 6.3%; box-shadow: 0 0 0 1px var(--line); background: var(--chip); }
+@keyframes wall-drift { from { transform: translateX(0); } to { transform: translateX(calc(-50% - var(--wall-gap) / 2)); } }
+.screen-wall.is-paused .wall-row { animation-play-state: paused; }
+@media (max-width: 599px) {
+  .screen-wall { --wall-gap: var(--space-3); --wall-w: clamp(80px, calc((55svh - var(--wall-gap)) / 4.34), 110px); }
+}
+@media (prefers-reduced-motion: reduce) { .wall-row { animation: none; } }
