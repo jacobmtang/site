@@ -286,8 +286,10 @@
 /* Slide skies (sky.js): a fixed layer behind the page, one gradient per slide in the Maureen family. Plain
    page colour for the top third of the screen (where headings and text sit), the tint gathering towards the
    bottom edge, so it's clearly visible without sitting behind the copy. Each fades in over the last (700ms); the layer is clear
-   outside the slides. Add a .sky-N here when a slide is added; a slide without one just keeps the previous tint. */
-.slide-sky { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0; transition: opacity 700ms ease; }
+   outside the slides. Add a .sky-N here when a slide is added; a slide without one just keeps the previous tint.
+   Height 100lvh (the screen with Safari's bars hidden), so on iPhone the gradient carries on behind the bottom
+   bar instead of stopping above it; sky.js also tints the page colour to match (--page-tint on body). */
+.slide-sky { position: fixed; inset: 0 0 auto; height: 100vh; height: 100lvh; z-index: -1; pointer-events: none; opacity: 0; transition: opacity 700ms ease; }
 .slide-sky.is-on { opacity: 1; }
 .sky-layer { position: absolute; inset: 0; opacity: 0; transition: opacity 700ms ease; }
 .sky-layer.is-on { opacity: 1; }
@@ -394,6 +396,9 @@
 @media (max-width: 599px) {
   .examples.ex-card { padding: var(--space-4) var(--space-4) var(--space-6); border-radius: var(--space-8); }
   .examples.ex-card .ex-pills { margin-inline: calc(var(--space-4) * -1); padding-inline: var(--space-4); }
+  /* phones: the grid stops at the screen edge (the 16px gutter) and fades out inside it, rather than running
+     48px past and getting cut off by the screen, which read as bleeding off the edge */
+  .examples.ex-card::before, .grid-card::before { inset-inline: calc(var(--gutter) * -1); }
 }
 /* the wide grid frame (07 native examples): fills the column; the clips drop their own side insets, since
    the frame's padding now does that job */
@@ -412,12 +417,13 @@
 @property --fw { syntax: '<length>'; inherits: true; initial-value: 0px; }
 @property --fh { syntax: '<length>'; inherits: true; initial-value: 0px; }
 .lib-stage { justify-self: center; width: 100%; padding: var(--space-6); margin: 0; }
-.lib-canvas { display: grid; place-items: center; height: var(--space-80); }
+.lib-canvas { display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); place-items: center; place-items: unsafe center; height: var(--space-80); }   /* one fixed cell: a wide hidden step can't widen the track and push the others off centre */
 .lib-item { grid-area: 1 / 1; display: flex; align-items: center; justify-content: center; gap: var(--space-32); visibility: hidden; }   /* 128px: room for each frame's tag, which can be wider than a small component */
 .lib-item.is-on { visibility: visible; }
+.lib-item:not(.is-on) .lib-part { transform: scale(0); }   /* hidden steps still take up layout; at full size a wide one (the notice) pokes past a phone's screen and lets iOS Safari zoom out */
 .lib-item[data-stack="column"] { flex-direction: column; gap: var(--space-16); }   /* stacked steps: 64px between frames, room for the lower tag */
 .lib-target {
-  position: relative; display: grid; place-items: center;
+  position: relative; display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); place-items: center; place-items: unsafe center;   /* a fixed cell, centred even when the component is wider than its scaled-down box (phones) */
   --pad: var(--space-2); --sel: #0d99ff;   /* frame sits 8px outside the component */
   transition: --fw 380ms cubic-bezier(.65, 0, .35, 1), --fh 380ms cubic-bezier(.65, 0, .35, 1);
 }

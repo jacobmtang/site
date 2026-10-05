@@ -2,7 +2,8 @@
 // gradient per slide, stacked in order. As a slide crosses the middle of the screen, its gradient fades in OVER
 // the previous ones (and those after it fade out on the way back up), so the tint shifts without ever passing
 // through blank. The whole layer is clear above slide 01 and fades out again once "More from this project" is
-// in view, so the hero, header and footer are untouched. Opacity only.
+// in view, so the hero, header and footer are untouched. Opacity only. While a sky is on, the page colour
+// (--page-tint on body) follows its bottom colour, so the strip iOS Safari leaves behind its bars matches.
 // Registered as a mount (see site.js); the cleanup removes the layer and both observers.
 (window.siteMounts ||= []).push(() => {
   const main = document.querySelector('main.case-study');
@@ -21,9 +22,15 @@
   main.prepend(sky);
 
   let current = -1, atEnd = false;
+  // each sky's bottom colour (the last colour in its gradient), for the page colour behind Safari's bars
+  const bottomOf = (l) => (getComputedStyle(l).backgroundImage.match(/rgba?\([^)]*\)/g) || []).pop();
   const paint = () => {
-    sky.classList.toggle('is-on', current >= 0 && !atEnd);
+    const on = current >= 0 && !atEnd;
+    sky.classList.toggle('is-on', on);
     layers.forEach((l, i) => l.classList.toggle('is-on', i <= current));
+    const tint = on && bottomOf(layers[Math.min(current, layers.length - 1)]);
+    if (tint) document.body.style.setProperty('--page-tint', tint);
+    else document.body.style.removeProperty('--page-tint');
   };
 
   // a zero-height line across the middle of the viewport: whichever slide it crosses is the current one
@@ -42,5 +49,5 @@
   });
   if (end) endIo.observe(end);
 
-  return () => { slideIo.disconnect(); if (endIo) endIo.disconnect(); sky.remove(); };
+  return () => { slideIo.disconnect(); if (endIo) endIo.disconnect(); sky.remove(); document.body.style.removeProperty('--page-tint'); };
 });

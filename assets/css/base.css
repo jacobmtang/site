@@ -90,6 +90,7 @@
 * { box-sizing: border-box; }
 body {
   margin: 0; background: var(--bg); color: var(--text);
+  background-color: var(--page-tint, var(--bg)); transition: background-color 700ms ease;   /* sky.js sets --page-tint to the current slide sky's bottom colour, so the strip iOS Safari leaves behind its bottom bar matches the gradient */
   font-family: var(--font-body); font-size: var(--text-body); line-height: var(--leading-body);
 }
 h1, h2, h3, p, dl, dd { margin: 0; }   /* no browser-default margins: spacing comes from tokens only */
