@@ -271,10 +271,18 @@
       else if (checkAnim) checkAnim.pause();
     }, { threshold: 0.4 });
     io.observe(stage);
-    const onResize = () => frameStep(i);
-    window.addEventListener('resize', onResize);
+    // re-fit whenever the canvas itself changes width, not just the window: a scrollbar appearing after load
+    // (or the page settling) narrows it without a resize event, which left steps sized too big and off centre
+    let lastW = canvas.clientWidth;
+    const ro = new ResizeObserver(() => {
+      if (canvas.clientWidth === lastW) return;
+      lastW = canvas.clientWidth;
+      items.forEach((_, n) => targetsOf(n).forEach((t) => fit(t, across(n))));
+      frameStep(i);
+    });
+    ro.observe(canvas);
     offs.push(() => {
-      stop(); io.disconnect(); window.removeEventListener('resize', onResize);
+      stop(); io.disconnect(); ro.disconnect();
       dots.forEach((d) => d.stop()); carousels.forEach((c) => c.stop()); lenses.forEach((l) => l.stop());
       if (checkAnim) { checkAnim.destroy(); checkAnim = null; }
     });

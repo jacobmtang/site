@@ -417,7 +417,8 @@
 @property --fh { syntax: '<length>'; inherits: true; initial-value: 0px; }
 .lib-stage { justify-self: center; width: 100%; padding: var(--space-6); margin: 0; }
 .lib-canvas { display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); place-items: center; place-items: unsafe center; height: var(--space-80); }   /* one fixed cell: a wide hidden step can't widen the track and push the others off centre */
-.lib-item { grid-area: 1 / 1; display: flex; align-items: center; justify-content: center; gap: var(--space-32); visibility: hidden; }   /* 128px: room for each frame's tag, which can be wider than a small component */
+.lib-item { grid-area: 1 / 1; display: flex; align-items: center; justify-content: center; gap: var(--space-32); visibility: hidden;
+  justify-self: start; position: relative; left: 50%; translate: -50% 0; }   /* centred by offset, not grid alignment, so it stays centred in Safari even if it's ever wider than the canvas */   /* 128px: room for each frame's tag, which can be wider than a small component */
 .lib-item.is-on { visibility: visible; }
 .lib-item[data-stack="column"] { flex-direction: column; gap: var(--space-16); }   /* stacked steps: 64px between frames, room for the lower tag */
 .lib-target {
@@ -544,7 +545,7 @@
   -webkit-mask-composite: source-in;
           mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent), linear-gradient(to bottom, transparent, #000 var(--space-6), #000 calc(100% - var(--space-6)), transparent);
           mask-composite: intersect; }
-.wall-tilt { display: grid; gap: var(--wall-gap); width: max-content; position: relative; left: 50%; top: 50%; translate: -50% -50%; }
+.wall-tilt { display: grid; gap: var(--wall-gap); width: max-content; position: relative; top: 50%; translate: 0 -50%; }   /* rows start at the wall's left edge: centring them (they're different lengths) left the shorter dark row off screen for its first stretch */
 .wall-row { display: flex; gap: var(--wall-gap); width: max-content; animation: wall-drift var(--wall-dur, 60s) linear infinite; will-change: transform; }   /* will-change: each row keeps its own layer, so iOS Safari doesn't drop and repaint it mid-scroll */
 .wall-row:nth-child(even) { animation-direction: reverse; }
 .wall-row img { display: block; width: var(--wall-w); height: auto; aspect-ratio: 590 / 1282; border-radius: 13.7% / 6.3%; box-shadow: 0 0 0 1px var(--line); background: var(--chip); }
