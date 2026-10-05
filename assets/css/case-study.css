@@ -35,11 +35,19 @@
 .case-study section h2 { margin-bottom: var(--space-4); }
 /* Case studies use the full content width (--container), like the rest of the site. Running text keeps a
    comfortable measure; images, infographics and other media take the whole width. */
-.case-study p, .case-study section > ul, .case-study section > ol { max-width: var(--measure); }
+.case-study p, .case-study section > ul, .case-study section > ol, .slide-text > ul { max-width: var(--measure); }
 .case-study p + p { margin-top: var(--space-4); }
 /* lists in a section's body: under the measure, a little indented, 8px between items */
-.case-study section > ul:not(.tags) { margin: var(--space-4) 0 0; padding-left: var(--space-5); }
-.case-study section > ul:not(.tags) li + li { margin-top: var(--space-2); }
+.case-study section > ul:not(.tags), .slide-text > ul { margin: var(--space-4) 0 0; padding-left: var(--space-5); }
+.case-study section > ul:not(.tags) li + li, .slide-text > ul li + li { margin-top: var(--space-2); }
+.slide-text > p + ul { margin-top: var(--space-2); }   /* a list introduced by a sentence sits close under it */
+.slide-text > ul + p { margin-top: var(--space-4); }   /* text after a list: the same gap as between paragraphs */
+/* bullets: the normal dot, in Maureen's teal */
+.case-study section > ul:not(.tags) > li::marker, .slide-text > ul > li::marker { color: #37727e; }
+@media (prefers-color-scheme: dark) { .case-study section > ul:not(.tags) > li::marker, .slide-text > ul > li::marker { color: #4f8894; } }
+/* bold lead-ins in slide text (e.g. the two user needs on 02) take Maureen's teal, like the bullets */
+.slide-text strong { color: #37727e; }
+@media (prefers-color-scheme: dark) { .slide-text strong { color: #4f8894; } }
 /* footnotes: a superscript number after the claim; the source sits with the visual it supports (e.g. under the
    big stat), in small muted type. */
 .fn-ref { font-size: .65em; line-height: 0; vertical-align: super; margin-left: 1px; }
@@ -199,16 +207,22 @@
 @media (min-width: 768px) { .cs-media-pair { grid-template-columns: 1fr 1fr; } }
 .cs-media-pair .cs-media { margin: 0; }
 
-/* Scroll cue (case study): a small chevron fixed at the bottom centre, bobbing gently, until the last slide is
-   reached (scroll-cue.js adds .is-done once "More from this project" is in view). Decorative only. */
+/* Scroll cue (case study), fixed at the bottom centre. Above the first slide: a chevron bobbing gently, a nudge to
+   scroll. From slide 01 the progress ("03 / 06", scroll-cue.js) replaces it, crossfading in the same spot. The
+   whole cue fades out once "More from this project" is in view (.is-done). Decorative only. */
 .scroll-cue {
-  position: fixed; left: 50%; bottom: var(--space-6); z-index: 5;
-  width: var(--space-6); height: var(--space-6); margin-left: calc(var(--space-6) / -2);
+  position: fixed; left: 50%; bottom: var(--space-6); z-index: 5; translate: -50% 0;
+  display: grid; place-items: center;
   color: var(--muted); pointer-events: none;
   transition: opacity 400ms ease;
 }
-.scroll-cue svg { display: block; width: 100%; height: 100%; animation: cue-bob 2.4s ease-in-out infinite; }
+.scroll-cue > * { grid-area: 1 / 1; transition: opacity 300ms ease; }
+.scroll-cue svg { display: block; width: var(--space-6); height: var(--space-6); animation: cue-bob 2.4s ease-in-out infinite; }
+.cue-count { opacity: 0; font-size: var(--text-sm); line-height: var(--leading-sm); font-variant-numeric: tabular-nums; letter-spacing: .04em; white-space: nowrap; }
+.scroll-cue.has-count svg { opacity: 0; animation-play-state: paused; }
+.scroll-cue.has-count .cue-count { opacity: 1; }
 .scroll-cue.is-done { opacity: 0; }
+.scroll-cue.is-done svg { animation-play-state: paused; }   /* nothing animates while hidden */
 @keyframes cue-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
 @media (prefers-reduced-motion: reduce) { .scroll-cue svg { animation: none; } }
 /* count-up (count-up.js): the decimal is its own box so it can ease shut at the end */
@@ -227,5 +241,66 @@
 .cs-venn.is-apart .venn-left .venn-label  { transform: translateX(40px); }
 .cs-venn.is-apart .venn-right .venn-label { transform: translateX(-40px); }
 .cs-venn.is-apart .venn-join, .cs-venn.is-joining .venn-join { opacity: 0; transition-duration: 250ms; }
-/* the bobbing chevron stops once hidden, so it isn't animating at zero opacity */
-.scroll-cue.is-done svg { animation-play-state: paused; }
+/* Phone screen recordings (video.js): no bezel, just the iPhone screen's own rounded corners (about 55pt on a
+   402pt-wide screen: 13.7% of the width, which is 6.3% of the height at this aspect) and a hairline edge, so it
+   reads as a phone and matches the App Store shots. Capped so a portrait video doesn't tower over its half. */
+.phone-video { justify-self: center; width: min(100%, 320px); }
+.phone-video video {
+  display: block; width: 100%; height: auto; aspect-ratio: 590 / 1282;
+  border-radius: 13.7% / 6.3%; background: var(--chip);
+  box-shadow: 0 0 0 1px var(--line), 0 var(--space-6) var(--space-12) rgb(0 0 0 / .06);
+}
+/* Tab bar clips (05, video.js): short, wide crops of just the bar, stacked in order (custom → native) with a
+   small label above each. No phone frame: rounded like the site's cards, a hairline edge, the clip's own
+   light background. */
+.bar-clips { display: grid; gap: var(--space-6); align-content: center; }
+.bar-clip { margin: 0; }
+.bar-clip figcaption { margin-bottom: var(--space-2); font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--muted); }
+.bar-clip video {
+  display: block; width: 100%; height: auto; aspect-ratio: 900 / 186;
+  border-radius: var(--space-6); background: var(--chip);
+  box-shadow: 0 0 0 1px var(--line);
+}
+/* Examples switcher (examples.js): small pills above a visual, like an iOS segmented control. The active pill
+   is Maureen teal. Panels sit in ONE grid cell, so the visual keeps the height of the tallest example and the
+   slide never jumps; the inactive ones fade out and can't be clicked. Pills hide while there's one example. */
+.examples { display: grid; gap: var(--space-6); align-content: center; }
+.ex-pills { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.ex-pills:has(> :only-child) { display: none; }
+.ex-pills [role="tab"] {
+  height: calc(var(--space-8) + var(--space-1));   /* 36px */ padding: 0 var(--space-4); border: 0; border-radius: 999px;
+  background: var(--chip); color: var(--text);
+  font: 500 var(--text-sm) / 1 var(--font-body); cursor: pointer;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+.ex-pills [role="tab"]:hover { background: var(--line); }
+.ex-pills [role="tab"][aria-selected="true"] { background: #37727e; color: #fff; }
+.ex-pills [role="tab"]:focus-visible { outline: 2px solid #37727e; outline-offset: 2px; }
+.ex-panels { display: grid; }
+.ex-panel { grid-area: 1 / 1; align-self: center; opacity: 0; visibility: hidden; transition: opacity 250ms ease, visibility 0s linear 250ms; }
+.ex-panel.is-active { opacity: 1; visibility: visible; transition: opacity 250ms ease 100ms, visibility 0s; }
+@media (prefers-reduced-motion: reduce) { .ex-panel, .ex-panel.is-active { transition: none; } }
+/* Slide skies (sky.js): a fixed layer behind the page, one soft gradient per slide in the Maureen family, near
+   white so cards, pills and clips keep their contrast. Each fades in over the last (700ms); the layer is clear
+   outside the slides. Add a .sky-N here when a slide is added; a slide without one just keeps the previous tint. */
+.slide-sky { position: fixed; inset: 0; z-index: -1; pointer-events: none; opacity: 0; transition: opacity 700ms ease; }
+.slide-sky.is-on { opacity: 1; }
+.sky-layer { position: absolute; inset: 0; opacity: 0; transition: opacity 700ms ease; }
+.sky-layer.is-on { opacity: 1; }
+.sky-1 { background: linear-gradient(to bottom, #e8f0f2, #f5f7f7 70%); }   /* 01 the market: cool teal mist */
+.sky-2 { background: linear-gradient(to bottom, #edf2ea, #f6f7f3 70%); }   /* 02 the ideal user: soft sage */
+.sky-3 { background: linear-gradient(to bottom, #f5f0e7, #f8f6f2 70%); }   /* 03 restraint: warm cream */
+.sky-4 { background: linear-gradient(to bottom, #e6eff1, #f4f7f7 70%); }   /* 04 onboarding: Maureen teal, a touch deeper */
+.sky-5 { background: linear-gradient(to bottom, #e9eef5, #f5f6f8 70%); }   /* 05 native: pale iOS blue */
+.sky-6 { background: linear-gradient(to bottom, #f3eee7, #f7f5f2 70%); }   /* 06 the listing: sand */
+.sky-7 { background: linear-gradient(to bottom, #eef1f1, #f7f7f7 70%); }   /* 07 outcomes: settling back to the page */
+@media (prefers-color-scheme: dark) {
+  .sky-1 { background: linear-gradient(to bottom, #13201f, #111 70%); }
+  .sky-2 { background: linear-gradient(to bottom, #161d15, #111 70%); }
+  .sky-3 { background: linear-gradient(to bottom, #1f1b15, #111 70%); }
+  .sky-4 { background: linear-gradient(to bottom, #102022, #111 70%); }
+  .sky-5 { background: linear-gradient(to bottom, #141a22, #111 70%); }
+  .sky-6 { background: linear-gradient(to bottom, #1e1a15, #111 70%); }
+  .sky-7 { background: linear-gradient(to bottom, #151818, #111 70%); }
+}
+@media (prefers-reduced-motion: reduce) { .slide-sky, .sky-layer { transition: none; } }

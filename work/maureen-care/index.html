@@ -55,7 +55,7 @@
         <p class="stat-num swap" data-count-to="7"><span class="swap-word is-on"><span class="count-val">7</span> million</span><span class="swap-word" aria-hidden="true">1 in 36</span></p>
         <p class="stat-cap">American adults will experience binge eating disorder in their lifetime, making it the most common eating disorder in the U.S.<sup class="fn-ref"><a href="#fn-bed" aria-label="Source 1">1</a></sup></p>
         <div class="cs-notes" aria-label="Sources">
-          <p class="cs-note" id="fn-bed"><span class="fn-num">1</span> <a href="https://www.nimh.nih.gov/health/statistics/eating-disorders">National Institute of Mental Health, “Eating Disorders”</a>: 2.8% of U.S. adults over their lifetime (National Comorbidity Survey Replication, Hudson et al., 2007). “7 million” applies that rate to today’s roughly 260 million U.S. adults; “1 in 36” is the same rate as a ratio.</p>
+          <p class="cs-note" id="fn-bed"><span class="fn-num">1</span> <a href="https://www.nimh.nih.gov/health/statistics/eating-disorders">National Institute of Mental Health, “Eating Disorders”</a>: 2.8% of U.S. adults over their lifetime (National Comorbidity Survey Replication, Hudson et al., 2007). “7 million” applies that rate to today’s roughly 260 million U.S. adults.</p>
         </div>
       </figure>
       <div class="slide-text">
@@ -99,9 +99,9 @@
       </div>
       <!-- Pill cloud (assets/js/cloud.js): the 17 prototyped features, on a loop while in view. Cuts strike through and pop
            out, the rest close up and turn teal, 17 → 11; then everything returns and it plays again. -->
-      <figure class="slide-visual cloud" aria-label="17 features prototyped, 11 shipped">
+      <figure class="slide-visual cloud" aria-label="17 features prototyped, 11 features shipped">
         <div class="cloud-card">
-          <p class="cloud-head"><span class="cloud-count">17</span> <span class="cloud-label swap"><span class="swap-word is-on">features prototyped</span><span class="swap-word">shipped</span></span></p>
+          <p class="cloud-head"><span class="cloud-count">17</span> <span class="cloud-label">features <span class="swap"><span class="swap-word is-on">prototyped</span><span class="swap-word">shipped</span></span></span></p>
           <ul class="cloud-list">
             <li data-fate="keep">Urge surfing<span class="visually-hidden"> (shipped)</span></li>
             <li data-fate="cut">Leaves on a Stream<span class="visually-hidden"> (cut)</span></li>
@@ -124,17 +124,82 @@
         </div>
       </figure>
     </section>
-    <section class="slide center">
+    <section class="slide">
       <div class="slide-text">
         <p class="slide-label">04</p>
         <h2>Show, don't narrate</h2>
-        <p>My first onboarding opened with three voice-over steps explaining Maureen's purpose. I cut them. Now new users share their goals and what they struggle with, and Maureen turns that into a starter action plan: small steps like pacing a meal or creating a meal plan, each one introducing a feature. They can revisit it anytime and discover the rest at their own pace.</p>
-        <!-- Visual to come: the three voice-over intro screens (cut) beside the new flow: goals, struggles, action plan -->
+        <p>My first onboarding sequence opened with voice-over steps explaining Maureen's purpose, expecting users to sit and listen. I cut them.</p>
+        <p>Rather than invent new patterns, I leaned on ones people are already familiar with:</p>
+        <ul>
+          <li>A questionnaire-style intake</li>
+          <li>Progressive disclosure</li>
+          <li>Gentle motion and playful animations</li>
+        </ul>
+        <p>Together, they lower the stakes of answering.</p>
+        <p>Now the flow captures user signals, their goals and what they struggle with, which populate their to-do list with a starter action plan: small steps like pacing a meal or creating a meal plan, each one introducing a feature. This flow encourages them to revisit and discover the rest at their own pace.</p>
       </div>
+      <!-- Screen recording (assets/js/video.js): the src sits in data-src and is attached only as the slide nears the
+           screen; it plays muted on a loop while in view and pauses off screen. Poster = the welcome tagline frame. -->
+      <figure class="slide-visual phone-video">
+        <video muted loop playsinline preload="none" width="590" height="1282"
+          poster="/assets/img/maureen-onboarding-poster-v2.webp"
+          data-src="/assets/video/maureen-onboarding-v2.mp4"
+          aria-label="Screen recording of Maureen's onboarding: the welcome, name, goals, a starter action plan, principles and the paywall"></video>
+      </figure>
+    </section>
+    <!-- DRAFT (earmarked): copy is a first pass for Jacob to rewrite. Visuals to come: the nav bar's progression
+         (custom → native Liquid Glass, native buttons; native clip in), and a custom bottom sheet beside the native form sheet. -->
+    <section class="slide flip">
+      <div class="slide-text">
+        <p class="slide-label">05</p>
+        <h2>Good design has already been done</h2>
+        <p>An important lesson was that I didn't need to reinvent iOS. Referencing Mobbin and Apple's Human Interface Guidelines enabled me to keep every screen grounded in best practices. As the app matured, I moved it closer and closer to native.</p>
+        <p>For example, the nav bar progressed from a custom build to a fully native Liquid Glass bar, native buttons included. It also brought progressive blurs at the top, which were previously made with custom masked gradient fades. Custom bottom sheets became native form sheets, which were more performant and behave the way iOS users already expect.</p>
+      </div>
+      <!-- The tab bar's progression, one short clip per version (video.js: loads near view, plays only on screen).
+           Custom Navbar → Custom Glass → Native Glass. -->
+      <!-- Examples switcher (assets/js/examples.js): pill tabs above the visual swap between examples with a
+           crossfade; panels share one grid cell, so the slide never changes height. Only the active panel's videos
+           load and play. The pills hide themselves while there's only one example. To add one: a <button> in
+           .ex-pills and a matching .ex-panel (hidden), same ids pattern. -->
+      <div class="slide-visual examples">
+        <div class="ex-pills" role="tablist" aria-label="Examples">
+          <button type="button" role="tab" id="ex-navbar-tab" aria-controls="ex-navbar" aria-selected="true">Nav bar</button>
+          <!-- next: <button type="button" role="tab" id="ex-sheets-tab" aria-controls="ex-sheets" aria-selected="false" tabindex="-1">Form sheets</button> -->
+        </div>
+        <div class="ex-panels">
+          <div class="ex-panel is-active" id="ex-navbar" role="tabpanel" aria-labelledby="ex-navbar-tab">
+          <figure class="bar-clips">
+            <figure class="bar-clip">
+              <figcaption>Custom Navbar</figcaption>
+              <video muted loop playsinline preload="none" width="900" height="186"
+                poster="/assets/img/maureen-tabbar-custom-poster-v1.webp"
+                data-src="/assets/video/maureen-tabbar-custom-v1.mp4"
+                aria-label="Maureen's first, fully custom tab bar: a dark pill with a teal centre button, tapping between tabs"></video>
+            </figure>
+            <figure class="bar-clip">
+              <figcaption>Custom Glass</figcaption>
+              <video muted loop playsinline preload="none" width="900" height="186"
+                poster="/assets/img/maureen-tabbar-hybrid-poster-v1.webp"
+                data-src="/assets/video/maureen-tabbar-hybrid-v1.mp4"
+                aria-label="Maureen's custom glass tab bar, tapping between tabs"></video>
+            </figure>
+            <figure class="bar-clip">
+              <figcaption>Native Glass</figcaption>
+              <video muted loop playsinline preload="none" width="900" height="186"
+                poster="/assets/img/maureen-tabbar-native-poster-v1.webp"
+                data-src="/assets/video/maureen-tabbar-native-v1.mp4"
+                aria-label="Maureen's native Liquid Glass tab bar: tapping between tabs"></video>
+            </figure>
+          </div>
+          <!-- next: <div class="ex-panel" id="ex-sheets" role="tabpanel" aria-labelledby="ex-sheets-tab" hidden>…</div> -->
+        </div>
+      </div>
+      </figure>
     </section>
     <section class="slide center">
       <div class="slide-text">
-        <p class="slide-label">05</p>
+        <p class="slide-label">06</p>
         <h2>Cleared for takeoff</h2>
         <p>For the listing, I led with benefits, not feature names, and wrote in possessive terms to reinforce the app as the user's own. The first three primary slides, the ones displayed prominently on the App Store, share Maureen's brand teal: one introduces the toolkit, and one speaks to each of the two overlapping user needs, therapeutic support and dietary structure. Later slides add variety, with mockups set in real-world scenes and held in human hands.</p>
       </div>
@@ -160,12 +225,12 @@
     </section>
     <section class="slide center">
       <div class="slide-text">
-        <p class="slide-label">06</p>
+        <p class="slide-label">07</p>
         <h2>Outcomes and future plans</h2>
       </div>
     </section>
 
-    <div class="scroll-cue" aria-hidden="true"><svg viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M112 184l144 144 144-144"/></svg></div>
+    <div class="scroll-cue" aria-hidden="true"><span class="cue-count"></span><svg viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M112 184l144 144 144-144"/></svg></div>
     <section class="more">
       <h2>More from this project</h2>
       <!-- /work/maureen-care/app-store-review/ and /work/maureen-care/ecosystem/ once written -->
@@ -196,7 +261,10 @@
   <script src="/assets/js/cloud.js" defer></script>
   <script src="/assets/js/count-up.js" defer></script>
   <script src="/assets/js/scroll-cue.js" defer></script>
+  <script src="/assets/js/sky.js" defer></script>
   <script src="/assets/js/venn.js" defer></script>
+  <script src="/assets/js/examples.js" defer></script>
+  <script src="/assets/js/video.js" defer></script>
   <script src="/assets/js/site.js" defer></script>
 </body>
 </html>
