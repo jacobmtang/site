@@ -107,7 +107,8 @@
       <!-- Tools switcher (examples.js): one phone at a time, pills appear once there are two. -->
       <div class="slide-visual examples">
         <div class="ex-pills" role="tablist" aria-label="Tools">
-          <button type="button" role="tab" id="ex-checkin-tab" aria-controls="ex-checkin" aria-selected="true">Check-in</button>
+          <button type="button" role="tab" id="ex-checkin-tab" aria-controls="ex-checkin" aria-selected="true">Mood Check-In</button>
+          <button type="button" role="tab" id="ex-urge-tab" aria-controls="ex-urge" aria-selected="false" tabindex="-1">Urge Surfing</button>
         </div>
         <div class="ex-panels">
           <div class="ex-panel is-active" id="ex-checkin" role="tabpanel" aria-labelledby="ex-checkin-tab">
@@ -117,6 +118,15 @@
                 poster="/assets/img/maureen-checkin-poster-v2.webp"
                 data-src="/assets/video/maureen-checkin-v2.mp4"
                 aria-label="Maureen's dashboard and mood check-in: choosing how you feel from floating bubbles, then what you're doing, who you're with and where you are"></video>
+            </figure>
+          </div>
+          <div class="ex-panel" id="ex-urge" role="tabpanel" aria-labelledby="ex-urge-tab" hidden>
+            <figure class="phone-video">
+              <figcaption class="screen-label">Urge Surfing</figcaption>
+              <video muted loop playsinline preload="none" width="590" height="1282"
+                poster="/assets/img/maureen-urge-poster-v1.webp"
+                data-src="/assets/video/maureen-urge-v1.mp4"
+                aria-label="Urge surfing in Maureen: a slow, breathing timer ring with guided steps, ending with rating the urge's intensity"></video>
             </figure>
           </div>
         </div>
