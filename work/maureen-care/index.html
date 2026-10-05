@@ -97,23 +97,25 @@
       <div class="slide-text">
         <p class="slide-label">03</p>
         <h2>Creating the core interactions</h2>
-        <p>Every interaction is designed to feel calm and responsive:</p>
+        <p>I designed every interaction to feel dynamic and responsive:</p>
         <ul>
-          <li><strong>Press feedback:</strong> every tappable element shares one subtle press-in, used in nearly 90 places.</li>
+          <li><strong>Press feedback:</strong> every tappable element responds to touch with a subtle press-in, dimming slightly or scaling down.</li>
           <li><strong>Haptics:</strong> taps of varying strengths confirm actions across the app, with custom patterns for moments like urge surfing and breathwork.</li>
           <li><strong>Motion:</strong> playful, dynamic animations, from Lottie files to custom ones built in code, kept performant so they stay smooth and engaging.</li>
         </ul>
       </div>
       <!-- Tools switcher (examples.js): one phone at a time, pills appear once there are two. -->
-      <div class="slide-visual examples">
+      <div class="slide-visual examples ex-card" data-autoplay>
         <div class="ex-pills" role="tablist" aria-label="Tools">
-          <button type="button" role="tab" id="ex-checkin-tab" aria-controls="ex-checkin" aria-selected="true">Mood Check-In</button>
+          <button type="button" role="tab" id="ex-checkin-tab" aria-controls="ex-checkin" aria-selected="true">Check-In</button>
           <button type="button" role="tab" id="ex-urge-tab" aria-controls="ex-urge" aria-selected="false" tabindex="-1">Urge Surfing</button>
+          <button type="button" role="tab" id="ex-pacer-tab" aria-controls="ex-pacer" aria-selected="false" tabindex="-1">Pacer</button>
+          <button type="button" role="tab" id="ex-breath-tab" aria-controls="ex-breath" aria-selected="false" tabindex="-1">Breathwork</button>
         </div>
         <div class="ex-panels">
           <div class="ex-panel is-active" id="ex-checkin" role="tabpanel" aria-labelledby="ex-checkin-tab">
 <figure class="phone-video">
-              <figcaption class="screen-label">Mood Check-In</figcaption>
+              <figcaption class="screen-label">Check-In</figcaption>
               <video muted loop playsinline preload="none" width="590" height="1282"
                 poster="/assets/img/maureen-checkin-poster-v2.webp"
                 data-src="/assets/video/maureen-checkin-v2.mp4"
@@ -129,12 +131,39 @@
                 aria-label="Urge surfing in Maureen: a slow, breathing timer ring with guided steps, ending with rating the urge's intensity"></video>
             </figure>
           </div>
+          <div class="ex-panel" id="ex-pacer" role="tabpanel" aria-labelledby="ex-pacer-tab" hidden>
+            <figure class="phone-video">
+              <figcaption class="screen-label">Pacer</figcaption>
+              <video muted loop playsinline preload="none" width="590" height="1282"
+                poster="/assets/img/maureen-pacer-poster-v1.webp"
+                data-src="/assets/video/maureen-pacer-v1.mp4"
+                aria-label="Maureen's Pacer: a meal pacer with a glowing countdown ring between bites, then a task timer shown as an hourglass"></video>
+            </figure>
+          </div>
+          <div class="ex-panel" id="ex-breath" role="tabpanel" aria-labelledby="ex-breath-tab" hidden>
+            <figure class="phone-video">
+              <figcaption class="screen-label">Breathwork</figcaption>
+              <video muted loop playsinline preload="none" width="590" height="1282"
+                poster="/assets/img/maureen-breathwork-poster-v1.webp"
+                data-src="/assets/video/maureen-breathwork-v1.mp4"
+                aria-label="Breathwork in Maureen: the physiological sigh, a flower shape that blooms and softens with each breath, then progressive muscle relaxation, a figure whose muscle groups light up as you tense and release them"></video>
+            </figure>
+          </div>
         </div>
       </div>
     </section>
+    <!-- 04: DRAFT copy from Jacob's notes. Visual to come (component clips / light-dark). -->
     <section class="slide">
       <div class="slide-text">
         <p class="slide-label">04</p>
+        <h2>Establishing structure with a design library</h2>
+        <p>I set up the foundations every screen would share. A token layer defines colours by role in both light and dark mode, so one change updates the whole app. Spacing follows a 4-point grid, and layouts are capped at a readable width so they hold their shape on iPad.</p>
+        <p>On top of that, I built about 60 reusable components, from buttons and sheet rows to switches, so every screen looks and behaves the same.</p>
+      </div>
+    </section>
+    <section class="slide flip">
+      <div class="slide-text">
+        <p class="slide-label">05</p>
         <h2>Designing with restraint</h2>
           <p>Using AI tooling made it fast to prototype features, so the MVP grew quickly, until it was too much to maintain, features repeated each other and the app's core use case got muddled. After weighing which features brought users the most utility, I ultimately trimmed the core product offering from 17 to 11.</p>
       </div>
@@ -165,9 +194,9 @@
         </div>
       </figure>
     </section>
-    <section class="slide flip">
+    <section class="slide">
       <div class="slide-text">
-        <p class="slide-label">05</p>
+        <p class="slide-label">06</p>
         <h2>Show, don't narrate</h2>
         <p>My first onboarding sequence opened with voice-over steps explaining Maureen's purpose, expecting users to sit and listen. I cut them.</p>
         <p>Rather than invent new patterns, I leaned on ones people are already familiar with:</p>
@@ -190,9 +219,9 @@
     </section>
     <!-- DRAFT (earmarked): copy is a first pass for Jacob to rewrite. Visuals: the bottom tab bar's progression
          (custom → native Liquid Glass, native buttons; native clip in), and a custom bottom sheet beside the native form sheet. -->
-    <section class="slide">
+    <section class="slide flip">
       <div class="slide-text">
-        <p class="slide-label">06</p>
+        <p class="slide-label">07</p>
         <h2>Good design has already been done</h2>
         <p>An important lesson was that I didn't need to reinvent iOS. Referencing Mobbin and Apple's Human Interface Guidelines enabled me to keep every screen grounded in best practices. As the app matured, I moved it closer and closer to native.</p>
         <p>For example, the bottom tab bar progressed from a custom build to a fully native Liquid Glass bar, native buttons included. It also brought progressive blurs at the top, which were previously made with custom masked gradient fades. Custom bottom sheets became native form sheets, which were more performant and behave the way iOS users already expect.</p>
@@ -203,7 +232,7 @@
            crossfade; panels share one grid cell, so the slide never changes height. Only the active panel's videos
            load and play. The pills hide themselves while there's only one example. To add one: a <button> in
            .ex-pills and a matching .ex-panel (hidden), same ids pattern. -->
-      <div class="slide-visual examples">
+      <div class="slide-visual examples ex-card ex-card-wide" data-autoplay>
         <div class="ex-pills" role="tablist" aria-label="Examples">
           <button type="button" role="tab" id="ex-navbar-tab" aria-controls="ex-navbar" aria-selected="true">Bottom tab bar</button>
           <button type="button" role="tab" id="ex-sheets-tab" aria-controls="ex-sheets" aria-selected="false" tabindex="-1">Form sheets</button>
@@ -228,11 +257,12 @@
             </figure>
             <figure class="bar-clip">
               <figcaption>Native Glass</figcaption>
-              <video muted loop playsinline preload="none" width="900" height="186"
+              <video data-lead muted loop playsinline preload="none" width="900" height="186"
                 poster="/assets/img/maureen-tabbar-native-poster-v1.webp"
                 data-src="/assets/video/maureen-tabbar-native-v1.mp4"
                 aria-label="Maureen's native Liquid Glass tab bar: tapping between tabs"></video>
             </figure>
+          </figure>
           </div>
           <div class="ex-panel" id="ex-sheets" role="tabpanel" aria-labelledby="ex-sheets-tab" hidden>
             <!-- custom bottom sheet (static) beside the native form sheet (recording) -->
@@ -244,7 +274,7 @@
               </figure>
               <figure class="sheet-shot">
                 <figcaption>Native form sheet</figcaption>
-                <video class="phone-screen" muted loop playsinline preload="none" width="590" height="1282"
+                <video data-lead class="phone-screen" muted loop playsinline preload="none" width="590" height="1282"
                   poster="/assets/img/maureen-sheet-native-poster-v1.webp"
                   data-src="/assets/video/maureen-sheet-native-v1.mp4"
                   aria-label="Logging a meal in Maureen's native form sheet: name, food groups, a native meal menu, date and time pickers, and linking a recipe"></video>
@@ -263,7 +293,7 @@
               </figure>
               <figure class="blur-clip">
                 <figcaption>Native scroll edge effect</figcaption>
-                <video muted loop playsinline preload="none" width="900" height="538"
+                <video data-lead muted loop playsinline preload="none" width="900" height="538"
                   poster="/assets/img/maureen-blur-native-poster-v2.webp"
                   data-src="/assets/video/maureen-blur-native-v2.mp4"
                   aria-label="The top of Maureen's Community screen: posts blur softly under the native bar as the feed scrolls"></video>
@@ -272,11 +302,10 @@
           </div>
         </div>
       </div>
-      </figure>
     </section>
     <section class="slide center">
       <div class="slide-text">
-        <p class="slide-label">07</p>
+        <p class="slide-label">08</p>
         <h2>Cleared for takeoff</h2>
         <p>For the listing, I led with benefits, not feature names, and wrote in possessive terms to reinforce the app as the user's own. The first three slides, displayed prominently on the App Store, share Maureen's brand teal: one introduces the toolkit, and one speaks to each of the two overlapping user needs, therapeutic support and dietary structure. Later slides add variety, with mockups set in real-world scenes and held in human hands.</p>
       </div>
@@ -302,7 +331,7 @@
     </section>
     <section class="slide center">
       <div class="slide-text">
-        <p class="slide-label">08</p>
+        <p class="slide-label">09</p>
         <h2>Outcomes and future plans</h2>
         <!-- DRAFT: first pass for Jacob to rewrite. No ratings on purpose (only two so far). -->
         <p>Maureen is live on the App Store, with 60 to 100 active users. Most features are free; premium unlocks extras like recipe imports, room for more recipes, richer insights and cloud backup.</p>

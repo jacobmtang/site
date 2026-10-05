@@ -141,9 +141,10 @@
 .cloud-label { font-size: var(--text-title1); line-height: var(--leading-title1); font-weight: 200; color: var(--text); }
 .cloud-list { display: flex; flex-wrap: wrap; align-content: flex-start; align-items: flex-start; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }   /* rows pack to the top: the locked height must never stretch the pills */
 .cloud-list li {
-  position: relative; padding: var(--space-2) var(--space-3); border-radius: 999px; background: var(--surface);   /* white: --chip is too close to the page colour without a card */
+  position: relative; padding: var(--space-2) var(--space-3); border-radius: 999px;
+  background: transparent; box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--text) 20%, transparent);   /* outline only, so they read as labels, not buttons (an inset stroke doesn't change the pill's size) */
   font-size: var(--text-subhead); line-height: var(--leading-subhead);
-  transition: transform 350ms cubic-bezier(.2, .8, .2, 1), opacity 200ms ease, background-color 300ms, color 300ms;
+  transition: transform 350ms cubic-bezier(.2, .8, .2, 1), opacity 200ms ease, background-color 300ms, color 300ms, box-shadow 300ms;
 }
 .cloud-list li::after {   /* the strike-through, drawn left to right */
   content: ""; position: absolute; left: var(--space-3); right: var(--space-3); top: 50%; height: 1.5px; background: currentColor;
@@ -153,7 +154,7 @@
 .cloud-list li.is-struck::after { transform: scaleX(1); }
 .cloud-list li.is-popping { transform: scale(.6); opacity: 0; }
 .cloud-list li.is-gone { display: none; }
-.cloud-list li.is-shipped { background: #45818e; color: #fff; }   /* shipped: solid Maureen teal (the Venn overlap), white text */
+.cloud-list li.is-shipped { color: #45818e; box-shadow: inset 0 0 0 1px #45818e; }   /* shipped: the outline and text turn Maureen teal (the Venn overlap), still no fill */
 /* a two-word swap with the rotator's motion (drift + fade, no clipping): both words share one grid cell */
 .swap { display: inline-grid; }
 .swap-word { grid-area: 1 / 1; white-space: nowrap; opacity: 0; translate: 0 .3em; transition: none; }
@@ -292,20 +293,22 @@
 .sky-1 { background: linear-gradient(to bottom, #e8f0f2, #f5f7f7 70%); }   /* 01 the market: cool teal mist */
 .sky-2 { background: linear-gradient(to bottom, #edf2ea, #f6f7f3 70%); }   /* 02 the ideal user: soft sage */
 .sky-3 { background: linear-gradient(to bottom, #f4ece8, #f8f5f3 70%); }   /* 03 the core interactions: soft blush */
-.sky-4 { background: linear-gradient(to bottom, #f5f0e7, #f8f6f2 70%); }   /* 04 restraint: warm cream */
-.sky-5 { background: linear-gradient(to bottom, #e6eff1, #f4f7f7 70%); }   /* 05 onboarding: Maureen teal, a touch deeper */
-.sky-6 { background: linear-gradient(to bottom, #e9eef5, #f5f6f8 70%); }   /* 06 native: pale iOS blue */
-.sky-7 { background: linear-gradient(to bottom, #f3eee7, #f7f5f2 70%); }   /* 07 the listing: sand */
-.sky-8 { background: linear-gradient(to bottom, #eef1f1, #f7f7f7 70%); }   /* 08 outcomes: settling back to the page */
+.sky-4 { background: linear-gradient(to bottom, #ecedf3, #f6f6f8 70%); }   /* 04 the design library: cool grey-lavender */
+.sky-5 { background: linear-gradient(to bottom, #f5f0e7, #f8f6f2 70%); }   /* 05 restraint: warm cream */
+.sky-6 { background: linear-gradient(to bottom, #e6eff1, #f4f7f7 70%); }   /* 06 onboarding: Maureen teal, a touch deeper */
+.sky-7 { background: linear-gradient(to bottom, #e9eef5, #f5f6f8 70%); }   /* 07 native: pale iOS blue */
+.sky-8 { background: linear-gradient(to bottom, #f3eee7, #f7f5f2 70%); }   /* 08 the listing: sand */
+.sky-9 { background: linear-gradient(to bottom, #eef1f1, #f7f7f7 70%); }   /* 09 outcomes: settling back to the page */
 @media (prefers-color-scheme: dark) {
   .sky-1 { background: linear-gradient(to bottom, #13201f, #111 70%); }
   .sky-2 { background: linear-gradient(to bottom, #161d15, #111 70%); }
   .sky-3 { background: linear-gradient(to bottom, #1f1817, #111 70%); }
-  .sky-4 { background: linear-gradient(to bottom, #1f1b15, #111 70%); }
-  .sky-5 { background: linear-gradient(to bottom, #102022, #111 70%); }
-  .sky-6 { background: linear-gradient(to bottom, #141a22, #111 70%); }
-  .sky-7 { background: linear-gradient(to bottom, #1e1a15, #111 70%); }
-  .sky-8 { background: linear-gradient(to bottom, #151818, #111 70%); }
+  .sky-4 { background: linear-gradient(to bottom, #17171d, #111 70%); }
+  .sky-5 { background: linear-gradient(to bottom, #1f1b15, #111 70%); }
+  .sky-6 { background: linear-gradient(to bottom, #102022, #111 70%); }
+  .sky-7 { background: linear-gradient(to bottom, #141a22, #111 70%); }
+  .sky-8 { background: linear-gradient(to bottom, #1e1a15, #111 70%); }
+  .sky-9 { background: linear-gradient(to bottom, #151818, #111 70%); }
 }
 @media (prefers-reduced-motion: reduce) { .slide-sky, .sky-layer { transition: none; } }
 /* Form sheets example (05): phone screens side by side (custom → native), each with the iPhone screen's corners
@@ -326,3 +329,71 @@
 /* label above a phone recording (the tool's name), styled like the tab bar clip labels; each tool's panel has
    its own, so it changes with the switcher */
 .phone-video .screen-label { margin-bottom: var(--space-2); font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--muted); }
+/* The pills stay on one row at every size and scroll sideways when they don't fit (like iOS filter chips),
+   rather than wrapping onto a second line. No scrollbar. Wider screens: each edge fades out while there's
+   more to scroll that way, as a hint. Phones: the row bleeds to the screen edges instead. */
+.ex-pills { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
+.ex-pills::-webkit-scrollbar { display: none; }
+.ex-pills [role="tab"] { flex: none; }
+@media (min-width: 600px) {
+  /* each edge fades only while there's more to scroll that way: --fl (left) and --fr (right) are 0 or 48px */
+  .ex-pills.is-overflowing {
+    --fl: var(--space-12); --fr: var(--space-12);
+    -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--fl), #000 calc(100% - var(--fr)), transparent);
+            mask-image: linear-gradient(to right, transparent, #000 var(--fl), #000 calc(100% - var(--fr)), transparent);
+  }
+  .ex-pills.is-overflowing.is-at-start { --fl: 0px; }
+  .ex-pills.is-overflowing.is-at-end { --fr: 0px; }
+}
+@media (max-width: 599px) {
+  .ex-pills { margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); }
+}
+/* Auto-cycling switcher (examples.js, data-autoplay): the active pill shows how far its video has played,
+   a light sweep across the teal from left to right. Hidden once the viewer takes over. */
+@property --p { syntax: '<percentage>'; inherits: false; initial-value: 0%; }
+.examples.is-auto .ex-pills [role="tab"][aria-selected="true"] {
+  background: linear-gradient(to right, rgb(255 255 255 / .22) var(--p), transparent var(--p)), #37727e;
+  transition: --p 300ms linear;
+}
+/* .ex-card (slide 03): the pills and the phone share one rounded frame, so the pills read as part of the demo
+   rather than separate buttons. Pills centred over the phone. A faint 24px grid (a design-canvas feel) that fades out
+   at the edges, no outline and no fill, so the slide tint shows through. */
+.examples.ex-card {
+  justify-self: center; width: min(100%, 480px);
+  padding: var(--space-6) var(--space-6) var(--space-8);
+  border-radius: var(--space-10);
+  position: relative; isolation: isolate;
+}
+/* the grid lives on its own layer so it can fade out softly at every edge (no outline); the mask is static,
+   painted once, so it costs nothing while scrolling */
+.examples.ex-card::before {
+  content: ""; position: absolute; inset: calc(var(--space-12) * -1); z-index: -1; pointer-events: none;   /* 48px past the frame on every side; absolute, so it adds no spacing */
+  border-radius: var(--space-16);   /* 64px: the grid area reads as a rounded card; the background is clipped to it */
+  --grid: color-mix(in oklab, var(--text) 7%, transparent);
+  background:
+    linear-gradient(to right, var(--grid) 1px, transparent 1px) 0 0 / var(--space-6) var(--space-6),
+    linear-gradient(to bottom, var(--grid) 1px, transparent 1px) 0 0 / var(--space-6) var(--space-6);
+  /* fade only in the 48px band outside the frame, on all four sides: two straight fades, intersected
+     (not an oval, so the grid stays full behind the pills at the top) */
+  --edge: var(--space-6);   /* a softer, narrower fade so the rounded shape still reads */
+  -webkit-mask-image:
+    linear-gradient(to right, transparent, #000 var(--edge), #000 calc(100% - var(--edge)), transparent),
+    linear-gradient(to bottom, transparent, #000 var(--edge), #000 calc(100% - var(--edge)), transparent);
+  -webkit-mask-composite: source-in;
+          mask-image:
+    linear-gradient(to right, transparent, #000 var(--edge), #000 calc(100% - var(--edge)), transparent),
+    linear-gradient(to bottom, transparent, #000 var(--edge), #000 calc(100% - var(--edge)), transparent);
+          mask-composite: intersect;
+}
+.examples.ex-card .ex-pills { justify-content: center; }
+.examples.ex-card .ex-pills.is-overflowing { justify-content: flex-start; }   /* centring would hide the first pills when the row scrolls */
+.examples.ex-card .screen-label { text-align: center; }
+@media (max-width: 599px) {
+  .examples.ex-card { padding: var(--space-4) var(--space-4) var(--space-6); border-radius: var(--space-8); }
+  .examples.ex-card .ex-pills { margin-inline: calc(var(--space-4) * -1); padding-inline: var(--space-4); }
+}
+/* the wide grid frame (07 native examples): fills the column; the clips drop their own side insets, since
+   the frame's padding now does that job */
+.examples.ex-card.ex-card-wide { width: 100%; }
+.ex-card .bar-clips, .ex-card .blur-pair { margin-inline: 0; }
+.ex-card .bar-clip figcaption, .ex-card .blur-clip figcaption, .ex-card .sheet-shot figcaption { text-align: center; }
