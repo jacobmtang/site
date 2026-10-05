@@ -136,7 +136,7 @@
 .cloud-card { position: relative; }   /* no card: the pills sit straight on the page */
 .cloud-head { display: flex; align-items: baseline; gap: var(--space-3); margin: 0 0 var(--space-6); }
 .cloud-count { font-size: clamp(var(--space-12), 5vw, 72px); line-height: 1; letter-spacing: -.02em; font-weight: 600; color: #37727e; font-variant-numeric: tabular-nums; }
-.cloud-label { font-size: var(--text-title1); line-height: var(--leading-title1); font-weight: 500; color: var(--text); }
+.cloud-label { font-size: var(--text-title1); line-height: var(--leading-title1); font-weight: 200; color: var(--text); }
 .cloud-list { display: flex; flex-wrap: wrap; align-content: flex-start; align-items: flex-start; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }   /* rows pack to the top: the locked height must never stretch the pills */
 .cloud-list li {
   position: relative; padding: var(--space-2) var(--space-3); border-radius: 999px; background: var(--surface);   /* white: --chip is too close to the page colour without a card */
@@ -151,7 +151,7 @@
 .cloud-list li.is-struck::after { transform: scaleX(1); }
 .cloud-list li.is-popping { transform: scale(.6); opacity: 0; }
 .cloud-list li.is-gone { display: none; }
-.cloud-list li.is-shipped { background: color-mix(in oklab, #37727e 14%, transparent); color: #37727e; }
+.cloud-list li.is-shipped { background: #45818e; color: #fff; }   /* shipped: solid Maureen teal (the Venn overlap), white text */
 /* a two-word swap with the rotator's motion (drift + fade, no clipping): both words share one grid cell */
 .swap { display: inline-grid; }
 .swap-word { grid-area: 1 / 1; white-space: nowrap; opacity: 0; translate: 0 .3em; transition: none; }
@@ -253,7 +253,7 @@
 /* Tab bar clips (05, video.js): short, wide crops of just the bar, stacked in order (custom → native) with a
    small label above each. No phone frame: rounded like the site's cards, a hairline edge, the clip's own
    light background. */
-.bar-clips { display: grid; gap: var(--space-6); align-content: center; }
+.bar-clips { display: grid; gap: var(--space-6); align-content: center; margin: 0 var(--space-10); }   /* 40px in from each side */
 .bar-clip { margin: 0; }
 .bar-clip figcaption { margin-bottom: var(--space-2); font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--muted); }
 .bar-clip video {
@@ -269,15 +269,15 @@
 .ex-pills:has(> :only-child) { display: none; }
 .ex-pills [role="tab"] {
   height: calc(var(--space-8) + var(--space-1));   /* 36px */ padding: 0 var(--space-4); border: 0; border-radius: 999px;
-  background: var(--chip); color: var(--text);
+  background: var(--surface); color: var(--text);   /* white, like the cloud pills */
   font: 500 var(--text-sm) / 1 var(--font-body); cursor: pointer;
   transition: background-color 200ms ease, color 200ms ease;
 }
-.ex-pills [role="tab"]:hover { background: var(--line); }
+.ex-pills [role="tab"]:hover { background: var(--chip); }
 .ex-pills [role="tab"][aria-selected="true"] { background: #37727e; color: #fff; }
 .ex-pills [role="tab"]:focus-visible { outline: 2px solid #37727e; outline-offset: 2px; }
 .ex-panels { display: grid; }
-.ex-panel { grid-area: 1 / 1; align-self: center; opacity: 0; visibility: hidden; transition: opacity 250ms ease, visibility 0s linear 250ms; }
+.ex-panel { grid-area: 1 / 1; align-self: start;   /* every example starts right under the pills */ opacity: 0; visibility: hidden; transition: opacity 250ms ease, visibility 0s linear 250ms; }
 .ex-panel.is-active { opacity: 1; visibility: visible; transition: opacity 250ms ease 100ms, visibility 0s; }
 @media (prefers-reduced-motion: reduce) { .ex-panel, .ex-panel.is-active { transition: none; } }
 /* Slide skies (sky.js): a fixed layer behind the page, one soft gradient per slide in the Maureen family, near
@@ -304,3 +304,18 @@
   .sky-7 { background: linear-gradient(to bottom, #151818, #111 70%); }
 }
 @media (prefers-reduced-motion: reduce) { .slide-sky, .sky-layer { transition: none; } }
+/* Form sheets example (05): phone screens side by side (custom → native), each with the iPhone screen's corners
+   like the onboarding video, a label above. Images and videos share .phone-screen. */
+.sheet-pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-6); align-items: start; }
+.sheet-shot { margin: 0; }
+.sheet-shot figcaption { margin-bottom: var(--space-2); font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--muted); }
+.phone-screen {
+  display: block; width: 100%; height: auto; aspect-ratio: 590 / 1283;
+  border-radius: 13.7% / 6.3%; background: var(--chip);
+  box-shadow: 0 0 0 1px var(--line), 0 var(--space-6) var(--space-12) rgb(0 0 0 / .06);
+}
+/* Progressive blur example (05): crops of the top of the screen, custom → native stacked, rounded like the site's cards */
+.blur-pair { display: grid; gap: var(--space-6); margin: 0 var(--space-10); }   /* stacked, the same width as the tab bar clips */
+.blur-clip { margin: 0; }
+.blur-clip figcaption { margin-bottom: var(--space-2); font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--muted); }
+.blur-clip video { display: block; width: 100%; height: auto; aspect-ratio: 900 / 538; border-radius: var(--space-6); background: var(--chip); box-shadow: 0 0 0 1px var(--line); }

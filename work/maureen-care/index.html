@@ -147,31 +147,32 @@
           aria-label="Screen recording of Maureen's onboarding: the welcome, name, goals, a starter action plan, principles and the paywall"></video>
       </figure>
     </section>
-    <!-- DRAFT (earmarked): copy is a first pass for Jacob to rewrite. Visuals to come: the nav bar's progression
+    <!-- DRAFT (earmarked): copy is a first pass for Jacob to rewrite. Visuals: the bottom tab bar's progression
          (custom → native Liquid Glass, native buttons; native clip in), and a custom bottom sheet beside the native form sheet. -->
     <section class="slide flip">
       <div class="slide-text">
         <p class="slide-label">05</p>
         <h2>Good design has already been done</h2>
         <p>An important lesson was that I didn't need to reinvent iOS. Referencing Mobbin and Apple's Human Interface Guidelines enabled me to keep every screen grounded in best practices. As the app matured, I moved it closer and closer to native.</p>
-        <p>For example, the nav bar progressed from a custom build to a fully native Liquid Glass bar, native buttons included. It also brought progressive blurs at the top, which were previously made with custom masked gradient fades. Custom bottom sheets became native form sheets, which were more performant and behave the way iOS users already expect.</p>
+        <p>For example, the bottom tab bar progressed from a custom build to a fully native Liquid Glass bar, native buttons included. It also brought progressive blurs at the top, which were previously made with custom masked gradient fades. Custom bottom sheets became native form sheets, which were more performant and behave the way iOS users already expect.</p>
       </div>
       <!-- The tab bar's progression, one short clip per version (video.js: loads near view, plays only on screen).
-           Custom Navbar → Custom Glass → Native Glass. -->
+           Custom Tab Bar → Custom Glass → Native Glass. -->
       <!-- Examples switcher (assets/js/examples.js): pill tabs above the visual swap between examples with a
            crossfade; panels share one grid cell, so the slide never changes height. Only the active panel's videos
            load and play. The pills hide themselves while there's only one example. To add one: a <button> in
            .ex-pills and a matching .ex-panel (hidden), same ids pattern. -->
       <div class="slide-visual examples">
         <div class="ex-pills" role="tablist" aria-label="Examples">
-          <button type="button" role="tab" id="ex-navbar-tab" aria-controls="ex-navbar" aria-selected="true">Nav bar</button>
-          <!-- next: <button type="button" role="tab" id="ex-sheets-tab" aria-controls="ex-sheets" aria-selected="false" tabindex="-1">Form sheets</button> -->
+          <button type="button" role="tab" id="ex-navbar-tab" aria-controls="ex-navbar" aria-selected="true">Bottom tab bar</button>
+          <button type="button" role="tab" id="ex-sheets-tab" aria-controls="ex-sheets" aria-selected="false" tabindex="-1">Form sheets</button>
+          <button type="button" role="tab" id="ex-blur-tab" aria-controls="ex-blur" aria-selected="false" tabindex="-1">Progressive blur</button>
         </div>
         <div class="ex-panels">
           <div class="ex-panel is-active" id="ex-navbar" role="tabpanel" aria-labelledby="ex-navbar-tab">
           <figure class="bar-clips">
             <figure class="bar-clip">
-              <figcaption>Custom Navbar</figcaption>
+              <figcaption>Custom Tab Bar</figcaption>
               <video muted loop playsinline preload="none" width="900" height="186"
                 poster="/assets/img/maureen-tabbar-custom-poster-v1.webp"
                 data-src="/assets/video/maureen-tabbar-custom-v1.mp4"
@@ -192,7 +193,42 @@
                 aria-label="Maureen's native Liquid Glass tab bar: tapping between tabs"></video>
             </figure>
           </div>
-          <!-- next: <div class="ex-panel" id="ex-sheets" role="tabpanel" aria-labelledby="ex-sheets-tab" hidden>…</div> -->
+          <div class="ex-panel" id="ex-sheets" role="tabpanel" aria-labelledby="ex-sheets-tab" hidden>
+            <!-- custom bottom sheet (static) beside the native form sheet (recording) -->
+            <div class="sheet-pair">
+              <figure class="sheet-shot">
+                <figcaption>Custom bottom sheet</figcaption>
+                <img class="phone-screen" src="/assets/img/maureen-sheet-custom-v1.webp" width="590" height="1283" loading="lazy" decoding="async"
+                  alt="Maureen's old custom bottom sheet for adding a rung to the Exposure Hierarchy: a text field and a distress slider">
+              </figure>
+              <figure class="sheet-shot">
+                <figcaption>Native form sheet</figcaption>
+                <video class="phone-screen" muted loop playsinline preload="none" width="590" height="1282"
+                  poster="/assets/img/maureen-sheet-native-poster-v1.webp"
+                  data-src="/assets/video/maureen-sheet-native-v1.mp4"
+                  aria-label="Logging a meal in Maureen's native form sheet: name, food groups, a native meal menu, date and time pickers, and linking a recipe"></video>
+              </figure>
+            </div>
+          </div>
+          <div class="ex-panel" id="ex-blur" role="tabpanel" aria-labelledby="ex-blur-tab" hidden>
+            <!-- the top of the screen only (custom → native, stacked like the tab bars): content passing under the top bar -->
+            <div class="blur-pair">
+              <figure class="blur-clip">
+                <figcaption>Custom gradient fade</figcaption>
+                <video muted loop playsinline preload="none" width="900" height="538"
+                  poster="/assets/img/maureen-blur-custom-poster-v2.webp"
+                  data-src="/assets/video/maureen-blur-custom-v2.mp4"
+                  aria-label="The top of Maureen's old Community screen: posts fade under a custom masked gradient as the feed scrolls"></video>
+              </figure>
+              <figure class="blur-clip">
+                <figcaption>Native scroll edge effect</figcaption>
+                <video muted loop playsinline preload="none" width="900" height="538"
+                  poster="/assets/img/maureen-blur-native-poster-v2.webp"
+                  data-src="/assets/video/maureen-blur-native-v2.mp4"
+                  aria-label="The top of Maureen's Community screen: posts blur softly under the native bar as the feed scrolls"></video>
+              </figure>
+            </div>
+          </div>
         </div>
       </div>
       </figure>
