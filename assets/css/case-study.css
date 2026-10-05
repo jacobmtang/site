@@ -279,7 +279,7 @@
 .ex-pills [role="tab"]:hover { background: var(--chip); }
 .ex-pills [role="tab"][aria-selected="true"] { background: #37727e; color: #fff; }
 .ex-pills [role="tab"]:focus-visible { outline: 2px solid #37727e; outline-offset: 2px; }
-.ex-panels { display: grid; }
+.ex-panels { display: grid; grid-template-columns: minmax(0, 1fr); }   /* one column exactly the card's width: a video's own (590px) size can't widen it, which pushed the phone right in iOS Safari */
 .ex-panel { grid-area: 1 / 1; align-self: start;   /* every example starts right under the pills */ opacity: 0; visibility: hidden; transition: opacity 250ms ease, visibility 0s linear 250ms; }
 .ex-panel.is-active { opacity: 1; visibility: visible; transition: opacity 250ms ease 100ms, visibility 0s; }
 @media (prefers-reduced-motion: reduce) { .ex-panel, .ex-panel.is-active { transition: none; } }
@@ -420,10 +420,9 @@
 .lib-canvas { display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); place-items: center; place-items: unsafe center; height: var(--space-80); }   /* one fixed cell: a wide hidden step can't widen the track and push the others off centre */
 .lib-item { grid-area: 1 / 1; display: flex; align-items: center; justify-content: center; gap: var(--space-32); visibility: hidden; }   /* 128px: room for each frame's tag, which can be wider than a small component */
 .lib-item.is-on { visibility: visible; }
-.lib-item:not(.is-on) .lib-part { transform: scale(0); }   /* hidden steps still take up layout; at full size a wide one (the notice) pokes past a phone's screen and lets iOS Safari zoom out */
 .lib-item[data-stack="column"] { flex-direction: column; gap: var(--space-16); }   /* stacked steps: 64px between frames, room for the lower tag */
 .lib-target {
-  position: relative; display: grid; grid-template: minmax(0, 1fr) / minmax(0, 1fr); place-items: center; place-items: unsafe center;   /* a fixed cell, centred even when the component is wider than its scaled-down box (phones) */
+  position: relative; display: grid; place-items: center;   /* lib-stage.js gives the part negative margins, so its layout box is exactly the scaled size: centred, nothing overflowing */
   --pad: var(--space-2); --sel: #0d99ff;   /* frame sits 8px outside the component */
   transition: --fw 380ms cubic-bezier(.65, 0, .35, 1), --fh 380ms cubic-bezier(.65, 0, .35, 1);
 }
@@ -536,7 +535,8 @@
    opposite directions, edges fading out. Each row holds its screens twice and slides by exactly one set, so
    the loop is seamless. Transform-only CSS animation; paused off screen (.is-paused) and for reduced motion.
    Two rows everywhere: light screens on top, dark below. Desktop up to 170px screens; phones up to 110px. */
-.screen-wall { position: relative; justify-self: stretch; overflow: hidden;
+.screen-wall { position: relative; justify-self: stretch; overflow: hidden; overflow: clip;   /* clip: never scrollable, not even by a swipe */
+  pointer-events: none; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none;   /* decorative: touches go straight to the page, no image drag or long-press preview */
   /* the screens are sized so both rows fit whole: about 64% of the screen height, never above 170px wide
      (phone shape 1 : 2.17); the wall is exactly the rows plus a little room for the fades */
   --wall-gap: var(--space-4); --wall-w: clamp(100px, calc((64svh - var(--wall-gap)) / 4.34), 170px);
@@ -546,7 +546,7 @@
           mask-image: linear-gradient(to right, transparent, #000 12%, #000 88%, transparent), linear-gradient(to bottom, transparent, #000 var(--space-6), #000 calc(100% - var(--space-6)), transparent);
           mask-composite: intersect; }
 .wall-tilt { display: grid; gap: var(--wall-gap); width: max-content; position: relative; left: 50%; top: 50%; translate: -50% -50%; }
-.wall-row { display: flex; gap: var(--wall-gap); width: max-content; animation: wall-drift var(--wall-dur, 60s) linear infinite; }
+.wall-row { display: flex; gap: var(--wall-gap); width: max-content; animation: wall-drift var(--wall-dur, 60s) linear infinite; will-change: transform; }   /* will-change: each row keeps its own layer, so iOS Safari doesn't drop and repaint it mid-scroll */
 .wall-row:nth-child(even) { animation-direction: reverse; }
 .wall-row img { display: block; width: var(--wall-w); height: auto; aspect-ratio: 590 / 1282; border-radius: 13.7% / 6.3%; box-shadow: 0 0 0 1px var(--line); background: var(--chip); }
 @keyframes wall-drift { from { transform: translateX(0); } to { transform: translateX(calc(-50% - var(--wall-gap) / 2)); } }

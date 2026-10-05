@@ -132,7 +132,7 @@
     const W = {}, v = { aTx: 0, bTx: 0, dip: 0 };
     let active = 'a', raf = 0;
     // both widths at the active (400) weight, so the gap holds whichever word is active
-    [['a', a], ['b', b]].forEach(([k, el]) => { el.classList.add('is-active'); W[k] = Math.round(el.getBoundingClientRect().width); el.classList.remove('is-active'); });
+    [['a', a], ['b', b]].forEach(([k, el]) => { el.classList.add('is-active'); W[k] = el.offsetWidth;   /* layout width: unaffected by any scale on the stage */ el.classList.remove('is-active'); });
     root.style.width = W.a + W.b + GAP + 'px';
     const rgb = (name) => { const h = getComputedStyle(stage).getPropertyValue(name).trim().slice(1); return [0, 2, 4].map((i) => parseInt(h.slice(i, i + 2), 16)); };
     const mix = (t) => { const x = rgb('--m-active'), y = rgb('--m-soft'); return `rgb(${x.map((c, i) => Math.round(c + (y[i] - c) * t))})`; };
@@ -179,18 +179,27 @@
     stage.querySelectorAll('.lib-target[data-demo="dot"]').forEach((t) => dots.set(t, makeDot(t, stage)));
 
     // a component's real size, and the scale it's drawn at (its zoom, reduced if it wouldn't fit)
-    const frameTo = (t, siblings) => {
-      const el = t.querySelector('.lib-part').firstElementChild;
+    // sizes a target to its component at that scale; the part's negative margins shrink its layout box to the
+    // same size, so it centres exactly and a wide component never pushes the page wider (iOS Safari)
+    const fit = (t, siblings) => {
+      const part = t.querySelector('.lib-part'), el = part.firstElementChild;
       const w = el.offsetWidth, h = el.offsetHeight, zoom = Number(t.dataset.zoom) || 1;
       const room = (canvas.clientWidth - 48 - (siblings - 1) * 128) / siblings;
       const s = Math.min(zoom, room / w);
       t.style.setProperty('--s', s);
       t.style.width = w * s + 'px'; t.style.height = h * s + 'px';
+      part.style.margin = `${(h * s - h) / 2}px ${(w * s - w) / 2}px`;
+      return { w, h, s, zoom };
+    };
+    const frameTo = (t, siblings) => {
+      const { w, h, s, zoom } = fit(t, siblings);
       t.style.setProperty('--fw', w * s + 'px'); t.style.setProperty('--fh', h * s + 'px');
       t.querySelector('.lib-name').textContent = t.dataset.name;
       t.querySelector('.lib-size').textContent = `${w} × ${h}` + (zoom !== 1 && Math.abs(s - zoom) < 0.01 ? ` · ${Math.round(zoom * 100)}%` : '');
     };
-    const frameStep = (n) => { const ts = targetsOf(n); const across = items[n].dataset.stack === 'column' ? 1 : ts.length; ts.forEach((t) => frameTo(t, across)); };
+    const across = (n) => items[n].dataset.stack === 'column' ? 1 : targetsOf(n).length;
+    const frameStep = (n) => targetsOf(n).forEach((t) => frameTo(t, across(n)));
+    items.forEach((_, n) => targetsOf(n).forEach((t) => fit(t, across(n))));   // size every step up front, hidden ones too
     const shrink = (n) => {
       canvas.classList.remove('is-settled'); canvas.classList.add('is-shrunk');
       targetsOf(n).forEach((t) => { t.style.setProperty('--fw', '0px'); t.style.setProperty('--fh', '0px'); });

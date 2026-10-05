@@ -16,7 +16,7 @@
     if (!rows[0].children.length) {
       shots.forEach((img, n) => {
         const row = rows[(img.dataset.row ? +img.dataset.row : n) % rows.length];   // data-row pins a screen to a row
-        img.loading = 'lazy'; img.decoding = 'async'; img.alt = img.alt || '';
+        img.loading = 'eager';   /* small files (~400KB for all); lazy left the off-screen dark row blank for a moment in iOS Safari */ img.decoding = 'async'; img.alt = img.alt || '';
         row.appendChild(document.importNode(img, true));
       });
       // each row's set is repeated until it's wider than the wall (so a short row never leaves a gap), then
