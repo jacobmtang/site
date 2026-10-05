@@ -87,6 +87,8 @@
 @media (min-width: 900px) {
   .slide:not(.center) { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-16); align-items: center; }
   .slide.flip .slide-text { order: 2; }
+  /* full-width slides keep their text to the same width as a two-column slide's text column */
+  .slide.center .slide-text { max-width: calc((100% - var(--space-16)) / 2); }
 }
 /* 01: the big stat */
 .stat-num { margin: 0; font-size: clamp(var(--space-12), 7vw, 96px); line-height: 1; font-weight: 600; letter-spacing: -.02em; color: #37727e; font-variant-numeric: tabular-nums; }
@@ -289,19 +291,21 @@
 .sky-layer.is-on { opacity: 1; }
 .sky-1 { background: linear-gradient(to bottom, #e8f0f2, #f5f7f7 70%); }   /* 01 the market: cool teal mist */
 .sky-2 { background: linear-gradient(to bottom, #edf2ea, #f6f7f3 70%); }   /* 02 the ideal user: soft sage */
-.sky-3 { background: linear-gradient(to bottom, #f5f0e7, #f8f6f2 70%); }   /* 03 restraint: warm cream */
-.sky-4 { background: linear-gradient(to bottom, #e6eff1, #f4f7f7 70%); }   /* 04 onboarding: Maureen teal, a touch deeper */
-.sky-5 { background: linear-gradient(to bottom, #e9eef5, #f5f6f8 70%); }   /* 05 native: pale iOS blue */
-.sky-6 { background: linear-gradient(to bottom, #f3eee7, #f7f5f2 70%); }   /* 06 the listing: sand */
-.sky-7 { background: linear-gradient(to bottom, #eef1f1, #f7f7f7 70%); }   /* 07 outcomes: settling back to the page */
+.sky-3 { background: linear-gradient(to bottom, #f4ece8, #f8f5f3 70%); }   /* 03 the core interactions: soft blush */
+.sky-4 { background: linear-gradient(to bottom, #f5f0e7, #f8f6f2 70%); }   /* 04 restraint: warm cream */
+.sky-5 { background: linear-gradient(to bottom, #e6eff1, #f4f7f7 70%); }   /* 05 onboarding: Maureen teal, a touch deeper */
+.sky-6 { background: linear-gradient(to bottom, #e9eef5, #f5f6f8 70%); }   /* 06 native: pale iOS blue */
+.sky-7 { background: linear-gradient(to bottom, #f3eee7, #f7f5f2 70%); }   /* 07 the listing: sand */
+.sky-8 { background: linear-gradient(to bottom, #eef1f1, #f7f7f7 70%); }   /* 08 outcomes: settling back to the page */
 @media (prefers-color-scheme: dark) {
   .sky-1 { background: linear-gradient(to bottom, #13201f, #111 70%); }
   .sky-2 { background: linear-gradient(to bottom, #161d15, #111 70%); }
-  .sky-3 { background: linear-gradient(to bottom, #1f1b15, #111 70%); }
-  .sky-4 { background: linear-gradient(to bottom, #102022, #111 70%); }
-  .sky-5 { background: linear-gradient(to bottom, #141a22, #111 70%); }
-  .sky-6 { background: linear-gradient(to bottom, #1e1a15, #111 70%); }
-  .sky-7 { background: linear-gradient(to bottom, #151818, #111 70%); }
+  .sky-3 { background: linear-gradient(to bottom, #1f1817, #111 70%); }
+  .sky-4 { background: linear-gradient(to bottom, #1f1b15, #111 70%); }
+  .sky-5 { background: linear-gradient(to bottom, #102022, #111 70%); }
+  .sky-6 { background: linear-gradient(to bottom, #141a22, #111 70%); }
+  .sky-7 { background: linear-gradient(to bottom, #1e1a15, #111 70%); }
+  .sky-8 { background: linear-gradient(to bottom, #151818, #111 70%); }
 }
 @media (prefers-reduced-motion: reduce) { .slide-sky, .sky-layer { transition: none; } }
 /* Form sheets example (05): phone screens side by side (custom → native), each with the iPhone screen's corners
@@ -319,3 +323,6 @@
 .blur-clip { margin: 0; }
 .blur-clip figcaption { margin-bottom: var(--space-2); font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--muted); }
 .blur-clip video { display: block; width: 100%; height: auto; aspect-ratio: 900 / 538; border-radius: var(--space-6); background: var(--chip); box-shadow: 0 0 0 1px var(--line); }
+/* label above a phone recording (the tool's name), styled like the tab bar clip labels; each tool's panel has
+   its own, so it changes with the switcher */
+.phone-video .screen-label { margin-bottom: var(--space-2); font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--muted); }

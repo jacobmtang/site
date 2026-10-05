@@ -91,9 +91,40 @@
         </svg>
       </figure>
     </section>
+    <!-- 03: the tools themselves, as screen recordings in an examples switcher (one phone at a time: urge surfing,
+         meal pacer, breathwork, reflection journal), each with a one-line design note. Copy and videos to come. -->
     <section class="slide flip">
       <div class="slide-text">
         <p class="slide-label">03</p>
+        <h2>Creating the core interactions</h2>
+        <p>Every interaction is designed to feel calm and responsive:</p>
+        <ul>
+          <li><strong>Press feedback:</strong> every tappable element shares one subtle press-in, used in nearly 90 places.</li>
+          <li><strong>Haptics:</strong> taps of varying strengths confirm actions across the app, with custom patterns for moments like urge surfing and breathwork.</li>
+          <li><strong>Motion:</strong> playful, dynamic animations, from Lottie files to custom ones built in code, kept performant so they stay smooth and engaging.</li>
+        </ul>
+      </div>
+      <!-- Tools switcher (examples.js): one phone at a time, pills appear once there are two. -->
+      <div class="slide-visual examples">
+        <div class="ex-pills" role="tablist" aria-label="Tools">
+          <button type="button" role="tab" id="ex-checkin-tab" aria-controls="ex-checkin" aria-selected="true">Check-in</button>
+        </div>
+        <div class="ex-panels">
+          <div class="ex-panel is-active" id="ex-checkin" role="tabpanel" aria-labelledby="ex-checkin-tab">
+<figure class="phone-video">
+              <figcaption class="screen-label">Mood Check-In</figcaption>
+              <video muted loop playsinline preload="none" width="590" height="1282"
+                poster="/assets/img/maureen-checkin-poster-v2.webp"
+                data-src="/assets/video/maureen-checkin-v2.mp4"
+                aria-label="Maureen's dashboard and mood check-in: choosing how you feel from floating bubbles, then what you're doing, who you're with and where you are"></video>
+            </figure>
+          </div>
+        </div>
+      </div>
+    </section>
+    <section class="slide">
+      <div class="slide-text">
+        <p class="slide-label">04</p>
         <h2>Designing with restraint</h2>
           <p>Using AI tooling made it fast to prototype features, so the MVP grew quickly, until it was too much to maintain, features repeated each other and the app's core use case got muddled. After weighing which features brought users the most utility, I ultimately trimmed the core product offering from 17 to 11.</p>
       </div>
@@ -124,9 +155,9 @@
         </div>
       </figure>
     </section>
-    <section class="slide">
+    <section class="slide flip">
       <div class="slide-text">
-        <p class="slide-label">04</p>
+        <p class="slide-label">05</p>
         <h2>Show, don't narrate</h2>
         <p>My first onboarding sequence opened with voice-over steps explaining Maureen's purpose, expecting users to sit and listen. I cut them.</p>
         <p>Rather than invent new patterns, I leaned on ones people are already familiar with:</p>
@@ -149,9 +180,9 @@
     </section>
     <!-- DRAFT (earmarked): copy is a first pass for Jacob to rewrite. Visuals: the bottom tab bar's progression
          (custom → native Liquid Glass, native buttons; native clip in), and a custom bottom sheet beside the native form sheet. -->
-    <section class="slide flip">
+    <section class="slide">
       <div class="slide-text">
-        <p class="slide-label">05</p>
+        <p class="slide-label">06</p>
         <h2>Good design has already been done</h2>
         <p>An important lesson was that I didn't need to reinvent iOS. Referencing Mobbin and Apple's Human Interface Guidelines enabled me to keep every screen grounded in best practices. As the app matured, I moved it closer and closer to native.</p>
         <p>For example, the bottom tab bar progressed from a custom build to a fully native Liquid Glass bar, native buttons included. It also brought progressive blurs at the top, which were previously made with custom masked gradient fades. Custom bottom sheets became native form sheets, which were more performant and behave the way iOS users already expect.</p>
@@ -235,9 +266,9 @@
     </section>
     <section class="slide center">
       <div class="slide-text">
-        <p class="slide-label">06</p>
+        <p class="slide-label">07</p>
         <h2>Cleared for takeoff</h2>
-        <p>For the listing, I led with benefits, not feature names, and wrote in possessive terms to reinforce the app as the user's own. The first three primary slides, the ones displayed prominently on the App Store, share Maureen's brand teal: one introduces the toolkit, and one speaks to each of the two overlapping user needs, therapeutic support and dietary structure. Later slides add variety, with mockups set in real-world scenes and held in human hands.</p>
+        <p>For the listing, I led with benefits, not feature names, and wrote in possessive terms to reinforce the app as the user's own. The first three slides, displayed prominently on the App Store, share Maureen's brand teal: one introduces the toolkit, and one speaks to each of the two overlapping user needs, therapeutic support and dietary structure. Later slides add variety, with mockups set in real-world scenes and held in human hands.</p>
       </div>
       <div class="slide-visual">
         <!-- App Store screenshots: a horizontal carousel (scroll / swipe, snapping). Masters: Maureen/app-store/screenshots/export/iphone-6-9in -->
@@ -261,8 +292,15 @@
     </section>
     <section class="slide center">
       <div class="slide-text">
-        <p class="slide-label">07</p>
+        <p class="slide-label">08</p>
         <h2>Outcomes and future plans</h2>
+        <!-- DRAFT: first pass for Jacob to rewrite. No ratings on purpose (only two so far). -->
+        <p>Maureen is live on the App Store, with 60 to 100 active users. Most features are free; premium unlocks extras like recipe imports, room for more recipes, richer insights and cloud backup.</p>
+        <p>Next, I'm focused on:</p>
+        <ul>
+          <li>Strengthening the premium offer, so upgrading feels worth it rather than required</li>
+          <li>Asking for reviews, which it doesn't do yet: Apple's native review prompt, shown after a successful action once someone has used the app a few times</li>
+        </ul>
       </div>
     </section>
 

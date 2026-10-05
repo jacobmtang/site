@@ -181,3 +181,15 @@
 .rotator-word.is-on  { opacity: 1; translate: 0 0; transition: opacity 260ms ease-out 100ms, translate 260ms cubic-bezier(.2, .8, .2, 1) 100ms; }
 .rotator-word.is-off { opacity: 0; translate: 0 -.3em; transition: opacity 150ms ease-in, translate 150ms ease-in; }
 @media (prefers-reduced-motion: reduce) { .rotator-word, .rotator-word.is-on, .rotator-word.is-off { transition: none; translate: none; } }
+/* Hero text entrance (after omnagarkar.com's case study splash, which does it with GSAP; here plain CSS):
+   each piece starts 40px low, blurred 8px and transparent, then rises into focus, one after another.
+   Runs once per page view (and again when Swup brings you back home). Reduced motion: shown at rest. */
+@keyframes rise-in {
+  from { opacity: 0; filter: blur(8px); translate: 0 40px; }
+  to   { opacity: 1; filter: blur(0);   translate: 0 0; }
+}
+.intro-line, .intro p { animation: rise-in 900ms cubic-bezier(.2, .8, .2, 1) both; }
+.intro-line:nth-child(1) { animation-delay: 150ms; }
+.intro-line:nth-child(2) { animation-delay: 270ms; }
+.intro p                 { animation-delay: 390ms; }
+@media (prefers-reduced-motion: reduce) { .intro-line, .intro p { animation: none; } }
