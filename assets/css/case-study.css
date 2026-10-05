@@ -247,7 +247,7 @@
 /* Phone screen recordings (video.js): no bezel, just the iPhone screen's own rounded corners (about 55pt on a
    402pt-wide screen: 13.7% of the width, which is 6.3% of the height at this aspect) and a hairline edge, so it
    reads as a phone and matches the App Store shots. Capped so a portrait video doesn't tower over its half. */
-.phone-video { justify-self: center; width: min(100%, 320px); }
+.phone-video { justify-self: center; width: min(100%, 320px); margin: 0; }   /* margin 0: a <figure>'s default 40px sides overflowed the panel on phones, and Safari then pushed the phone right */
 .phone-video video {
   display: block; width: 100%; height: auto; aspect-ratio: 590 / 1282;
   border-radius: 13.7% / 6.3%; background: var(--chip);
@@ -267,7 +267,7 @@
 /* Examples switcher (examples.js): small pills above a visual, like an iOS segmented control. The active pill
    is Maureen teal. Panels sit in ONE grid cell, so the visual keeps the height of the tallest example and the
    slide never jumps; the inactive ones fade out and can't be clicked. Pills hide while there's one example. */
-.examples { display: grid; gap: var(--space-6); align-content: center; }
+.examples { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--space-6); align-content: center; }   /* one column, exactly the frame's width */
 .ex-pills { display: flex; flex-wrap: wrap; gap: var(--space-2); }
 .ex-pills:has(> :only-child) { display: none; }
 .ex-pills [role="tab"] {
@@ -336,20 +336,19 @@
 .phone-video .screen-label { margin-bottom: var(--space-2); font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--muted); }
 /* The pills stay on one row at every size and scroll sideways when they don't fit (like iOS filter chips),
    rather than wrapping onto a second line. No scrollbar. Wider screens: each edge fades out while there's
-   more to scroll that way, as a hint. Phones: the row bleeds to the screen edges instead. */
+   more to scroll that way, as a hint. Phones: the row runs to the screen edges and fades out there the same way. */
 .ex-pills { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; }
 .ex-pills::-webkit-scrollbar { display: none; }
 .ex-pills [role="tab"] { flex: none; }
-@media (min-width: 600px) {
-  /* each edge fades only while there's more to scroll that way: --fl (left) and --fr (right) are 0 or 48px */
-  .ex-pills.is-overflowing {
-    --fl: var(--space-12); --fr: var(--space-12);
-    -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--fl), #000 calc(100% - var(--fr)), transparent);
-            mask-image: linear-gradient(to right, transparent, #000 var(--fl), #000 calc(100% - var(--fr)), transparent);
-  }
-  .ex-pills.is-overflowing.is-at-start { --fl: 0px; }
-  .ex-pills.is-overflowing.is-at-end { --fr: 0px; }
+/* each edge fades only while there's more to scroll that way: --fl (left) and --fr (right) are 0 or 48px */
+.ex-pills.is-overflowing {
+  --fl: var(--space-12); --fr: var(--space-12);
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 var(--fl), #000 calc(100% - var(--fr)), transparent);
+          mask-image: linear-gradient(to right, transparent, #000 var(--fl), #000 calc(100% - var(--fr)), transparent);
 }
+.ex-pills.is-overflowing.is-at-start { --fl: 0px; }
+.ex-pills.is-overflowing.is-at-end { --fr: 0px; }
+@media (max-width: 599px) { .ex-pills.is-overflowing { --fl: var(--space-8); --fr: var(--space-8); } }   /* a shorter 32px fade on a narrow row */
 @media (max-width: 599px) {
   .ex-pills { margin-inline: calc(var(--gutter) * -1); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); }
 }
