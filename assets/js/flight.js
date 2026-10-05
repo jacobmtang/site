@@ -33,12 +33,14 @@
 
   fit();
   document.fonts?.ready.then(fit);   // re-measure once the font has loaded
-  addEventListener('resize', fit);   // sizes are fluid (plane width, type)
+  let lastW = innerWidth;
+  const onResize = () => { if (innerWidth !== lastW) { lastW = innerWidth; fit(); } };   // width only: iOS fires resize as its toolbar shows and hides while scrolling
+  addEventListener('resize', onResize);   // sizes are fluid (plane width, type)
   path.addEventListener('animationiteration', onIteration);
 
   return () => {
     active = false;
-    removeEventListener('resize', fit);
+    removeEventListener('resize', onResize);
     path.removeEventListener('animationiteration', onIteration);
   };
 });

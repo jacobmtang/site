@@ -263,6 +263,7 @@ main > section + section { margin-top: var(--section-gap); }
 @media (min-width: 900px) { :root { --hero-pad: var(--space-16); } }
 
 html, body { overflow-x: clip; }   /* the escaping plane must never cause sideways scrolling */
+#swup { overflow-x: clip; }   /* iOS Safari ignores clip on html/body: the plane flying off the right widened the page, so it slid sideways as you scrolled. A wrapper's clip holds */
 .hero {
   position: relative; isolation: isolate; color: var(--on-sky);
   display: flex; flex-direction: column;
