@@ -555,3 +555,23 @@
   .screen-wall { --wall-gap: var(--space-3); --wall-w: clamp(80px, calc((55svh - var(--wall-gap)) / 4.34), 110px); }
 }
 @media (prefers-reduced-motion: reduce) { .wall-row { animation: none; } }
+/* 10: where people find Maureen. The Webflow site (a maureen.care mockup, the whole image links to it, with the
+   case study's ↗ circle in its top-right corner) above the iOS app, in its own white card: icon, name and the same
+   ↗ circle; the whole card links to the App Store. No outlines or shadows. */
+.app-card { display: grid; gap: var(--space-6); width: min(100%, 560px); justify-self: center; }
+.app-card > .screen-label { margin: 0 0 calc(var(--space-6) * -1 + var(--space-2)); font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--muted); }   /* each label sits 8px above what it names */
+.app-card > .app-card-shot + .screen-label { margin-top: var(--space-4); }   /* a little extra room between the two groups */
+.app-card-shot { position: relative; display: block; border-radius: var(--space-6); overflow: hidden; }
+.app-card-shot img { display: block; width: 100%; height: auto; transition: scale 400ms ease; }
+.app-card-shot:hover img, .app-card-shot:focus-visible img { scale: 1.02; }
+.shot-arrow { position: absolute; top: var(--space-4); right: var(--space-4); width: var(--space-10); height: var(--space-10); }   /* 40px over the image */
+.app-card-shot:hover .shot-arrow, .app-card-shot:focus-visible .shot-arrow { background: var(--nav); color: var(--surface); }
+.app-card-row { display: flex; align-items: center; gap: var(--space-4); padding: var(--space-4); border-radius: var(--space-6); background: var(--surface); color: inherit; text-decoration: none; }   /* its own card: the whole card links to the App Store */
+.app-card-icon { width: var(--space-16); height: auto; }   /* the icon file already has the squircle cut out: no extra rounding or outline */
+.app-card-text { display: grid; gap: var(--space-1); margin-right: auto; }
+.app-card-name { font-size: var(--text-title3); line-height: var(--leading-title3); font-weight: 600; }
+.app-card-sub { font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--muted); }
+.app-card-row .store-link { width: var(--space-10); height: var(--space-10); }
+.app-card-row .store-link { background: var(--line); }   /* a grey circle on the white card */
+.app-card-row:hover .store-link, .app-card-row:focus-visible .store-link { background: var(--nav); color: var(--surface); }
+@media (prefers-reduced-motion: reduce) { .app-card-shot img { transition: none; } }
