@@ -1,0 +1,183 @@
+/* home.css: the home page: the plane and banner, intro, work heading rotator, project cards and card stack. Loaded on every page, because Swup swaps pages without reloading <head>. */
+
+/* flight — a Cessna towing a banner across the sky, behind the text.
+   Plane art: assets/img/plane-*.webp (masters in portfolio/_source/). Both images share one canvas,
+   so the propeller sits on the nose by itself; it sits behind the body so the spinner hides the root. */
+:root {
+  --plane-w: clamp(120px, 18vw, 224px);
+  --plane-h: calc(var(--plane-w) * 273 / 677);
+  --flight-start: 64%;   /* starting height in the hero: below the intro text */
+  --climb: 8deg;         /* nose-up angle of the whole plane + banner */
+  --climb-slope: .1405;  /* tan(--climb): how much it rises per unit across — keep the two in step */
+  --flight-dur: 24s;     /* one crossing */
+}
+.hero .intro { position: relative; z-index: 1; }
+.flight {
+  position: absolute; z-index: 2; inset: 0;   /* above the text and the card edge, so it visibly breaks out */
+  /* clip only the LEFT: the plane appears from the card's left edge, but is free to leave past the right */
+  clip-path: inset(-100vh -100vw -100vh 0);
+  pointer-events: none;
+}
+/* decorative only: no link, no hover, hidden from screen readers */
+.flight-path {
+  position: absolute; left: 0; top: var(--flight-start);
+  display: block;
+  animation: fly var(--flight-dur) linear 1s infinite both;
+}
+.flight-bob { display: flex; align-items: flex-start; justify-content: flex-end;   /* banner hugs the plane; flight.js sizes the box to the longest message, spare room sits on the left */
+  animation: bob 4s ease-in-out infinite alternate; }
+/* climbs from the lower left to the upper right, nose up, like a takeoff */
+@keyframes fly {
+  from { transform: translate(-100%, 0) rotate(calc(var(--climb) * -1)); }
+  to   { transform: translate(100vw, calc(100vw * var(--climb-slope) * -1)) rotate(calc(var(--climb) * -1)); }
+}
+@keyframes bob { from { transform: translateY(calc(var(--space-1) * -1)); } to { transform: translateY(var(--space-1)); } }
+
+/* tow line meets the tail tie-down: 6.8% in from the canvas's left edge, 65.9% down (measured on the art) */
+.tow {
+  --banner-h: calc(var(--leading-sm) + 2 * var(--space-1));   /* 28px: footnote leading + 4px padding top and bottom */
+  display: flex; align-items: center; height: var(--banner-h);
+  margin-top: calc(var(--plane-h) * .659 - var(--banner-h) / 2); /* centre the line on the attach point */
+  margin-right: calc(var(--plane-w) * -.068);                  /* run the line under the tail to the attach point */
+}
+.banner {
+  padding: var(--space-1) var(--space-3);
+  background: var(--surface); color: var(--text);
+  border-radius: 2px; box-shadow: inset 0 0 0 1px rgb(0 0 0 / .08);  /* hairline so it still reads once it's over the page */
+  font: 600 var(--text-sm) / var(--leading-sm) var(--font-body);
+  text-transform: uppercase; letter-spacing: .06em; white-space: nowrap;
+}
+.rope { width: calc(var(--space-12) + var(--plane-w) * .068); height: 1px; background: rgb(0 0 0 / .35); }  /* reads on the sky and on the page */
+.plane { position: relative; z-index: 1; display: block; flex: none; width: var(--plane-w); aspect-ratio: 677 / 273; }
+.plane img { position: absolute; inset: 0; width: 100%; height: 100%; }
+.plane-prop {
+  transform-origin: 95.1% 52%;   /* the propeller hub, measured on the 677×273 canvas */
+  animation: prop 80ms linear infinite;  /* seen side-on, a spinning prop flickers rather than rotates */
+}
+@keyframes prop { 0% { transform: scaleY(1); } 50% { transform: scaleY(-1); } 100% { transform: scaleY(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  /* parked in the sky: no flight, no bob, no flicker */
+  .flight-path { animation: none; left: auto; right: var(--gutter); transform: rotate(calc(var(--climb) * -1)); }
+  .flight-bob, .plane-prop { animation: none; }
+}
+
+/* intro — two lines: Large Title on phones, stepping up to Display sizes on wider screens. */
+.intro h1 {
+  display: flex; flex-direction: column;
+  font-size: var(--text-large-title); line-height: var(--leading-large-title);
+}
+/* Steps, not fluid, so size and leading stay on the scale and the grid.
+   The longer line ("I pilot ideas from sketch to takeoff") is ~14.8em: it is kept whole only where it fits. */
+@media (min-width: 600px)  { .intro-line { white-space: nowrap; } }                       /* 34px × 14.8 ≈ 503 ≤ 552 */
+@media (min-width: 768px)  { .intro h1 { font-size: var(--text-display);   line-height: var(--leading-display); } }    /* 40 → ≈ 592 ≤ 720 */
+@media (min-width: 1024px) { .intro h1 { font-size: var(--text-display-l); line-height: var(--leading-display-l); } }  /* 48 → ≈ 710 ≤ 736 */
+.intro p { margin-top: var(--space-6); font-size: var(--text-body); line-height: var(--leading-body); color: var(--on-sky-muted); max-width: 60ch; text-wrap: balance; }  /* balance: when it wraps, lines come out even instead of leaving one word hanging */
+
+/* work — heading sits tight to its cards, far from the hero */
+.work h2 { margin-bottom: var(--space-4); }
+/* one project per row; on desktop each project is a card stack (white card + black details card) */
+.work-grid { display: grid; gap: var(--space-6); }
+.card {
+  display: block; padding: var(--pad-card);
+  overflow: hidden;   /* clips the centred phone image's empty side and the hover tint to the card's corners */
+  background: var(--surface); border-radius: var(--radius-card);
+  text-decoration: none;
+}
+.card h3 + p { margin-top: var(--space-2); }   /* 8px from the project title to its description */
+/* Hover: the image area's colour tint (below) is the only hover signal — no lift, no shadow. */
+
+/* card media — the whole phone above the title; only the bottom of the image (the hand below the phone)
+   dissolves into the card. The fade is an eased mask, so it blends into whatever is behind it. */
+.card-media {
+  --phone-w: var(--space-64);
+  position: relative; isolation: isolate;
+  display: flex; justify-content: center;
+  margin-bottom: var(--space-6);
+}
+/* Hover tint: the project's colour fills the image area out to the card edges and dissolves downward
+   with the same eased fade as the phone. Each card sets --card-brand (top) and optionally --card-brand-light
+   (bottom); without the second, the top colour is lightened toward the surface. */
+.card-media::before {
+  content: ""; position: absolute; z-index: -1;
+  inset: calc(var(--pad-card) * -1) calc(var(--pad-card) * -1) 0;
+  border-radius: var(--radius-card) var(--radius-card) 0 0;
+  /* the project colour at the top, lightening toward the bottom, then dissolving with the fade mask */
+  background: linear-gradient(to bottom in oklab,
+    var(--card-brand, var(--chip)),
+    var(--card-brand-light, color-mix(in oklab, var(--card-brand, var(--chip)) 45%, var(--surface))));
+  -webkit-mask-image: var(--media-fade);
+          mask-image: var(--media-fade);
+  opacity: 0;
+  transition: opacity 300ms cubic-bezier(.22, 1, .36, 1);
+}
+.card:hover .card-media::before, .card:focus-visible .card-media::before { opacity: 1; }
+.card-media img {
+  width: var(--phone-w); height: auto;
+  translate: var(--media-shift, 0) 0;   /* centre the PHONE, not the image (the hand enters from the left) */
+  -webkit-mask-image: var(--media-fade);
+          mask-image: var(--media-fade);
+}
+.card-media {
+  --media-fade: linear-gradient(to bottom, #000 64%,
+    rgb(0 0 0 / .9) 70%, rgb(0 0 0 / .7) 76%, rgb(0 0 0 / .45) 82%,
+    rgb(0 0 0 / .2) 88%, rgb(0 0 0 / .06) 94%, transparent 100%);
+}
+@media (min-width: 600px) { .card-media { --phone-w: var(--space-80); } }
+
+/* Card stack: the white project card rests on a black details card.
+   Desktop (900px+): side by side, the black card to the right. Phones and tablets: stacked, the black card below.
+   Either way the black card starts UNDER the white card (by one radius), so black shows only in the white card's
+   corner curves on the joining side, never along a shared edge where the curve would leave a dark anti-aliased fringe. */
+.card-stack { display: grid; }
+.card-stack .card { position: relative; z-index: 1; }
+.card-details {
+  position: relative; display: flex; flex-direction: column;
+  background: var(--stack); color: var(--on-stack); text-decoration: none;   /* the whole black panel is a link to the case study */
+  /* phones: below the white card */
+  border-radius: 0 0 var(--radius-card) var(--radius-card);
+  margin-top: calc(var(--radius-card) * -1);
+  padding: var(--pad-card); padding-top: calc(var(--pad-card) + var(--radius-card));
+}
+/* one column of rows divided by hairlines */
+.card-details dl { flex: 1; display: flex; flex-direction: column; justify-content: space-between; margin: 0; }
+.card-details dl > div { padding-block: var(--space-4); border-top: 1px solid rgb(255 255 255 / .16); }
+.card-details dl > div:first-child { border-top: 0; padding-top: 0; }
+.card-details dl > div:last-child { padding-bottom: 0; }
+.card-details dd { margin: var(--space-1) 0 0; }
+.card-details dt { font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--on-stack-muted); }
+.card-details dd { font-size: var(--text-body); line-height: var(--leading-body); }
+/* a second way in: a white circle with a ↗ arrow on its own row at the panel's bottom right, clear of the rows' text.
+   Matches the mail button. */
+.arrow-link {
+  flex: none; align-self: flex-end; margin-top: var(--space-6);
+  width: var(--space-12); height: var(--space-12);   /* 48px */
+  background: var(--surface); color: var(--nav);
+}
+.arrow-link .icon { width: var(--space-5); height: var(--space-5); rotate: -45deg; }   /* → becomes ↗ */
+/* hovering anywhere on the stack fills the arrow and tints the white card's image area, so the unit reacts as one */
+.card-stack:hover .arrow-link, .card-stack:focus-within .arrow-link { background: var(--card-brand, var(--nav)); color: var(--on-stack); }
+.card-stack:hover .card-media::before { opacity: 1; }
+@media (min-width: 900px) {
+  .card-stack { grid-template-columns: repeat(2, minmax(0, 1fr)); }   /* white card keeps the half width it had before */
+  .card-details {
+    border-radius: 0 var(--radius-card) var(--radius-card) 0;
+    margin-top: 0; margin-left: calc(var(--radius-card) * -1);
+    padding: var(--pad-card); padding-left: calc(var(--pad-card) + var(--radius-card));
+  }
+  .card-details dd { font-size: var(--text-title3); line-height: var(--leading-title3); }
+}
+
+/* word rotator (Work heading): every word stacked in ONE grid cell, so the slot is as wide as the longest word and
+   the line never shifts. Motion measured on muse.ai: a short drift (0.3em) paired with a fade, and NO clipping,
+   so the fade does the hiding and there is never a hard edge. Old word: up and out, quick (150ms, ease-in).
+   New word: up from below into place, softer (260ms, ease-out), starting before the old one has fully gone. */
+.rotator { display: inline-grid; vertical-align: bottom; }
+.rotator-word {
+  grid-area: 1 / 1; white-space: nowrap;
+  opacity: 0; translate: 0 .3em;   /* waiting below, invisible */
+  transition: none;
+}
+.rotator-word.is-on  { opacity: 1; translate: 0 0; transition: opacity 260ms ease-out 100ms, translate 260ms cubic-bezier(.2, .8, .2, 1) 100ms; }
+.rotator-word.is-off { opacity: 0; translate: 0 -.3em; transition: opacity 150ms ease-in, translate 150ms ease-in; }
+@media (prefers-reduced-motion: reduce) { .rotator-word, .rotator-word.is-on, .rotator-word.is-off { transition: none; translate: none; } }

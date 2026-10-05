@@ -8,7 +8,9 @@
   <!-- favicon: the pilot emoji on the hero sky, one 180px PNG (master: portfolio/_source/favicon.psd) -->
   <link rel="icon" type="image/png" href="/favicon.png">
   <link rel="apple-touch-icon" href="/favicon.png">
-  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/home.css">
+  <link rel="stylesheet" href="/assets/css/case-study.css">
 </head>
 <body>
   <header class="site-header">
@@ -47,61 +49,123 @@
       </dl>
     </header>
 
-    <section>
-      <h2>The problem</h2>
-      <div class="cs-body">
-        <p>Binge eating disorder (BED) is the most common eating disorder in the U.S., affecting about 1.2% of American adults in a given year.<sup class="fn-ref"><a href="#fn-bed" aria-label="Source 1">1</a></sup></p>
-        <p>Yet the coping strategies people are given are hard to use in the moment. Therapeutic advice usually comes as static paper worksheets, or as general guidance from a dietitian or therapist: follow a breathing pattern or slow down your eating. When an urge hits, there's nothing dynamic or all-in-one to guide them through it. The tools are disconnected, and rarely within reach when they're needed.</p>
+    <!-- Each section is a "slide": at least one screen tall, content centred; text and visual alternate sides. -->
+    <section class="slide">
+      <figure class="slide-visual stat">
+        <p class="stat-num swap" data-count-to="7"><span class="swap-word is-on"><span class="count-val">7</span> million</span><span class="swap-word" aria-hidden="true">1 in 36</span></p>
+        <p class="stat-cap">American adults will experience binge eating disorder in their lifetime, making it the most common eating disorder in the U.S.<sup class="fn-ref"><a href="#fn-bed" aria-label="Source 1">1</a></sup></p>
+        <div class="cs-notes" aria-label="Sources">
+          <p class="cs-note" id="fn-bed"><span class="fn-num">1</span> <a href="https://www.nimh.nih.gov/health/statistics/eating-disorders">National Institute of Mental Health, “Eating Disorders”</a>: 2.8% of U.S. adults over their lifetime (National Comorbidity Survey Replication, Hudson et al., 2007). “7 million” applies that rate to today’s roughly 260 million U.S. adults; “1 in 36” is the same rate as a ratio.</p>
+        </div>
+      </figure>
+      <div class="slide-text">
+        <p class="slide-label">01</p>
+        <h2>Building for an underserved market</h2>
+        <p>For such a common disorder, the coping strategies people are given are hard to use in the moment. Therapeutic advice usually comes as static paper worksheets, or as general guidance from a dietitian or therapist: follow a breathing pattern or slow down your eating. When an urge hits, there's nothing dynamic or all-in-one to guide them through it. The tools are disconnected, and rarely within reach when they're needed.</p>
       </div>
-      <!-- Sources for the section as a whole: right column from 900px, below the body text on smaller screens -->
-      <aside class="cs-notes" aria-label="Sources">
-        <p class="cs-note" id="fn-bed"><span class="fn-num">1</span> <a href="https://www.nimh.nih.gov/health/statistics/eating-disorders">National Institute of Mental Health, “Eating Disorders”</a>, from the National Comorbidity Survey Replication (Hudson et al., 2007).</p>
-      </aside>
     </section>
-    <section>
-      <h2>Who it's for</h2>
-      <div class="cs-body">
-        <p>Maureen is built for users with two overlapping needs.</p>
-        <p><strong>Therapeutic support, in the moment.</strong> People who can't afford therapy, or need help between sessions, get research-validated coping techniques from Acceptance and Commitment Therapy (ACT) and Cognitive Behavioral Therapy (CBT) right when they need them.</p>
-        <p><strong>Dietary structure, without the numbers.</strong> People who need structure around food, but for whom calorie counting and macro calculations are inappropriate, as they invite hypervigilance and restrictive behaviors.</p>
+    <section class="slide">
+      <div class="slide-text">
+        <p class="slide-label">02</p>
+        <h2>Identifying the ideal user</h2>
+          <p>Maureen is built for users with two overlapping needs.</p>
+          <p><strong>Therapeutic support, in the moment.</strong> People who can't afford therapy, or need help between sessions, get research-validated coping techniques from Acceptance and Commitment Therapy (ACT) and Cognitive Behavioral Therapy (CBT) right when they need them.</p>
+          <p><strong>Dietary structure, without the numbers.</strong> People who need structure around food, but for whom calorie counting and macro calculations are inappropriate, as they invite hypervigilance and restrictive behaviors.</p>
       </div>
-      <!-- Venn: the two needs, Maureen in the overlap. Right column from 900px, below the body text on smaller screens. -->
-      <figure class="cs-side cs-venn">
+      <figure class="slide-visual cs-venn">
         <svg viewBox="0 0 360 200" role="img" aria-labelledby="venn-title">
           <title id="venn-title">Venn diagram: therapeutic support on the left, moderated dietary tools on the right, and Maureen where they overlap.</title>
-          <circle class="venn-a" cx="128" cy="100" r="92"/>
-          <circle class="venn-b" cx="232" cy="100" r="92"/>
-          <text class="venn-label" x="88" y="96" text-anchor="middle"><tspan x="88">Therapeutic</tspan><tspan x="88" dy="18">support</tspan></text>
-          <text class="venn-centre" x="180" y="105" text-anchor="middle">Maureen</text>
-          <text class="venn-label" x="272" y="96" text-anchor="middle"><tspan x="272">Moderated</tspan><tspan x="272" dy="18">dietary tools</tspan></text>
+          <defs><clipPath id="venn-clip-a"><circle cx="128" cy="100" r="92"/></clipPath></defs>
+          <g class="venn-side venn-left">
+            <circle class="venn-a" cx="128" cy="100" r="92"/>
+            <text class="venn-label" x="88" y="96" text-anchor="middle"><tspan x="88">Therapeutic</tspan><tspan x="88" dy="18">support</tspan></text>
+          </g>
+          <g class="venn-side venn-right">
+            <circle class="venn-b" cx="232" cy="100" r="92"/>
+            <text class="venn-label" x="272" y="96" text-anchor="middle"><tspan x="272">Moderated</tspan><tspan x="272" dy="18">dietary tools</tspan></text>
+          </g>
+          <g class="venn-join">
+            <circle class="venn-ab" cx="232" cy="100" r="92" clip-path="url(#venn-clip-a)"/>
+            <text class="venn-centre" x="180" y="105" text-anchor="middle">Maureen</text>
+          </g>
         </svg>
       </figure>
     </section>
-    <section><h2>Building with restraint</h2></section>
-    <section><h2>Key decisions</h2></section>
-    <section>
-      <h2>Cleared for takeoff</h2>
-      <p>For the listing, I led with benefits, not feature names, and wrote in “you” and “your” so the app reads as the user's. The first three primary slides, the ones displayed prominently on the App Store, share Maureen's brand teal: one introduces the toolkit, and one speaks to each of the two overlapping user needs, therapeutic support and dietary structure. Later slides add variety, with mockups set in real-world scenes and held in human hands.</p>
-      <!-- App Store screenshots: a horizontal carousel (scroll / swipe, snapping). Masters: Maureen/app-store/screenshots/export/iphone-6-9in -->
-      <div class="shots-wrap">
-        <div class="shots" id="maureen-shots" role="region" aria-label="App Store screenshots" tabindex="0">
-          <ul>
-            <li><img src="/assets/img/maureen-app-store/shot-1.webp" alt="App Store screenshot: Your everyday support for food freedom: the Maureen dashboard" width="600" height="1304" loading="lazy" decoding="async"></li>
-            <li><img src="/assets/img/maureen-app-store/shot-2.webp" alt="App Store screenshot: Meet compulsive urges with guided ACT and CBT exercises: urge surfing" width="600" height="1304" loading="lazy" decoding="async"></li>
-            <li><img src="/assets/img/maureen-app-store/shot-3.webp" alt="App Store screenshot: Practice mindful eating by pacing your bites: the meal pacer" width="600" height="1304" loading="lazy" decoding="async"></li>
-            <li><img src="/assets/img/maureen-app-store/shot-4.webp" alt="App Store screenshot: Bring structure to how you eat with a meal plan and journal" width="600" height="1304" loading="lazy" decoding="async"></li>
-            <li><img src="/assets/img/maureen-app-store/shot-5.webp" alt="App Store screenshot: Simplify cooking with your recipes manager and cook mode" width="600" height="1304" loading="lazy" decoding="async"></li>
-            <li><img src="/assets/img/maureen-app-store/shot-6.webp" alt="App Store screenshot: Turn intentions into small visible wins with a simple to-do list" width="600" height="1304" loading="lazy" decoding="async"></li>
-            <li><img src="/assets/img/maureen-app-store/shot-7.webp" alt="App Store screenshot: Join the community that just gets it" width="600" height="1304" loading="lazy" decoding="async"></li>
-            <li><img src="/assets/img/maureen-app-store/shot-8.webp" alt="App Store screenshot: Take a deep breath, it gets quieter from here: breathwork" width="600" height="1304" loading="lazy" decoding="async"></li>
+    <section class="slide flip">
+      <div class="slide-text">
+        <p class="slide-label">03</p>
+        <h2>Designing with restraint</h2>
+          <p>Using AI tooling made it fast to prototype features, so the MVP grew quickly, until it was too much to maintain, features repeated each other and the app's core use case got muddled. After weighing which features brought users the most utility, I ultimately trimmed the core product offering from 17 to 11.</p>
+      </div>
+      <!-- Pill cloud (assets/js/cloud.js): the 17 prototyped features, on a loop while in view. Cuts strike through and pop
+           out, the rest close up and turn teal, 17 → 11; then everything returns and it plays again. -->
+      <figure class="slide-visual cloud" aria-label="17 features prototyped, 11 shipped">
+        <div class="cloud-card">
+          <p class="cloud-head"><span class="cloud-count">17</span> <span class="cloud-label swap"><span class="swap-word is-on">features prototyped</span><span class="swap-word">shipped</span></span></p>
+          <ul class="cloud-list">
+            <li data-fate="keep">Urge surfing<span class="visually-hidden"> (shipped)</span></li>
+            <li data-fate="cut">Leaves on a Stream<span class="visually-hidden"> (cut)</span></li>
+            <li data-fate="keep">Breathwork<span class="visually-hidden"> (shipped)</span></li>
+            <li data-fate="cut">Grounding<span class="visually-hidden"> (cut)</span></li>
+            <li data-fate="keep">Meal Pacer &amp; Task Timer<span class="visually-hidden"> (shipped)</span></li>
+            <li data-fate="cut">Thought defusion<span class="visually-hidden"> (cut)</span></li>
+            <li data-fate="keep">Meal Plan &amp; Log<span class="visually-hidden"> (shipped)</span></li>
+            <li data-fate="keep">Recipes &amp; Cook Mode<span class="visually-hidden"> (shipped)</span></li>
+            <li data-fate="cut">Journal after every module<span class="visually-hidden"> (cut)</span></li>
+            <li data-fate="keep">Exposure Hierarchy<span class="visually-hidden"> (shipped)</span></li>
+            <li data-fate="keep">To-do list<span class="visually-hidden"> (shipped)</span></li>
+            <li data-fate="keep">Mood Check-In<span class="visually-hidden"> (shipped)</span></li>
+            <li data-fate="cut">Future Mail<span class="visually-hidden"> (cut)</span></li>
+            <li data-fate="keep">Insights<span class="visually-hidden"> (shipped)</span></li>
+            <li data-fate="cut">Safety plan<span class="visually-hidden"> (cut)</span></li>
+            <li data-fate="keep">Moments Reflections<span class="visually-hidden"> (shipped)</span></li>
+            <li data-fate="keep">Community<span class="visually-hidden"> (shipped)</span></li>
           </ul>
         </div>
-        <button class="shots-btn shots-prev icon-link" type="button" aria-controls="maureen-shots" aria-label="Previous screenshots"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 18l-6-6 6-6"/></svg></button>
-        <button class="shots-btn shots-next icon-link" type="button" aria-controls="maureen-shots" aria-label="Next screenshots"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 18l6-6-6-6"/></svg></button>
+      </figure>
+    </section>
+    <section class="slide center">
+      <div class="slide-text">
+        <p class="slide-label">04</p>
+        <h2>Show, don't narrate</h2>
+        <p>My first onboarding opened with three voice-over steps explaining Maureen's purpose. I cut them. Now new users share their goals and what they struggle with, and Maureen turns that into a starter action plan: small steps like pacing a meal or creating a meal plan, each one introducing a feature. They can revisit it anytime and discover the rest at their own pace.</p>
+        <!-- Visual to come: the three voice-over intro screens (cut) beside the new flow: goals, struggles, action plan -->
       </div>
     </section>
-    <section><h2>Outcomes and future plans</h2></section>
+    <section class="slide center">
+      <div class="slide-text">
+        <p class="slide-label">05</p>
+        <h2>Cleared for takeoff</h2>
+        <p>For the listing, I led with benefits, not feature names, and wrote in possessive terms to reinforce the app as the user's own. The first three primary slides, the ones displayed prominently on the App Store, share Maureen's brand teal: one introduces the toolkit, and one speaks to each of the two overlapping user needs, therapeutic support and dietary structure. Later slides add variety, with mockups set in real-world scenes and held in human hands.</p>
+      </div>
+      <div class="slide-visual">
+        <!-- App Store screenshots: a horizontal carousel (scroll / swipe, snapping). Masters: Maureen/app-store/screenshots/export/iphone-6-9in -->
+        <div class="shots-wrap">
+          <div class="shots" id="maureen-shots" role="region" aria-label="App Store screenshots" tabindex="0">
+            <ul>
+              <li><img src="/assets/img/maureen-app-store/shot-1.webp" alt="App Store screenshot: Your everyday support for food freedom: the Maureen dashboard" width="600" height="1304" loading="lazy" decoding="async"></li>
+              <li><img src="/assets/img/maureen-app-store/shot-2.webp" alt="App Store screenshot: Meet compulsive urges with guided ACT and CBT exercises: urge surfing" width="600" height="1304" loading="lazy" decoding="async"></li>
+              <li><img src="/assets/img/maureen-app-store/shot-3.webp" alt="App Store screenshot: Practice mindful eating by pacing your bites: the meal pacer" width="600" height="1304" loading="lazy" decoding="async"></li>
+              <li><img src="/assets/img/maureen-app-store/shot-4.webp" alt="App Store screenshot: Bring structure to how you eat with a meal plan and journal" width="600" height="1304" loading="lazy" decoding="async"></li>
+              <li><img src="/assets/img/maureen-app-store/shot-5.webp" alt="App Store screenshot: Simplify cooking with your recipes manager and cook mode" width="600" height="1304" loading="lazy" decoding="async"></li>
+              <li><img src="/assets/img/maureen-app-store/shot-6.webp" alt="App Store screenshot: Turn intentions into small visible wins with a simple to-do list" width="600" height="1304" loading="lazy" decoding="async"></li>
+              <li><img src="/assets/img/maureen-app-store/shot-7.webp" alt="App Store screenshot: Join the community that just gets it" width="600" height="1304" loading="lazy" decoding="async"></li>
+              <li><img src="/assets/img/maureen-app-store/shot-8.webp" alt="App Store screenshot: Take a deep breath, it gets quieter from here: breathwork" width="600" height="1304" loading="lazy" decoding="async"></li>
+            </ul>
+          </div>
+          <button class="shots-btn shots-prev icon-link" type="button" aria-controls="maureen-shots" aria-label="Previous screenshots"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 18l-6-6 6-6"/></svg></button>
+          <button class="shots-btn shots-next icon-link" type="button" aria-controls="maureen-shots" aria-label="Next screenshots"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 18l6-6-6-6"/></svg></button>
+        </div>
+      </div>
+    </section>
+    <section class="slide center">
+      <div class="slide-text">
+        <p class="slide-label">06</p>
+        <h2>Outcomes and future plans</h2>
+      </div>
+    </section>
 
+    <div class="scroll-cue" aria-hidden="true"><svg viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M112 184l144 144 144-144"/></svg></div>
     <section class="more">
       <h2>More from this project</h2>
       <!-- /work/maureen-care/app-store-review/ and /work/maureen-care/ecosystem/ once written -->
@@ -129,6 +193,10 @@
   <script src="/assets/js/flight.js" defer></script>
   <script src="/assets/js/rotator.js" defer></script>
   <script src="/assets/js/carousel.js" defer></script>
+  <script src="/assets/js/cloud.js" defer></script>
+  <script src="/assets/js/count-up.js" defer></script>
+  <script src="/assets/js/scroll-cue.js" defer></script>
+  <script src="/assets/js/venn.js" defer></script>
   <script src="/assets/js/site.js" defer></script>
 </body>
 </html>

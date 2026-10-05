@@ -1,0 +1,231 @@
+/* case-study.css: case study pages: header, slides, footnotes, Venn, stat count-up, pill cloud, App Store carousel, scroll cue, back link. Loaded on every page, because Swup swaps pages without reloading <head>. */
+
+/* case study */
+.cs-header h1 { font-size: var(--text-large-title); line-height: var(--leading-large-title); }
+.cs-header .tags { margin-top: var(--space-4); }
+/* inline icons in the brief: the Maureen app icon after "iOS app", and grey tool logos after each tool's name.
+   Sized to the text (about cap height + a bit), sitting on the baseline; logos are muted so they don't compete. */
+.inline-app-icon { display: inline-block; width: 1.2em; height: 1.2em; vertical-align: -0.25em; border-radius: 22.5%; }
+.inline-logo { display: inline-block; width: .9em; height: .9em; vertical-align: -0.1em; color: var(--muted); }
+.nowrap { white-space: nowrap; }   /* a name never splits from its logo */
+.cs-brief { margin-top: var(--space-6); max-width: var(--measure); font-size: var(--text-title3); line-height: var(--leading-title2); }   /* the lead: a step up from body. 28px leading, not Title 3's 24, because it runs several lines */
+@media (min-width: 768px) { .cs-header h1 { font-size: var(--text-display); line-height: var(--leading-display); } }
+.cs-meta {   /* Role, Timeline, Status in a black card, matching the home page's details panel */
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: var(--space-6);
+  margin: 0; padding: var(--pad-card);
+  background: var(--stack); color: var(--on-stack); border-radius: var(--radius-card);
+}
+.cs-meta dd { margin: var(--space-1) 0 0; }
+/* a fact with a link (Status → the App Store): the text, then a small white circle with a ↗ arrow (the home card's
+   arrow button, smaller). On the black card it fills with Maureen's teal on hover, since the usual black would vanish. */
+.meta-link { display: flex; align-items: center; gap: var(--space-3); }
+.store-link { flex: none; width: var(--space-8); height: var(--space-8); }   /* 32px */
+.store-link .icon { width: var(--space-4); height: var(--space-4); rotate: -45deg; }   /* → becomes ↗ */
+.store-link:hover, .store-link:focus-visible { background: #37727e; color: var(--on-stack); }
+/* header: the lead (title, pills, brief) and the facts card. Phones and tablets: stacked, the card's facts
+   side by side. 900px+: the card condenses to a right column, top-aligned with the TITLE, so it sits beside
+   the whole lead instead of hanging down past the brief into the page body. */
+.cs-header { display: grid; gap: var(--space-8); }
+.cs-meta { row-gap: var(--space-4); }
+@media (min-width: 900px) {
+  .cs-header { grid-template-columns: minmax(0, 1fr) var(--space-80); column-gap: var(--space-16); align-items: start; }
+  .cs-header .cs-meta { grid-template-columns: 1fr; padding: var(--space-8); }
+}
+.cs-meta dt { font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--on-stack-muted); }
+.case-study section h2 { margin-bottom: var(--space-4); }
+/* Case studies use the full content width (--container), like the rest of the site. Running text keeps a
+   comfortable measure; images, infographics and other media take the whole width. */
+.case-study p, .case-study section > ul, .case-study section > ol { max-width: var(--measure); }
+.case-study p + p { margin-top: var(--space-4); }
+/* lists in a section's body: under the measure, a little indented, 8px between items */
+.case-study section > ul:not(.tags) { margin: var(--space-4) 0 0; padding-left: var(--space-5); }
+.case-study section > ul:not(.tags) li + li { margin-top: var(--space-2); }
+/* footnotes: a superscript number after the claim; the source sits with the visual it supports (e.g. under the
+   big stat), in small muted type. */
+.fn-ref { font-size: .65em; line-height: 0; vertical-align: super; margin-left: 1px; }
+.fn-ref a { color: var(--muted); text-decoration: none; }
+.cs-notes { margin-top: var(--space-6); }
+.cs-note { font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--muted); }
+.cs-note + .cs-note { margin-top: var(--space-2); }
+.cs-note a { color: inherit; }
+.fn-num { margin-right: var(--space-1); }
+/* Venn (Identifying the ideal user): solid Maureen teals, the overlap its own mid teal (#45818e), white type */
+.cs-venn svg { display: block; width: 100%; height: auto; overflow: visible; }
+.venn-a { fill: #37727e; }
+.venn-b { fill: #4f8894; }
+.venn-ab { fill: #45818e; }
+.venn-centre { fill: #fff; font: 600 var(--text-subhead) / 1 var(--font-body); }
+.venn-label { fill: rgba(255,255,255,.85); font: 400 var(--text-sm) / 1 var(--font-body); }
+/* Case study "slides": each section is at least one screen tall (below the fixed header), its content centred
+   vertically, so the page reads as a story, one moment per screen, with no background changes. Normal scrolling
+   (no snapping). 900px+: text and visual side by side, alternating sides (.flip puts the text on the right).
+   .center: left-anchored text over a full-width visual (or alone). Phones: text, then visual. */
+.case-study .slide {
+  display: grid; align-content: center; gap: var(--space-10);
+  min-height: calc(100svh - var(--header-h));
+  padding-block: var(--space-16);
+}
+.case-study main > .slide + .slide, .case-study .slide + .slide { margin-top: 0; }   /* the slides' own height separates them */
+.cs-header + .slide { margin-top: var(--space-8); }
+.slide .slide-visual { margin: 0; min-width: 0; }   /* beats the cloud's and others' own top margins: the slide's gap spaces them */
+.slide .shots { margin-top: 0; }
+.slide-label {   /* a small number above each heading: 01, 02… */
+  margin: 0 0 var(--space-2); font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--muted);
+  font-variant-numeric: tabular-nums; letter-spacing: .04em;
+}
+/* .center (full-width slides): text above, left-anchored like the rest of the site; the visual spans the full width */
+.slide.center { justify-items: start; }
+.slide.center .slide-visual { justify-self: stretch; }
+@media (min-width: 900px) {
+  .slide:not(.center) { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: var(--space-16); align-items: center; }
+  .slide.flip .slide-text { order: 2; }
+}
+/* 01: the big stat */
+.stat-num { margin: 0; font-size: clamp(var(--space-12), 7vw, 96px); line-height: 1; font-weight: 600; letter-spacing: -.02em; color: #37727e; font-variant-numeric: tabular-nums; }
+.stat-cap { margin-top: var(--space-4); font-size: var(--text-title3); line-height: var(--leading-title2); max-width: 32ch; }
+.stat .cs-notes { margin-top: var(--space-6); max-width: 40ch; }
+/* 02: the Venn, capped so it doesn't overwhelm its half */
+.slide .cs-venn { max-width: 480px; width: 100%; justify-self: center; }
+/* Case study hero: the home page's landing hero reused (.hero-sky: same sky, glow, grain, top-rounded corners,
+   eased fade into the page), shorter and without the plane. The phone is centred and rises from the bottom,
+   dissolving with the same mask as the home card. data-tone tells nav-tone.js it's dark above the fade. */
+.cs-hero {
+  --sky-fade: var(--space-40);   /* 160px: a shorter card gets a shorter fade */
+  /* Maureen's brand gradient, the same teal as the home card's hover tint (#37727e at the top to #4f8894),
+     fed into the home hero's sky layers: base, horizon glow and fade */
+  --sky-top: #37727e; --sky-mid: #4f8894; --sky-low: #8fb5bd; --sky-pale: #d9e7ea;
+  position: relative; isolation: isolate;
+  display: flex; justify-content: center; align-items: flex-end;
+  margin: 0 var(--hero-inset);   /* same insets as the home hero: full width on phones, page gutter from 600px */
+  height: clamp(var(--space-80), 56vw, 600px);   /* 320px on phones, up to 600px on wide screens */
+  padding-top: var(--space-12);
+}
+.cs-hero img {
+  display: block; height: 100%; width: auto;
+  translate: var(--media-shift, 0) 0;   /* centre the PHONE, not the image (the hand enters from the left) */
+  -webkit-mask-image: linear-gradient(to bottom, #000 64%, rgb(0 0 0 / .9) 70%, rgb(0 0 0 / .7) 76%, rgb(0 0 0 / .45) 82%, rgb(0 0 0 / .2) 88%, rgb(0 0 0 / .06) 94%, transparent 100%);
+          mask-image: linear-gradient(to bottom, #000 64%, rgb(0 0 0 / .9) 70%, rgb(0 0 0 / .7) 76%, rgb(0 0 0 / .45) 82%, rgb(0 0 0 / .2) 88%, rgb(0 0 0 / .06) 94%, transparent 100%);
+}
+.cs-hero + main { padding-top: var(--space-6); }
+/* Back link on the case study hero: chevron + text, no pill, white on the sky, on the content's left edge
+   (inside the inset card: the content edge, never closer than --hero-pad to the card edge, like the home hero text). */
+.back-link {
+  position: absolute; z-index: 1; top: var(--space-6);
+  left: max(var(--hero-pad), calc((100% - var(--container)) / 2 + var(--gutter)));   /* same rule as the home hero text */
+  display: inline-flex; align-items: center; gap: var(--space-1);
+  padding-block: var(--space-2);   /* a taller tap target without a visible box */
+  color: var(--on-sky); text-decoration: none;
+  font-size: var(--text-body); line-height: var(--leading-body); font-weight: 500;
+  transition: opacity 200ms;
+}
+.back-link .icon { width: var(--space-5); height: var(--space-5); margin-left: -4px; }   /* optical: the chevron's stroke sits inside its box */
+.back-link:hover, .back-link:focus-visible { opacity: .75; }
+/* a project card targeted by a back link lands below the fixed header, not under it */
+.card-stack { scroll-margin-top: calc(var(--header-h) + var(--space-6)); }
+/* Restraint pill cloud (assets/js/cloud.js): every prototyped feature as a white pill straight on the page (no card), under
+   the section's text. Cuts strike through and pop out, the rest slide together and turn Maureen teal; 17 → 11. */
+.cloud { margin: var(--space-8) 0 0; }
+.cloud-card { position: relative; }   /* no card: the pills sit straight on the page */
+.cloud-head { display: flex; align-items: baseline; gap: var(--space-3); margin: 0 0 var(--space-6); }
+.cloud-count { font-size: clamp(var(--space-12), 5vw, 72px); line-height: 1; letter-spacing: -.02em; font-weight: 600; color: #37727e; font-variant-numeric: tabular-nums; }
+.cloud-label { font-size: var(--text-title1); line-height: var(--leading-title1); font-weight: 500; color: var(--text); }
+.cloud-list { display: flex; flex-wrap: wrap; align-content: flex-start; align-items: flex-start; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }   /* rows pack to the top: the locked height must never stretch the pills */
+.cloud-list li {
+  position: relative; padding: var(--space-2) var(--space-3); border-radius: 999px; background: var(--surface);   /* white: --chip is too close to the page colour without a card */
+  font-size: var(--text-subhead); line-height: var(--leading-subhead);
+  transition: transform 350ms cubic-bezier(.2, .8, .2, 1), opacity 200ms ease, background-color 300ms, color 300ms;
+}
+.cloud-list li::after {   /* the strike-through, drawn left to right */
+  content: ""; position: absolute; left: var(--space-3); right: var(--space-3); top: 50%; height: 1.5px; background: currentColor;
+  transform: scaleX(0); transform-origin: left; transition: transform 250ms ease;
+}
+.cloud-list li.is-struck { color: var(--muted); }
+.cloud-list li.is-struck::after { transform: scaleX(1); }
+.cloud-list li.is-popping { transform: scale(.6); opacity: 0; }
+.cloud-list li.is-gone { display: none; }
+.cloud-list li.is-shipped { background: color-mix(in oklab, #37727e 14%, transparent); color: #37727e; }
+/* a two-word swap with the rotator's motion (drift + fade, no clipping): both words share one grid cell */
+.swap { display: inline-grid; }
+.swap-word { grid-area: 1 / 1; white-space: nowrap; opacity: 0; translate: 0 .3em; transition: none; }
+.swap-word.is-on  { opacity: 1; translate: 0 0; transition: opacity 260ms ease-out 100ms, translate 260ms cubic-bezier(.2, .8, .2, 1) 100ms; }
+.swap-word.is-off { opacity: 0; translate: 0 -.3em; transition: opacity 150ms ease-in, translate 150ms ease-in; }
+@media (prefers-reduced-motion: reduce) { .cloud-card * { transition: none !important; } }
+@property --fade-l { syntax: '<length>'; inherits: true; initial-value: 0px; }
+@property --fade-r { syntax: '<length>'; inherits: true; initial-value: 0px; }
+.shots-wrap { position: relative; grid-column: 1 / -1; }   /* spans both section columns on desktop */
+.case-study section > .shots-wrap { grid-column: 1 / -1; }   /* beats the sections' column-1 rule */
+.shots-btn { display: none; }   /* arrows are desktop only; touch screens swipe */
+/* App Store screenshot carousel (What shipped): a horizontal row that scrolls / swipes and snaps to each shot.
+   Phones: a tight carousel that bleeds to the screen edges, about 1.5 shots visible so it's clearly swipeable.
+   600px+: about 2.5. 900px+: four across the full content width, the rest a scroll away. */
+.shots {
+  margin: var(--space-8) calc(var(--gutter) * -1) 0;   /* bleed to the screen edges on small screens… */
+  padding-inline: var(--gutter);                        /* …while the first shot still lines up with the text */
+  scroll-padding-inline: var(--gutter);
+  overflow-x: auto; overscroll-behavior-x: contain;
+  scroll-snap-type: x mandatory; scrollbar-width: none;
+}
+.shots::-webkit-scrollbar { display: none; }
+.shots:focus-visible { outline: 2px solid var(--text); outline-offset: 4px; }
+.shots ul { display: flex; gap: var(--space-2); margin: 0; padding: 0; list-style: none; }
+.shots li { flex: 0 0 62%; scroll-snap-align: start; }
+.shots img { display: block; width: 100%; height: auto; border-radius: var(--space-5); }
+@media (min-width: 600px) {
+  .shots li { flex-basis: 38%; }
+}
+@media (min-width: 900px) {
+  .shots { margin-inline: 0; padding-inline: 0; scroll-padding-inline: 0;
+    /* fade the edges that have more to see (the row doesn't bleed off the screen here, so it would otherwise cut hard) */
+    -webkit-mask-image: linear-gradient(to right, transparent 0, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent 100%);
+            mask-image: linear-gradient(to right, transparent 0, #000 var(--fade-l), #000 calc(100% - var(--fade-r)), transparent 100%);
+    transition: --fade-l 250ms ease, --fade-r 250ms ease;
+  }
+  .shots-wrap { --fade-l: var(--space-16); --fade-r: var(--space-16); }
+  .shots-wrap.at-start { --fade-l: 0px; }
+  .shots-wrap.at-end { --fade-r: 0px; }
+  /* arrows: the nav's white circle, centred on each edge over the fade; hidden when there's nowhere to go */
+  .shots-btn { display: grid; position: absolute; top: calc(50% + var(--space-4)); translate: 0 -50%;   /* +16px: half the carousel's 32px top margin, which sits inside the wrapper */ z-index: 1; border: 0; cursor: pointer;
+    width: var(--space-12); height: var(--space-12); transition: background-color 200ms, color 200ms, opacity 200ms; }
+  .shots-prev { left: calc(var(--space-6) * -1); }
+  .shots-next { right: calc(var(--space-6) * -1); }
+  .shots-wrap.at-start .shots-prev, .shots-wrap.at-end .shots-next { opacity: 0; pointer-events: none; }
+  .shots li { flex-basis: calc((100% - 3 * var(--space-2)) / 4); }   /* four across, 8px gaps */
+}
+.cs-media { margin: var(--space-8) 0 0; }   /* a figure: an image, video or infographic, full content width */
+.cs-media img, .cs-media video, .cs-media svg { display: block; width: 100%; height: auto; border-radius: var(--radius-card); }
+.cs-media figcaption { margin-top: var(--space-3); max-width: var(--measure); font-size: var(--text-sm); line-height: var(--leading-sm); color: var(--muted); }
+/* two figures side by side from 768px (e.g. before / after, two screens) */
+.cs-media-pair { display: grid; gap: var(--space-4); margin: var(--space-8) 0 0; }
+@media (min-width: 768px) { .cs-media-pair { grid-template-columns: 1fr 1fr; } }
+.cs-media-pair .cs-media { margin: 0; }
+
+/* Scroll cue (case study): a small chevron fixed at the bottom centre, bobbing gently, until the last slide is
+   reached (scroll-cue.js adds .is-done once "More from this project" is in view). Decorative only. */
+.scroll-cue {
+  position: fixed; left: 50%; bottom: var(--space-6); z-index: 5;
+  width: var(--space-6); height: var(--space-6); margin-left: calc(var(--space-6) / -2);
+  color: var(--muted); pointer-events: none;
+  transition: opacity 400ms ease;
+}
+.scroll-cue svg { display: block; width: 100%; height: 100%; animation: cue-bob 2.4s ease-in-out infinite; }
+.scroll-cue.is-done { opacity: 0; }
+@keyframes cue-bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+@media (prefers-reduced-motion: reduce) { .scroll-cue svg { animation: none; } }
+/* count-up (count-up.js): the decimal is its own box so it can ease shut at the end */
+.count-dec { display: inline-block; overflow: hidden; vertical-align: bottom; white-space: nowrap; }
+.count-dec.is-closing { max-width: 0 !important; opacity: 0; transition: max-width 450ms cubic-bezier(.2, .8, .2, 1), opacity 250ms ease-out; }
+/* Venn animation (venn.js): .is-apart slides the two circles (with their labels) 44 units out each way so they
+   no longer touch, and hides the overlap and "Maureen". Removing it eases them together; the overlap and name
+   fade in once they've met. Transform and opacity only, so it stays on the compositor. */
+.venn-side { transition: transform 900ms cubic-bezier(.65, 0, .35, 1); }
+.venn-join { transition: opacity 400ms ease-out; }
+.cs-venn.is-apart .venn-left  { transform: translateX(-44px); }
+.cs-venn.is-apart .venn-right { transform: translateX(44px); }
+/* labels: centred in their own circle while apart (joined x 88 / 272 vs circle centres 128 / 232, so 40 units in),
+   easing out to the sides as the circles merge, leaving the middle for "Maureen" */
+.venn-side .venn-label { transition: transform 900ms cubic-bezier(.65, 0, .35, 1); }
+.cs-venn.is-apart .venn-left .venn-label  { transform: translateX(40px); }
+.cs-venn.is-apart .venn-right .venn-label { transform: translateX(-40px); }
+.cs-venn.is-apart .venn-join, .cs-venn.is-joining .venn-join { opacity: 0; transition-duration: 250ms; }
+/* the bobbing chevron stops once hidden, so it isn't animating at zero opacity */
+.scroll-cue.is-done svg { animation-play-state: paused; }
