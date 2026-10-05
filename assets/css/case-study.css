@@ -247,7 +247,7 @@
 /* Phone screen recordings (video.js): no bezel, just the iPhone screen's own rounded corners (about 55pt on a
    402pt-wide screen: 13.7% of the width, which is 6.3% of the height at this aspect) and a hairline edge, so it
    reads as a phone and matches the App Store shots. Capped so a portrait video doesn't tower over its half. */
-.phone-video { justify-self: center; width: min(100%, 320px); margin: 0; }   /* margin 0: a <figure>'s default 40px sides overflowed the panel on phones, and Safari then pushed the phone right */
+.phone-video { justify-self: center; width: min(100%, 320px); margin: 0 auto; }   /* auto sides centre it in any parent: the panel is a plain block, where Safari ignores justify-self (and a <figure>'s default 40px sides overflowed it) */
 .phone-video video {
   display: block; width: 100%; height: auto; aspect-ratio: 590 / 1282;
   border-radius: 13.7% / 6.3%; background: var(--chip);
