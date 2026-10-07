@@ -83,7 +83,7 @@
   :root { --bg: #111; --surface: #1c1c1c; --chip: #2a2a2a; --text: #eee; --muted: #999; --line: #2a2a2a; --accent: #eee; --nav: #ffffff;
           --sky-top: #021f45; --sky-mid: #0a3a78; --sky-low: #12305a; --sky-pale: #141c28; }
   /* dark mode: only the resting fill changes, to the Instagram button's grey (the near-black --surface barely read); hover still inverts as normal */
-  .site-header .icon-link, .site-header .nav-pill, .contact-pill .contact-pill-icon { background: var(--line); }   /* the two mail circles; two-class selectors beat the later base rules and lose to their :hover */
+  .site-header .icon-link, .contact-pill .contact-pill-icon { background: var(--line); }   /* the two mail circles; two-class selectors beat the later base rules and lose to their :hover */
 }
 
 /* base */
@@ -135,14 +135,6 @@ html.tone-dark .site-header::before { background-color: rgb(0 0 0 / .14); }
 html.tone-light .signature { background-color: #000; }   /* over light backgrounds */
 html.tone-dark .signature { background-color: #fff; }    /* over the sky, the black panel, dark mode */
 .site-header nav { display: flex; align-items: center; gap: var(--space-2); }
-/* Resume: a text pill beside the mail button, same height and colours (white, black text), inverts on hover. Opens the PDF in a new tab. */
-.nav-pill {
-  display: inline-flex; align-items: center; height: var(--space-10); padding-inline: var(--space-4);
-  border-radius: 999px; background: var(--surface); color: var(--nav);
-  font-size: var(--text-subhead); line-height: var(--leading-subhead); font-weight: 500; text-decoration: none;
-  transition: background-color 200ms, color 200ms;
-}
-.nav-pill:hover, .nav-pill:focus-visible { background: var(--nav); color: var(--surface); }
 .site-header nav a { text-decoration: none; color: var(--nav); }
 /* icons are inline SVG filled with currentColor, so their colour comes from the link's token — no separate white/black files */
 .icon { display: block; width: var(--space-6); height: var(--space-6); }
