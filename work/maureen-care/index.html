@@ -470,6 +470,22 @@
     
     </section>
 
+    <!-- After the story: the case study deck. Text and a pill link, then a live preview of the deck's first slide:
+         the deck itself in an iframe (?embed: no deck chrome, English, not interactive), scaled down and loaded when
+         it scrolls into view (deck-preview.js), so it plays its own entrance. The whole preview links to the deck too.
+         .more: the scroll cue fades out here (scroll-cue.js). Not a .slide, so it isn't numbered. -->
+    <section class="more deck-cta">
+      <div class="deck-cta-text">
+        <h2>See the full case study deck</h2>
+        <p>A detailed walkthrough of my thought process and design workflow, from product–market fit to the native design system, motion, performance and the AI-assisted workflow behind it.</p>
+        <a class="contact-pill deck-pill" href="/work/maureen-care/presentation/" data-no-swup>View the deck<span class="contact-pill-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M268 112l144 144-144 144M392 256H100"/></svg></span></a>
+      </div>
+      <a class="app-card-shot deck-preview" href="/work/maureen-care/presentation/" data-no-swup tabindex="-1" aria-hidden="true">
+        <div class="deck-frame"><iframe data-src="/work/maureen-care/presentation/?embed#1" title="Preview of the case study deck" tabindex="-1"></iframe></div>
+        <span class="icon-link store-link shot-arrow"><svg class="icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M268 112l144 144-144 144M392 256H100"/></svg></span>
+      </a>
+    </section>
+
     <div class="scroll-cue" aria-hidden="true"><span class="cue-count"></span><svg viewBox="0 0 512 512"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M112 184l144 144 144-144"/></svg></div>
     <!-- "More from this project" (deep-dive pages: engineering, brand & launch) goes here once they're written -->
   </main>
@@ -504,6 +520,7 @@
   <script src="/assets/js/video.js" defer></script>
   <script src="/assets/js/lib-stage.js" defer></script>
   <script src="/assets/js/screen-wall.js" defer></script>
+  <script src="/assets/js/deck-preview.js" defer></script>
   <script src="/assets/js/site.js" defer></script>
 </body>
 </html>

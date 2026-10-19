@@ -575,3 +575,17 @@
 .app-card-row .store-link { background: var(--line); }   /* a grey circle on the white card */
 .app-card-row:hover .store-link, .app-card-row:focus-visible .store-link { background: var(--nav); color: var(--surface); }
 @media (prefers-reduced-motion: reduce) { .app-card-shot img { transition: none; } }
+
+/* After slide 10: the case study deck. Text (held to a two-column slide's text width) and a pill link like the
+   footer's Contact pill, its arrow turned to ↗; then a live preview of the deck's first slide across the full width.
+   The iframe renders the deck at its own 1512 x 982 frame, scaled to fit by deck-preview.js (--deck-scale). It never
+   takes the pointer: the card around it is the link, and lifts slightly on hover like the Webflow mockup on 10. */
+.deck-cta { display: grid; gap: var(--space-10); justify-items: start; padding-block: var(--space-16) var(--space-24); }
+.deck-cta .contact-pill { margin-top: var(--space-6); }
+.deck-pill .icon { rotate: -45deg; }   /* → becomes ↗ */
+@media (min-width: 900px) { .deck-cta-text { max-width: calc((100% - var(--space-16)) / 2); } }
+.deck-preview { justify-self: stretch; box-shadow: 0 0 0 1px var(--line); }
+.deck-frame { --deck-scale: 0.5; position: relative; aspect-ratio: 1512 / 982; overflow: hidden; background: var(--surface); transition: scale 400ms ease; }
+.deck-frame iframe { position: absolute; top: 0; left: 0; width: 1512px; height: 982px; border: 0; transform: scale(var(--deck-scale)); transform-origin: 0 0; pointer-events: none; }
+.deck-preview:hover .deck-frame { scale: 1.02; }
+@media (prefers-reduced-motion: reduce) { .deck-frame { transition: none; } }
