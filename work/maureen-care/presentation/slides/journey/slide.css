@@ -89,3 +89,11 @@ body[data-lang="both"] .jm-note { font-size: 15px; line-height: 20px; }
 .chapter.journey .jm-over { opacity: 0; }
 .chapter.journey.play .jm-over { animation: j-in 800ms cubic-bezier(0.32, 0.72, 0, 1) 380ms both; }
 @media (prefers-reduced-motion: reduce) { .chapter.journey .jm-over { opacity: 1; } }
+
+/* Settled (slide.js, once the entrance has played or on the first step): the entrance animation is switched off,
+   so steps shown later (display: none → grid) don't replay it and blink in; and only now do the persona tiles get
+   view-transition names, so A morphs between the overview and its map. Named during the entrance, a tile would be
+   lifted out of its fading parent by the slide's view transition, show at full opacity, then drop to 0 and fade in. */
+.chapter.journey.settled .j-title, .chapter.journey.settled .jm, .chapter.journey.settled .jm-over { animation: none; opacity: 1; }
+.chapter.journey.settled .jm-persona.pa { view-transition-name: jm-pa; }
+.chapter.journey.settled .jm-persona.pb { view-transition-name: jm-pb; }
