@@ -335,3 +335,9 @@ body[data-lang="both"] .sheet:has(.toc) .sheet-title .zh { display: inline; marg
 .sheet:has(.toc) .sheet-title { margin-left: 12px; }
 .sheet:has(.toc) .sheet-close { background: var(--card); }
 .toc button:hover { background: color-mix(in srgb, var(--card) 70%, transparent); }
+/* the slide list scrolls inside the menu when it runs taller than the window (the title and close button stay put).
+   overflow: visible above is what kept the whole sheet from scrolling. */
+.sheet:has(.toc) .toc { max-height: calc(100vh / var(--fit, 1) - 140px); overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; }
+.sheet:has(.toc) .toc { --fade: 20px; padding-block: var(--fade); margin-top: -4px;   /* soft top and bottom edges where the list runs under */
+  -webkit-mask-image: linear-gradient(transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent);
+          mask-image: linear-gradient(transparent, #000 var(--fade), #000 calc(100% - var(--fade)), transparent); }
