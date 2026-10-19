@@ -193,3 +193,33 @@
 .intro-line:nth-child(2) { animation-delay: 270ms; }
 .intro p                 { animation-delay: 390ms; }
 @media (prefers-reduced-motion: reduce) { .intro-line, .intro p { animation: none; } }
+
+/* side projects — student videos under Work: a heading styled like Work's, a muted caption, then one row of 16:9
+   YouTube thumbnails. It reuses the App Store carousel (.shots in case-study.css, which loads after this file,
+   hence the two-class selectors): about 1.25 across on phones, 2 at 600px+, 3 at 900px+ with the fading edges
+   and arrows. Each video is a card stack like the Maureen card: the rounded thumbnail on top of a black card with the
+   title in white; the cards in a row share a height. The thumbnail lifts slightly on hover. */
+.side-title { margin: 0; }   /* the site's h2, the same as the Work heading above */
+.side-cap { margin-top: var(--space-2); color: var(--muted); }
+.shots-yt .shots { margin-top: var(--space-6); }
+.shots-yt .shots li { flex-basis: 80%; }
+.shots-yt .shots li { display: flex; }
+/* a stack, like the Maureen card on phones: the rounded thumbnail sits on top of a black card whose top tucks up
+   under it (pulled up by the corner radius, padded back down by the same), so the black shows round corners below */
+.shots-yt a { --yt-r: var(--space-5); display: flex; flex-direction: column; flex: 1; color: var(--on-stack); text-decoration: none; }
+.yt-thumb { position: relative; z-index: 1; display: block; overflow: hidden; border-radius: var(--yt-r); background: var(--line); }
+.shots-yt .yt-thumb img { aspect-ratio: 16 / 9; object-fit: cover; border-radius: 0; transition: scale 400ms ease; }
+.shots-yt a:hover img, .shots-yt a:focus-visible img { scale: 1.03; }
+.yt-title { flex: 1; display: block; margin-top: calc(var(--yt-r) * -1); padding: calc(var(--yt-r) + var(--space-3)) var(--space-4) var(--space-4);
+  border-radius: 0 0 var(--yt-r) var(--yt-r); background: var(--stack); font-size: var(--text-sm); line-height: var(--leading-sm); font-weight: 500; }
+@media (min-width: 600px) { .shots-yt .shots li { flex-basis: calc((100% - var(--space-2)) / 2); } }
+@media (min-width: 900px) {
+  .shots-yt .shots li { flex-basis: calc((100% - 2 * var(--space-2)) / 3); }
+  .shots-yt .shots-btn { top: calc(50% + var(--space-3)); }   /* centred on the cards (half of the row's 24px top margin) */
+}
+@media (prefers-reduced-motion: reduce) { .shots-yt .yt-thumb img { transition: none; } }
+.scramble { white-space: nowrap; }
+/* rainbow letters (scramble.js gives each character its hue, --h); the glyphs mid-swap are a little lighter */
+.scramble-ch { color: hsl(var(--h) 80% 46%); }
+.scramble-glyph { color: hsl(var(--h) 80% 60%); }
+@media (prefers-color-scheme: dark) { .scramble-ch { color: hsl(var(--h) 85% 64%); } .scramble-glyph { color: hsl(var(--h) 85% 74%); } }

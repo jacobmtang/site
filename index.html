@@ -85,6 +85,27 @@
       </div>
       </div>
     </section>
+
+    <!-- Side projects: student videos from Jacob's YouTube channel (jacob tangerine). One row that scrolls / swipes,
+         reusing the App Store carousel (.shots-wrap, carousel.js) at a smaller, 16:9 size. Thumbnails load straight
+         from YouTube (i.ytimg.com), so a thumbnail changed on YouTube shows up here on its own. Each opens the
+         video in a new tab. -->
+    <section class="side-projects" aria-labelledby="side-title">
+      <h2 id="side-title" class="side-title" aria-label="My student creative projects">My student <span class="scramble" data-words="creative|video|motion" aria-hidden="true">creative</span> projects</h2>
+      <p class="side-cap">Highlighting light motion graphics, news-style lower thirds and video editing.</p>
+      <div class="shots-wrap shots-yt">
+        <div class="shots" id="yt-shots" role="region" aria-label="Student videos on YouTube" tabindex="0">
+          <ul>
+          <li><a href="https://www.youtube.com/watch?v=rtgwV73nv2Y" target="_blank" rel="noopener"><span class="yt-thumb"><img src="https://i.ytimg.com/vi/rtgwV73nv2Y/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async"></span><span class="yt-title">Spotify Wrapped but it roasts my food spending instead of music</span><span class="visually-hidden"> (YouTube, opens in a new tab)</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=r1luvoZbCVU" target="_blank" rel="noopener"><span class="yt-thumb"><img src="https://i.ytimg.com/vi/r1luvoZbCVU/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async"></span><span class="yt-title">The Massacre at Atåte: Guam in World War II</span><span class="visually-hidden"> (YouTube, opens in a new tab)</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=ruFt5zK_Yoc" target="_blank" rel="noopener"><span class="yt-thumb"><img src="https://i.ytimg.com/vi/ruFt5zK_Yoc/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async"></span><span class="yt-title">2022 1MB: Group 6 Project</span><span class="visually-hidden"> (YouTube, opens in a new tab)</span></a></li>
+          <li><a href="https://www.youtube.com/watch?v=co1IP44bMwY" target="_blank" rel="noopener"><span class="yt-thumb"><img src="https://i.ytimg.com/vi/co1IP44bMwY/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async"></span><span class="yt-title">Worth It? Trying Cheap vs Expensive Boba Milk Tea in LA</span><span class="visually-hidden"> (YouTube, opens in a new tab)</span></a></li>
+          </ul>
+        </div>
+        <button class="shots-btn shots-prev icon-link" type="button" aria-controls="yt-shots" aria-label="Previous videos"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button class="shots-btn shots-next icon-link" type="button" aria-controls="yt-shots" aria-label="Next videos"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer" data-tone="dark" data-tone-fade="top" data-tone-fade-var="--foot-fade">
@@ -118,6 +139,7 @@
   <script src="/assets/js/lib-stage.js" defer></script>
   <script src="/assets/js/screen-wall.js" defer></script>
   <script src="/assets/js/deck-preview.js" defer></script>
+  <script src="/assets/js/scramble.js" defer></script>
   <script src="/assets/js/site.js" defer></script>
 </body>
 </html>
