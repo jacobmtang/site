@@ -196,8 +196,7 @@
 
 /* side projects — student videos under Work: a heading styled like Work's, a muted caption, then one row of 16:9
    YouTube thumbnails. It reuses the App Store carousel (.shots in case-study.css, which loads after this file,
-   hence the two-class selectors): about 1.25 across on phones, 2 at 600px+, 3 at 900px+ with the fading edges
-   and arrows. Each video is a card stack like the Maureen card: the rounded thumbnail on top of a black card with the
+   hence the two-class selectors): about 1.25 across on phones, 2 at 600px+, and a 3 x 2 grid with arrows at 900px+. Each video is a card stack like the Maureen card: the rounded thumbnail on top of a black card with the
    title in white; the cards in a row share a height. The thumbnail lifts slightly on hover. */
 .side-title { margin: 0; }   /* the site's h2, the same as the Work heading above */
 .side-cap { margin-top: var(--space-2); color: var(--muted); }
@@ -206,20 +205,39 @@
 .shots-yt .shots li { display: flex; }
 /* a stack, like the Maureen card on phones: the rounded thumbnail sits on top of a black card whose top tucks up
    under it (pulled up by the corner radius, padded back down by the same), so the black shows round corners below */
-.shots-yt a { --yt-r: var(--space-5); display: flex; flex-direction: column; flex: 1; color: var(--on-stack); text-decoration: none; }
+.yt-card { --yt-r: var(--space-5); display: flex; flex-direction: column; flex: 1; color: var(--on-stack); text-decoration: none; }
+button.yt-card { padding: 0; border: 0; background: none; font: inherit; text-align: left; cursor: zoom-in; }   /* infographics open full size */
 .yt-thumb { position: relative; z-index: 1; display: block; overflow: hidden; border-radius: var(--yt-r); background: var(--line); }
 .shots-yt .yt-thumb img { aspect-ratio: 16 / 9; object-fit: cover; border-radius: 0; transition: scale 400ms ease; }
-.shots-yt a:hover img, .shots-yt a:focus-visible img { scale: 1.03; }
+.shots-yt .yt-thumb video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; transition: scale 400ms ease; }
+.yt-card:hover .yt-thumb > *, .yt-card:focus-visible .yt-thumb > * { scale: 1.03; }
 .yt-title { flex: 1; display: block; margin-top: calc(var(--yt-r) * -1); padding: calc(var(--yt-r) + var(--space-3)) var(--space-4) var(--space-4);
   border-radius: 0 0 var(--yt-r) var(--yt-r); background: var(--stack); font-size: var(--text-sm); line-height: var(--leading-sm); font-weight: 500; }
 @media (min-width: 600px) { .shots-yt .shots li { flex-basis: calc((100% - var(--space-2)) / 2); } }
+/* desktop: a 3 x 2 grid per view that scrolls sideways a page at a time (columns fill top, then bottom), with hard
+   edges instead of the App Store row's fades; phones and tablets keep the single swipeable row */
 @media (min-width: 900px) {
-  .shots-yt .shots li { flex-basis: calc((100% - 2 * var(--space-2)) / 3); }
-  .shots-yt .shots-btn { top: calc(50% + var(--space-3)); }   /* centred on the cards (half of the row's 24px top margin) */
+  .shots-yt .shots { -webkit-mask-image: none; mask-image: none; }
+  .shots-yt .shots ul { display: grid; grid-auto-flow: column; grid-template-rows: repeat(2, auto);
+    grid-auto-columns: calc((100% - 2 * var(--space-4)) / 3); gap: var(--space-4); }
+  .shots-yt .shots li { flex-basis: auto; }
+  .shots-yt .shots-btn { top: calc(50% + var(--space-3)); }   /* centred on the grid (half of the row's 24px top margin) */
 }
-@media (prefers-reduced-motion: reduce) { .shots-yt .yt-thumb img { transition: none; } }
+@media (prefers-reduced-motion: reduce) { .shots-yt .yt-thumb > * { transition: none; } }
 .scramble { white-space: nowrap; }
 /* rainbow letters (scramble.js gives each character its hue, --h); the glyphs mid-swap are a little lighter */
 .scramble-ch { color: hsl(var(--h) 80% 46%); }
 .scramble-glyph { color: hsl(var(--h) 80% 60%); }
 @media (prefers-color-scheme: dark) { .scramble-ch { color: hsl(var(--h) 85% 64%); } .scramble-glyph { color: hsl(var(--h) 85% 74%); } }
+
+/* infographic lightbox (ig-lightbox.js): the video at up to 1280px over a blurred page, the nav's white close circle
+   at its top right. The clicked card's thumbnail grows into it (a view transition named ig-media). */
+.ig-lightbox { padding: 0; border: 0; background: none; overflow: visible; max-width: none; max-height: none; }
+.ig-lightbox::backdrop { background: rgb(0 0 0 / .35); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); }
+.ig-media { display: block; width: min(92vw, 1280px, calc(86vh * 16 / 9)); height: auto; aspect-ratio: 16 / 9; border-radius: var(--space-6); background: var(--stack); }
+.ig-close { position: absolute; top: var(--space-3); right: var(--space-3); border: 0; cursor: pointer; }
+::view-transition-group(ig-media) { animation-duration: 420ms; animation-timing-function: cubic-bezier(.32, .72, 0, 1); }
+.ig-lightbox:not(.vt)[open] { animation: ig-in 320ms cubic-bezier(.32, .72, 0, 1); }   /* without view transitions: a plain grow-in */
+@keyframes ig-in { from { opacity: 0; scale: .94; } }
+@media (prefers-reduced-motion: reduce) { .ig-lightbox:not(.vt)[open] { animation: none; } }
+

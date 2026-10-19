@@ -86,25 +86,40 @@
       </div>
     </section>
 
-    <!-- Side projects: student videos from Jacob's YouTube channel (jacob tangerine). One row that scrolls / swipes,
+    <!-- Side projects: student videos from Jacob's YouTube channel (jacob tangerine), then animated infographics
+         (masters: Design/_inbox/slides-portfolio/*.gif, as MP4s here). Videos open on YouTube; an infographic opens
+         full size in the lightbox below (ig-lightbox.js). One row that scrolls / swipes,
          reusing the App Store carousel (.shots-wrap, carousel.js) at a smaller, 16:9 size. Thumbnails load straight
-         from YouTube (i.ytimg.com), so a thumbnail changed on YouTube shows up here on its own. Each opens the
+         from YouTube (i.ytimg.com), so a thumbnail changed on YouTube shows up here on its own; bump the ?v= on its URL so
+         browsers that cached the old one fetch it again. Each opens the
          video in a new tab. -->
     <section class="side-projects" aria-labelledby="side-title">
       <h2 id="side-title" class="side-title" aria-label="My student creative projects">My student <span class="scramble" data-words="creative|video|motion" aria-hidden="true">creative</span> projects</h2>
-      <p class="side-cap">Highlighting light motion graphics, news-style lower thirds and video editing.</p>
+      <p class="side-cap">Showcasing light motion graphics, lower thirds and video editing.</p>
       <div class="shots-wrap shots-yt">
-        <div class="shots" id="yt-shots" role="region" aria-label="Student videos on YouTube" tabindex="0">
+        <div class="shots" id="yt-shots" role="region" aria-label="Student videos and infographics" tabindex="0">
           <ul>
-          <li><a href="https://www.youtube.com/watch?v=rtgwV73nv2Y" target="_blank" rel="noopener"><span class="yt-thumb"><img src="https://i.ytimg.com/vi/rtgwV73nv2Y/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async"></span><span class="yt-title">Spotify Wrapped but it roasts my food spending instead of music</span><span class="visually-hidden"> (YouTube, opens in a new tab)</span></a></li>
-          <li><a href="https://www.youtube.com/watch?v=r1luvoZbCVU" target="_blank" rel="noopener"><span class="yt-thumb"><img src="https://i.ytimg.com/vi/r1luvoZbCVU/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async"></span><span class="yt-title">The Massacre at Atåte: Guam in World War II</span><span class="visually-hidden"> (YouTube, opens in a new tab)</span></a></li>
-          <li><a href="https://www.youtube.com/watch?v=ruFt5zK_Yoc" target="_blank" rel="noopener"><span class="yt-thumb"><img src="https://i.ytimg.com/vi/ruFt5zK_Yoc/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async"></span><span class="yt-title">2022 1MB: Group 6 Project</span><span class="visually-hidden"> (YouTube, opens in a new tab)</span></a></li>
-          <li><a href="https://www.youtube.com/watch?v=co1IP44bMwY" target="_blank" rel="noopener"><span class="yt-thumb"><img src="https://i.ytimg.com/vi/co1IP44bMwY/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async"></span><span class="yt-title">Worth It? Trying Cheap vs Expensive Boba Milk Tea in LA</span><span class="visually-hidden"> (YouTube, opens in a new tab)</span></a></li>
+          <li><a class="yt-card" href="https://www.youtube.com/watch?v=rtgwV73nv2Y" target="_blank" rel="noopener"><span class="yt-thumb"><img src="https://i.ytimg.com/vi/rtgwV73nv2Y/maxresdefault.jpg?v=2" alt="" width="1280" height="720" loading="lazy" decoding="async"></span><span class="yt-title">Spotify Wrapped but it roasts my food spending instead of music</span><span class="visually-hidden"> (YouTube, opens in a new tab)</span></a></li>
+          <li><a class="yt-card" href="https://www.youtube.com/watch?v=r1luvoZbCVU" target="_blank" rel="noopener"><span class="yt-thumb"><img src="https://i.ytimg.com/vi/r1luvoZbCVU/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async"></span><span class="yt-title">The Massacre at Atåte: Guam in World War II</span><span class="visually-hidden"> (YouTube, opens in a new tab)</span></a></li>
+          <li><a class="yt-card" href="https://www.youtube.com/watch?v=ruFt5zK_Yoc" target="_blank" rel="noopener"><span class="yt-thumb"><img src="https://i.ytimg.com/vi/ruFt5zK_Yoc/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async"></span><span class="yt-title">2022 1MB: Group 6 Project</span><span class="visually-hidden"> (YouTube, opens in a new tab)</span></a></li>
+          <li><a class="yt-card" href="https://www.youtube.com/watch?v=co1IP44bMwY" target="_blank" rel="noopener"><span class="yt-thumb"><img src="https://i.ytimg.com/vi/co1IP44bMwY/maxresdefault.jpg" alt="" width="1280" height="720" loading="lazy" decoding="async"></span><span class="yt-title">Worth It? Trying Cheap vs Expensive Boba Milk Tea in LA</span><span class="visually-hidden"> (YouTube, opens in a new tab)</span></a></li>
+          <li><button class="yt-card ig-open" type="button" aria-haspopup="dialog" aria-label="Reworking Asian American Masculinities, animated presentation: open full size"><span class="yt-thumb"><video muted loop playsinline preload="none" data-src="/assets/video/infographic-asian-masculinities-v1.mp4" poster="/assets/img/infographic-asian-masculinities-poster-v1.webp" width="1280" height="720"></video></span><span class="yt-title">Reworking Asian American Masculinities</span></button></li>
+          <li><button class="yt-card ig-open" type="button" aria-haspopup="dialog" aria-label="Lobbying Spending, 1998–2020, animated infographic: open full size"><span class="yt-thumb"><video muted loop playsinline preload="none" data-src="/assets/video/infographic-lobbying-v1.mp4" poster="/assets/img/infographic-lobbying-poster-v1.webp" width="1366" height="768"></video></span><span class="yt-title">Lobbying Spending, 1998–2020</span></button></li>
+          <li><button class="yt-card ig-open" type="button" aria-haspopup="dialog" aria-label="Affordable Care Act, animated infographic: open full size"><span class="yt-thumb"><video muted loop playsinline preload="none" data-src="/assets/video/infographic-aca-v1.mp4" poster="/assets/img/infographic-aca-poster-v1.webp" width="1280" height="720"></video></span><span class="yt-title">Affordable Care Act</span></button></li>
+          <li><button class="yt-card ig-open" type="button" aria-haspopup="dialog" aria-label="Social Media Usage, animated infographic: open full size"><span class="yt-thumb"><video muted loop playsinline preload="none" data-src="/assets/video/infographic-social-media-v1.mp4" poster="/assets/img/infographic-social-media-poster-v1.webp" width="1280" height="720"></video></span><span class="yt-title">Social Media Usage</span></button></li>
+          <li><button class="yt-card ig-open" type="button" aria-haspopup="dialog" aria-label="U.S. Trade Deficit, 2000–2020, animated infographic: open full size"><span class="yt-thumb"><video muted loop playsinline preload="none" data-src="/assets/video/infographic-trade-deficit-v1.mp4" poster="/assets/img/infographic-trade-deficit-poster-v1.webp" width="1280" height="720"></video></span><span class="yt-title">U.S. Trade Deficit, 2000–2020</span></button></li>
+          <li><button class="yt-card ig-open" type="button" aria-haspopup="dialog" aria-label="Initiatives in the United States, animated infographic: open full size"><span class="yt-thumb"><video muted loop playsinline preload="none" data-src="/assets/video/infographic-us-initiatives-v1.mp4" poster="/assets/img/infographic-us-initiatives-poster-v1.webp" width="1280" height="720"></video></span><span class="yt-title">Initiatives in the United States</span></button></li>
+          <li><button class="yt-card ig-open" type="button" aria-haspopup="dialog" aria-label="Gender Wage Gap, animated infographic: open full size"><span class="yt-thumb"><video muted loop playsinline preload="none" data-src="/assets/video/infographic-wage-gap-v1.mp4" poster="/assets/img/infographic-wage-gap-poster-v1.webp" width="1280" height="720"></video></span><span class="yt-title">Gender Wage Gap</span></button></li>
           </ul>
         </div>
         <button class="shots-btn shots-prev icon-link" type="button" aria-controls="yt-shots" aria-label="Previous videos"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 18l-6-6 6-6"/></svg></button>
         <button class="shots-btn shots-next icon-link" type="button" aria-controls="yt-shots" aria-label="Next videos"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M9 18l6-6-6-6"/></svg></button>
       </div>
+      <!-- Infographic lightbox: the clicked card's video grows into this dialog over a blurred page (ig-lightbox.js). -->
+      <dialog class="ig-lightbox" aria-label="Infographic">
+        <video class="ig-media" muted loop playsinline width="1280" height="720"></video>
+        <button class="ig-close icon-link" type="button" aria-label="Close"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      </dialog>
     </section>
   </main>
 
@@ -140,6 +155,7 @@
   <script src="/assets/js/screen-wall.js" defer></script>
   <script src="/assets/js/deck-preview.js" defer></script>
   <script src="/assets/js/scramble.js" defer></script>
+  <script src="/assets/js/ig-lightbox.js" defer></script>
   <script src="/assets/js/site.js" defer></script>
 </body>
 </html>
