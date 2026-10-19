@@ -1,0 +1,141 @@
+/* Living documentation. A "fit" slide (1512 x 982 frame): title and lede, then the compass (where a fact goes)
+   on the left and the docs folder as a file tree on the right. File names are .def terms (base.css) that open the
+   real Markdown in the definition sheet; .md below styles that render. */
+.chapter.ai.on { display: grid; grid-template-rows: auto auto 1fr; }
+.chapter.ai { padding-bottom: 96px; }
+.ai-title { text-align: center; margin-bottom: 0; }
+body[data-lang="both"] .ai-title .en { margin-bottom: 4px; }
+.ai-lede { margin-top: 12px; text-align: center; font-size: var(--card-text); line-height: var(--card-lh); color: var(--body); }
+body[data-lang="both"] .ai-lede .en { display: block; margin-bottom: 4px; }
+body[data-lang="zh"] .ai-lede .zh { font-size: var(--card-text-zh); line-height: var(--card-lh-zh); }
+
+.ai-body { display: grid; grid-template-columns: 700px 560px; gap: 64px; justify-content: center; align-items: center; }
+
+/* the compass: the two questions from docs/README.md as a 2 x 2, tutorials greyed (we keep none) */
+.ai-compass { padding: 0; }   /* no card: the heading and grid sit straight on the page */
+.ai-compass h3 { font: 600 22px/28px var(--sans); color: var(--heading); }
+.ai-compass h3 .zh { font: 500 20px/25px 'Noto Sans SC', 'PingFang SC', var(--sans); }
+body[data-lang="both"] .ai-compass h3 .en { display: block; margin-bottom: 4px; }
+.cx-sub, .cx-note { font-size: var(--card-text); line-height: var(--card-lh); color: var(--body); }
+.cx-sub { margin-top: 4px; }
+.cx-note { grid-column: 2 / -1; margin-top: 14px; padding-left: 20px; color: var(--body); font-weight: 400; }   /* a caption under the chart, aligned to it, so it doesn't read as a third row label */
+body[data-lang="both"] :is(.cx-sub, .cx-note) .en { display: block; margin-bottom: 2px; }
+body[data-lang="zh"] :is(.cx-sub, .cx-note) .zh { font-size: var(--card-text-zh); line-height: var(--card-lh-zh); }
+.cx-grid { --cx-rule: color-mix(in srgb, var(--heading) 55%, var(--bg)); display: grid; grid-template-columns: auto 1fr 1fr; gap: 0; margin-top: 36px; align-items: stretch; }
+.cx-col, .cx-row { font: 600 16px/21px var(--sans); color: var(--heading); }   /* the two questions' axes: as strong as the cells they label */
+body[data-lang="both"] :is(.cx-col, .cx-row) .zh { font-weight: 500; font-size: 14px; line-height: 19px; color: var(--body); }
+.cx-col { padding: 0 20px 10px; }
+.cx-row { align-self: center; padding-right: 20px; white-space: nowrap; }
+body[data-lang="both"] :is(.cx-col, .cx-row) .en { display: block; }
+.cx-cell { display: grid; gap: 6px; align-content: start; padding: 22px 20px 24px; border-left: 1.5px solid var(--cx-rule); border-top: 1.5px solid var(--cx-rule); }   /* a ruled 2 x 2, no cards */
+.cx-cell:nth-child(6), .cx-cell:nth-child(9) { border-right: 1.5px solid var(--cx-rule); }   /* right column closes the box */
+.cx-cell:nth-child(8), .cx-cell:nth-child(9) { border-bottom: 1.5px solid var(--cx-rule); }   /* bottom row closes the box */
+.cx-cell code { font: 500 18px/24px ui-monospace, 'SF Mono', Menlo, monospace; color: var(--accent-text); }
+.cx-cell p { font: 400 16px/22px var(--sans); color: var(--body); }
+body[data-lang="both"] .cx-cell p .en { display: block; }
+.cx-cell.is-off > * { opacity: 0.4; }   /* fade the words, keep the rules */
+
+/* the file tree: a white card (no border, no shadow, as every card), monospace, 24 per level */
+.ai-tree { padding: 28px 32px; border-radius: 24px; background: var(--card); }
+.ai-tree ul { list-style: none; display: grid; gap: 6px; font: 400 15px/22px ui-monospace, 'SF Mono', Menlo, monospace; color: var(--body); }
+.ai-tree li { display: flex; align-items: center; gap: 10px; white-space: nowrap; min-height: 22px; }   /* centred, so the pills sit on the folder name's middle */
+.ai-tree .d1 { padding-left: 24px; } .ai-tree .d2 { padding-left: 48px; } .ai-tree .d3 { padding-left: 72px; }
+.ai-tree .t-dir { color: var(--soft); }
+.ai-tree .t-f::before { content: ''; width: 10px; height: 13px; flex: none; border-radius: 2px; background: color-mix(in srgb, var(--accent) 22%, transparent); align-self: center; }
+.ai-tree em { font: 500 12px/16px var(--sans); font-style: normal; color: var(--accent-text); background: var(--accent-wash); padding: 3px 10px; border-radius: 999px; margin-left: auto; margin-block: -3px; }   /* negative margin: the pill doesn't make its row taller than the others */
+.ai-tree .def { font: inherit; }
+.ai-tree figcaption { font: 600 12px/16px var(--sans); color: var(--soft); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px; }   /* labels the tree as an excerpt, like the journey map's SCENARIO */
+body[data-lang="both"] .ai-tree figcaption .zh { display: block; margin-top: 2px; text-transform: none; letter-spacing: 0; }
+
+/* a Markdown file in the sheet: its path, then the render */
+.sheet:has(.md) { width: 760px; }
+.md-path { font: 500 13px/18px ui-monospace, 'SF Mono', Menlo, monospace; color: var(--soft); margin: 4px 48px 16px 0; }
+.md { font: 400 15px/22px var(--sans); color: var(--body); }
+.md h1 { font: 600 22px/28px var(--sans); color: var(--heading); margin: 0 0 12px; }
+.md h2 { font: 600 17px/22px var(--sans); color: var(--heading); margin: 20px 0 8px; }
+.md h3 { font: 600 15px/20px var(--sans); color: var(--heading); margin: 16px 0 6px; }
+.md p, .md ul, .md table { margin: 0 0 12px; }
+.md ul { padding-left: 20px; }
+.md li { margin-bottom: 4px; }
+.md strong { color: var(--heading); font-weight: 600; }
+.md em { color: var(--soft); }
+.md code { font: 400 13px/18px ui-monospace, 'SF Mono', Menlo, monospace; background: var(--bg); padding: 1px 5px; border-radius: 4px; }
+.md table { border-collapse: collapse; width: 100%; font-size: 13px; line-height: 18px; }
+.md th, .md td { text-align: left; vertical-align: top; padding: 6px 10px 6px 0; border-bottom: 1px solid var(--border); }
+.md th { color: var(--heading); font-weight: 600; border-bottom: 1.5px solid var(--heading); }
+.md .md-link { color: var(--accent-text); }
+/* the Diátaxis table: tutorials greyed */
+.dx-table code { font: 400 13px/18px ui-monospace, 'SF Mono', Menlo, monospace; }
+.dx-table td:first-child { color: var(--heading); white-space: nowrap; }
+.dx-table tr.is-off td { opacity: 0.45; }
+.sheet:has(.dx-table) { width: 820px; }
+body[data-lang="both"] .dx-table td:nth-child(2) .zh, body[data-lang="both"] .dx-table td:nth-child(3) .zh { display: block; margin-top: 2px; }
+
+/* arriving (slide.js adds .play): the title, the lede, the compass, then the tree */
+.chapter.ai .ai-title, .chapter.ai .ai-lede, .chapter.ai .ai-compass, .chapter.ai .ai-tree { opacity: 0; }
+.chapter.ai.play .ai-title { animation: ai-in 700ms cubic-bezier(0.32, 0.72, 0, 1) 200ms both; }
+.chapter.ai.play .ai-lede { animation: ai-in 700ms cubic-bezier(0.32, 0.72, 0, 1) 300ms both; }
+.chapter.ai.play .ai-compass { animation: ai-in 800ms cubic-bezier(0.32, 0.72, 0, 1) 440ms both; }
+.chapter.ai.play .ai-tree { animation: ai-in 800ms cubic-bezier(0.32, 0.72, 0, 1) 600ms both; }
+@keyframes ai-in { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .chapter.ai .ai-title, .chapter.ai .ai-lede, .chapter.ai .ai-compass, .chapter.ai .ai-tree { opacity: 1; }
+  .chapter.ai.play * { animation: none !important; }
+}
+body[data-lang="both"] .ai-tree em .zh { display: none; }   /* EN + 中文: the tags stay one line (English: they name the Diátaxis types) */
+
+/* step 0, the session loop: a track of seven steps (the running one lit, the line filled up to it), and below
+   it a fake terminal that types each step out (slide.js drives both). The terminal stays dark in both themes. */
+.ai-loop { display: grid; align-content: center; justify-items: center; gap: 44px; }
+.al-track { --n: 7; position: relative; list-style: none; display: grid; grid-template-columns: repeat(var(--n), 156px); width: calc(var(--n) * 156px); }
+.al-track::before, .al-track::after {   /* the rail between the first and last icon, and its fill up to the running step */
+  content: ''; position: absolute; top: 25px; left: 78px; height: 2px; border-radius: 1px;
+}
+.al-track::before { width: calc(100% - 156px); background: color-mix(in srgb, var(--heading) 14%, transparent); }
+.al-track::after { width: calc((100% - 156px) * var(--prog, 0)); background: var(--accent); transition: width 520ms cubic-bezier(0.32, 0.72, 0, 1); }
+.al-step { position: relative; z-index: 1; display: grid; justify-items: center; align-content: start; gap: 12px; text-align: center; padding: 0 8px; }
+.al-ic {
+  display: grid; place-items: center; width: 52px; height: 52px; border-radius: 50%;
+  background: var(--card); color: var(--soft); box-shadow: 0 0 0 2px color-mix(in srgb, var(--heading) 14%, transparent);
+  transition: box-shadow 300ms, background-color 300ms, color 300ms, transform 300ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.al-ic svg { width: 24px; height: 24px; fill: currentColor; }
+.al-ic.is-git svg, .al-ic.is-loop svg { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.al-ic.is-agent { grid-auto-flow: column; gap: 2px; }
+.al-ic.is-agent img { width: 18px; height: auto; filter: grayscale(1) opacity(0.55); transition: filter 300ms; }
+.al-ic.is-agent img + img { width: 17px; }
+.al-step p { font: 500 15px/20px var(--sans); color: var(--soft); transition: color 300ms; }
+body[data-lang="both"] .al-step p .en { display: block; }
+body[data-lang="both"] .al-step p .zh { font-size: 13px; line-height: 18px; font-weight: 400; }
+body[data-lang="zh"] .al-step p .zh { font-size: 17px; line-height: 22px; }
+.al-step.is-done .al-ic { box-shadow: 0 0 0 2px var(--accent); color: var(--accent); }
+.al-step.is-done .al-ic.is-agent img { filter: none; }
+.al-step.is-on .al-ic { background: var(--accent); color: #fff; box-shadow: 0 0 0 6px var(--accent-wash); transform: scale(1.08); }
+.al-step.is-on .al-ic.is-agent { background: var(--card); box-shadow: 0 0 0 2px var(--accent), 0 0 0 7px var(--accent-wash); }
+.al-step.is-on .al-ic.is-agent img { filter: none; }
+.al-step.is-on p, .al-step.is-done p { color: var(--heading); }
+
+.al-term { width: 960px; border-radius: 14px; overflow: hidden; background: #1D1D1F; color: #D8D8D4; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .al-term { box-shadow: 0 0 0 1px rgba(255,255,255,0.1); } }   /* dark page: the window keeps its edge */
+:root[data-theme="dark"] .al-term { box-shadow: 0 0 0 1px rgba(255,255,255,0.1); }
+.al-bar { position: relative; display: flex; align-items: center; gap: 8px; height: 36px; padding: 0 14px; background: #2A2A2C; }
+.al-bar i { width: 12px; height: 12px; border-radius: 50%; background: #FF5F57; }
+.al-bar i:nth-child(2) { background: #FEBC2E; } .al-bar i:nth-child(3) { background: #28C840; }
+.al-bar span { position: absolute; left: 0; right: 0; text-align: center; font: 500 13px/1 var(--sans); color: #9A9A96; pointer-events: none; }
+.al-lines { display: flex; flex-direction: column; justify-content: flex-end; height: 264px; padding: 16px 22px 18px; overflow: hidden; -webkit-mask-image: linear-gradient(transparent 0, #000 56px); mask-image: linear-gradient(transparent 0, #000 56px);   /* older lines fade out as they scroll up */ font: 400 15px/24px ui-monospace, 'SF Mono', Menlo, monospace; white-space: pre; }
+.al-lines > div { animation: al-line 220ms ease-out both; }
+.al-lines .cmd { color: #F2F2EE; }
+.al-lines .cmd::before { content: '> '; color: #8CC0CA; }
+.al-lines .act::before { content: '⏺ '; color: #D97757; }
+.al-lines .sub { color: #8E8E8A; }
+.al-lines .sub::before { content: '  ⎿  '; }
+.al-lines .note { color: #7D7D79; }
+.al-lines .note::before { content: '   # '; }
+.al-lines .cmd.is-typing::after { content: ''; display: inline-block; width: 8px; height: 17px; margin-left: 1px; vertical-align: -3px; background: #F2F2EE; animation: al-caret 900ms steps(1) infinite; }
+@keyframes al-line { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@keyframes al-caret { 50% { opacity: 0; } }
+body[data-lang="both"] .ai-loop { gap: 36px; }
+body[data-lang="both"] .al-lines { height: 240px; }
+.chapter.ai .ai-loop { opacity: 0; }
+.chapter.ai.play .ai-loop { animation: ai-in 800ms cubic-bezier(0.32, 0.72, 0, 1) 440ms both; }
+@media (prefers-reduced-motion: reduce) { .chapter.ai .ai-loop { opacity: 1; } .al-lines > div { animation: none; } }

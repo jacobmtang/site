@@ -1,0 +1,99 @@
+/* The centrepiece. --d is the circle's diameter; everything else derives from it.
+   .u-pop is taller than the circle (it starts --rise above it) and masked by the UNION of two shapes:
+   a rectangle from its top down to the circle's equator, and the circle itself. Above the equator the
+   figure is free; below it, only what falls inside the circle shows. */
+.chapter.user.on {
+  /* sizes live here so the cards can line up with the circle, not with the head room above it */
+  --d: 492px;   /* half the 982 frame (the slide is "fit": no vh here), on the 4pt grid */
+  --rise: calc(var(--d) * 0.14);           /* head room: the head pops 0.12d, plus a little air */
+  --fig-h: calc(var(--d) * 1.12);          /* figure height; its bottom sits on the circle's bottom */
+  display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+  grid-template-rows: auto auto; align-content: start; column-gap: 48px; row-gap: 24px;
+}
+.u-title { grid-column: 1 / -1; text-align: center; margin-bottom: 0; }
+body[data-lang="both"] .u-title .en { margin-bottom: 4px; }
+
+.u-stage {
+  position: relative; width: var(--d); height: var(--d); margin-top: var(--rise);
+}
+
+.u-sky {
+  position: absolute; inset: 0; border-radius: 50%; overflow: hidden;
+  background: #A9C4EC;                     /* the sky's own blue, while the image decodes */
+  box-shadow: 0 24px 64px rgba(60, 80, 140, 0.18);
+}
+.u-sky img {
+  position: absolute; top: 0; left: 0; height: 100%; width: auto; max-width: none;
+  animation: u-drift 48s ease-in-out infinite alternate;   /* the clouds pass, slowly */
+}
+@keyframes u-drift { from { transform: translateX(0); } to { transform: translateX(calc(var(--d) - var(--d) * 1.5)); } }
+
+.u-pop {
+  position: absolute; left: 0; right: 0; top: calc(-1 * var(--rise)); bottom: 0;
+  /* rect: top → equator (rise + d/2); circle: centred on the stage's circle */
+  -webkit-mask-image: linear-gradient(#000, #000), radial-gradient(circle calc(var(--d) / 2) at 50% calc(var(--rise) + var(--d) / 2), #000 calc(100% - 1px), transparent 100%);
+          mask-image: linear-gradient(#000, #000), radial-gradient(circle calc(var(--d) / 2) at 50% calc(var(--rise) + var(--d) / 2), #000 calc(100% - 1px), transparent 100%);
+  -webkit-mask-size: 100% calc(var(--rise) + var(--d) / 2), 100% 100%;
+          mask-size: 100% calc(var(--rise) + var(--d) / 2), 100% 100%;
+  -webkit-mask-position: top, 0 0; mask-position: top, 0 0;
+  -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+}
+.u-figure {
+  position: absolute; bottom: 0; left: 50%; height: var(--fig-h); width: auto;
+  transform: translateX(-46%);             /* her face sits a touch right of centre, the hair balances left */
+}
+
+/* ---- entrance, replayed by slide.js on each visit (.play) ----
+   1. the whole stage (circle AND its mask) opens from a point, so nothing shows outside the circle;
+   2. she rises from below the equator, where only the circle can show her, and her head breaks the top edge.
+   ☠️ She must START wholly below the equator (top at -0.12d, so > 0.62d of 1.12d: 60%), or her head floats
+   free of the circle while it opens. One spring for both, as the deck's transitions. */
+.u-stage { transform-origin: 50% 50%; }
+.chapter.user.play .u-stage { animation: u-open 1100ms cubic-bezier(0.32, 0.72, 0, 1) 240ms both; }
+.chapter.user.play .u-figure { animation: u-rise 1400ms cubic-bezier(0.32, 0.72, 0, 1) 620ms both; }
+@keyframes u-open { from { transform: scale(0.2); opacity: 0; } 40% { opacity: 1; } to { transform: scale(1); } }
+@keyframes u-rise { from { transform: translate(-46%, 60%); } to { transform: translate(-46%, 0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .u-sky img, .chapter.user.play .u-stage, .chapter.user.play .u-figure { animation: none; }
+}
+
+/* the title rises in first, as on the market slide (same curve and timing) */
+.chapter.user .u-title { opacity: 0; }
+.chapter.user.play .u-title { animation: u-title-in 700ms cubic-bezier(0.32, 0.72, 0, 1) 200ms both; }
+@keyframes u-title-in { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .chapter.user .u-title { opacity: 1; } .chapter.user.play .u-title { animation: none; } }
+
+/* ---- stat cards: two each side of the circle, arriving with the entrance once she has risen ---- */
+.u-cards { display: grid; gap: 16px; align-content: center; align-self: stretch; margin-top: var(--rise); }   /* centred on the circle */
+.u-cards.is-left { justify-items: end; }
+.u-cards.is-right { justify-items: start; }
+.u-card {
+  width: 100%; max-width: 320px; padding: 20px; border-radius: 20px;
+  background: var(--card); border: 1px solid transparent;   /* no shadow: a view-transition snapshot drops it mid-move */
+}
+.u-num { font: 600 34px/41px var(--sans); color: var(--accent-text); font-variant-numeric: tabular-nums; margin-bottom: 8px; }
+.u-num .zh { font: 600 28px/34px 'Noto Sans SC', 'PingFang SC', var(--sans); }   /* sans: only slide titles are serif */
+body[data-lang="both"] .u-num .zh { display: none !important; }   /* one number, in English digits, when both show */
+body[data-lang="zh"] .u-num .zh { font: 600 34px/41px 'Noto Sans SC', 'PingFang SC', var(--sans); }
+.u-cap { font-size: var(--card-text); line-height: var(--card-lh); font-weight: var(--card-weight); color: var(--body); }   /* card text: base.css tokens, shared with every card */
+.u-card .u-cap .zh { font-size: var(--card-text); line-height: var(--card-lh); }   /* out-ranks base.css zh-mode inherit */
+body[data-lang="zh"] .u-card .u-cap .zh { font-size: var(--card-text-zh); line-height: var(--card-lh-zh); }
+body[data-lang="both"] .u-cap .en { display: block; margin-bottom: 4px; }
+.u-src { margin-top: 12px; font: 13px/18px var(--sans); color: var(--soft); }
+
+/* a card slides out from behind the circle toward its side. Hidden until the entrance plays; then in
+   reading order (left top, left bottom, right top, right bottom), 120ms apart, from 1.2s: as she settles. */
+.u-card { opacity: 0; }
+.is-left .u-card { --from: 48px; }
+.is-right .u-card { --from: -48px; }
+.chapter.user.play .u-card { animation: u-card-in 760ms cubic-bezier(0.32, 0.72, 0, 1) var(--at, 1200ms) both; }
+.is-left .u-card:nth-child(2) { --at: 1320ms; }
+.is-right .u-card:nth-child(1) { --at: 1440ms; }
+.is-right .u-card:nth-child(2) { --at: 1560ms; }
+@keyframes u-card-in { from { opacity: 0; transform: translateX(var(--from)) scale(0.96); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) { .u-card { opacity: 1; } .chapter.user.play .u-card { animation: none; } }
+
+/* Chinese breaks at punctuation and spaces only, never inside a word (药物, 零食) */
+.u-cap .zh { word-break: keep-all; overflow-wrap: anywhere; }

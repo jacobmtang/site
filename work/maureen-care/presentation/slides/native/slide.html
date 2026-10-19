@@ -1,0 +1,34 @@
+<!-- Designing a system on native-first principles. Left: the two principles as plain text. Right: one
+     screen recording at a time (step 0, then step 1 on →), with callout lines (a callout with data-t="start-end" (or several, comma-separated), in seconds of its video, shows only
+     while that element is on screen) to the native elements they show
+     (video/native-1.mp4, native-2.mp4, re-encoded from the .mov originals). -->
+<h2 class="n-title"><span class="en">Designing a system on native-first principles</span><span class="zh">基于原生优先原则的设计系统</span></h2>
+<div class="n-body">
+  <div class="n-points">
+    <article class="n-point">
+      <span class="n-num" aria-hidden="true">1</span>
+      <h3><span class="en">Follow Apple's Human Interface Guidelines</span><span class="zh">遵循苹果<span class="nobr">人机界面指南</span></span></h3>
+      <p><span class="en">Layout, navigation, typography and accessibility follow Apple's best practices, so Maureen feels like part of iOS.</span><span class="zh">布局、导航、字体排版与无障碍设计均遵循苹果的最佳实践，让 Maureen 用起来就像 iOS 的一部分。</span></p>
+    </article>
+    <article class="n-point">
+      <span class="n-num" aria-hidden="true">2</span>
+      <h3><span class="en">Use native Liquid Glass components</span><span class="zh">采用原生 Liquid Glass 组件</span></h3>
+      <p><span class="en">The tab bar, headers, sheets and buttons are iOS's own Liquid Glass, so they behave like the system and update with it.</span><span class="zh">标签栏、导航栏、底部面板与按钮均采用 iOS 原生的 Liquid Glass，交互与系统一致，并随系统一同更新。</span></p>
+    </article>
+  </div>
+  <div class="n-stage">
+    <figure class="n-phone" data-until="0">
+      <video data-src="video/native-1.mp4" poster="video/native-1-poster.webp" muted loop playsinline preload="none"></video>
+      <div class="n-call l" style="--x:5px; --y:59px"><span class="n-label"><span class="en">Morphing <span class="nobr">header buttons</span></span><span class="zh">可形变的<span class="nobr">导航栏按钮</span></span></span><i></i></div>
+      <div class="n-call r" style="--x:278px; --y:254px"><i></i><span class="n-label"><span class="en">Squircle cards</span><span class="zh">超椭圆圆角卡片</span></span></div>
+      <div class="n-call l" style="--x:14px; --y:584px"><span class="n-label"><span class="en">Native bottom <span class="nobr">tab bar</span></span><span class="zh">原生底部标签栏</span></span><i></i></div>
+    </figure>
+    <figure class="n-phone" data-from="1">
+      <video data-src="video/native-2.mp4" poster="video/native-2-poster.webp" muted loop playsinline preload="none"></video>
+      <div class="n-call r" style="--x:232px; --y:94px" data-t="2.2-19.9"><i></i><span class="n-label"><span class="en">Progressive edge blur <span class="nobr">on scroll</span></span><span class="zh">滚动时的渐进式<span class="nobr">边缘模糊</span></span></span></div>
+      <div class="n-call r" style="--x:279px; --y:340px" data-t="11.5-13.4"><i></i><span class="n-label"><span class="en">Detached <span class="nobr">form sheet</span></span><span class="zh">悬浮式表单面板</span></span></div>
+      <div class="n-call r" style="--x:256px; --y:300px" data-t="7.7-9.9"><i></i><span class="n-label"><span class="en">Calendar <span class="nobr">popover</span></span><span class="zh">日历弹出框</span></span></div>
+      <div class="n-call r" style="--x:188px; --y:420px" data-t="9.95-10.9"><i></i><span class="n-label"><span class="en">Time wheel <span class="nobr">popover</span></span><span class="zh">时间滚轮弹出框</span></span></div>
+    </figure>
+  </div>
+</div>

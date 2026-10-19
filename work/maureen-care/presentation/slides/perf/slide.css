@@ -1,0 +1,131 @@
+/* Designing for real-world performance and limitations. A "fit" slide (1512 x 982 frame). Title on top; below,
+   the takeaways on the left and the incident as a vertical timeline on the right. Plain text, no cards, no
+   numbers: the timeline's dots carry the order. */
+.chapter.perf.on { display: grid; grid-template-rows: auto auto 1fr; }
+.chapter.perf { padding-bottom: 100px; }
+.p-title { text-align: center; margin-bottom: 0; }
+body[data-lang="both"] .p-title .en { margin-bottom: 4px; }
+
+.p-body { display: grid; grid-template-columns: 720px 460px; gap: 80px; justify-content: center; align-items: center; }
+.p-body h3 { font: 600 13px/18px var(--sans); color: var(--soft); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 20px; }
+body[data-lang="both"] .p-body h3 .zh { margin-left: 8px; letter-spacing: 0; }
+
+/* takeaways: two statements, a rule between */
+.p-take article + article { margin-top: 20px; padding-top: 20px; border-top: 1.5px solid color-mix(in srgb, var(--heading) 14%, var(--bg)); }
+.p-take h4 { font: 600 26px/32px var(--sans); color: var(--heading); }
+.p-take h4 .zh { font-weight: 500; }
+body[data-lang="both"] .p-take h4 .zh { display: block; margin-top: 4px; font-size: 20px; line-height: 26px; color: var(--body); }
+body[data-lang="zh"] .p-take h4 .zh { font-size: 28px; line-height: 36px; }
+.p-take p { margin-top: 10px; font-size: var(--card-text); line-height: var(--card-lh); color: var(--body); }
+body[data-lang="both"] .p-take p .en { display: block; margin-bottom: 2px; }
+body[data-lang="both"] .p-take p .zh { color: var(--soft); }
+body[data-lang="zh"] .p-take p .zh { font-size: var(--card-text-zh); line-height: var(--card-lh-zh); }
+
+/* the incident: dots on a line, the last one red */
+.p-tl { list-style: none; position: relative; display: grid; gap: 26px; }
+.p-tl::before { content: ''; position: absolute; left: 7px; top: 10px; bottom: 12px; width: 2px; background: color-mix(in srgb, var(--heading) 16%, var(--bg)); }
+.p-tl > li { position: relative; display: grid; gap: 4px; padding-left: 36px; font-size: var(--card-text); line-height: var(--card-lh); color: var(--body); }
+.p-tl > li::before {
+  content: ''; position: absolute; left: 0; top: 4px; width: 16px; height: 16px; border-radius: 50%;
+  background: var(--bg); box-shadow: inset 0 0 0 2.5px var(--accent);
+}
+.p-tl > li > b { font-weight: 600; color: var(--heading); }
+body[data-lang="both"] .p-tl > li > b .zh { margin-left: 8px; font-weight: 500; }
+body[data-lang="both"] .p-tl > li > span.zh { color: var(--soft); }
+body[data-lang="zh"] .p-tl > li .zh { font-size: var(--card-text-zh); line-height: var(--card-lh-zh); }
+.p-tl > li.is-crash::before { background: #C4473A; box-shadow: 0 0 0 5px color-mix(in srgb, #C4473A 20%, transparent); }
+.p-tl > li.is-crash > b { color: #C4473A; }
+.p-load { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.p-load li { padding: 6px 14px; border-radius: 999px; background: var(--accent-wash); color: var(--accent-text); font: 500 15px/20px var(--sans); }
+body[data-lang="both"] .p-load li .zh { margin-left: 6px; }
+body[data-lang="zh"] .p-load li .zh { font-size: 16px; }
+.p-src { margin-top: 28px; padding-left: 36px; font: 400 13px/18px var(--sans); color: var(--soft); }
+body[data-lang="both"] .p-src .zh { margin-left: 8px; }
+
+/* the EN + 中文 view: short lines keep their Chinese inline */
+body[data-lang="both"] :is(.p-body h3, .p-tl > li > b, .p-load li, .p-src) .zh { display: inline; }
+body[data-lang="both"] :is(.p-tl > li > b, .p-load li) .en { display: inline; }
+
+/* arriving (slide.js adds .play): the title, the takeaways, then the incident */
+.chapter.perf .p-title, .chapter.perf .p-take, .chapter.perf .p-incident { opacity: 0; }
+.chapter.perf.play .p-title { animation: p-in 700ms cubic-bezier(0.32, 0.72, 0, 1) 200ms both; }
+.chapter.perf.play .p-take { animation: p-in 800ms cubic-bezier(0.32, 0.72, 0, 1) 420ms both; }
+.chapter.perf.play .p-incident { animation: p-in 800ms cubic-bezier(0.32, 0.72, 0, 1) 560ms both; }
+@keyframes p-in { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .chapter.perf .p-title, .chapter.perf .p-take, .chapter.perf .p-incident { opacity: 1; }
+  .chapter.perf.play * { animation: none !important; }
+}
+body[data-lang="both"] .p-take article + article { margin-top: 18px; padding-top: 18px; }
+body[data-lang="both"] .p-take h4 { font-size: 23px; line-height: 29px; }
+body[data-lang="both"] .p-take h4 .zh { font-size: 18px; line-height: 24px; }
+body[data-lang="both"] .p-take p { margin-top: 6px; }
+body[data-lang="both"] .p-tl { gap: 20px; }
+
+/* the device, Sentry's fields: a ruled two-column grid of label over value */
+.p-spec { display: grid; grid-template-columns: 1fr 1fr; column-gap: 32px; margin-bottom: 28px; border-top: 1.5px solid color-mix(in srgb, var(--heading) 14%, var(--bg)); }
+.p-spec > div { padding: 9px 0; border-bottom: 1.5px solid color-mix(in srgb, var(--heading) 14%, var(--bg)); }
+.p-spec dt { font: 600 11px/15px var(--sans); color: var(--soft); text-transform: uppercase; letter-spacing: 0.06em; }
+.p-spec dd { margin-top: 2px; font: 500 15px/21px var(--sans); color: var(--heading); }
+.p-spec dd b { color: #C4473A; font-weight: 600; }
+.p-spec code { font: 500 13px/21px ui-monospace, 'SF Mono', Menlo, monospace; }
+body[data-lang="both"] .p-spec dt .zh { display: inline; margin-left: 6px; letter-spacing: 0; }
+body[data-lang="both"] .p-spec dd .zh { display: none; }   /* EN + 中文: the values stay one line; the numbers read the same */
+body[data-lang="both"] .p-spec dd .en { display: inline; }
+body[data-lang="zh"] .p-spec dd .zh { font-size: 16px; }
+body[data-lang="both"] .p-spec { margin-bottom: 20px; }
+body[data-lang="both"] .chapter.perf { padding-top: 76px; }
+
+/* the incident in one line, above its details */
+.p-lead { margin: -8px 0 18px; font: 600 22px/28px var(--sans); color: var(--heading); }
+.p-lead .zh { font-weight: 500; }
+body[data-lang="both"] .p-lead { margin-bottom: 16px; font-size: 21px; line-height: 27px; }
+body[data-lang="both"] .p-lead .zh { display: block; margin-top: 2px; font-size: 17px; line-height: 23px; color: var(--body); }
+body[data-lang="zh"] .p-lead .zh { font-size: 26px; line-height: 33px; }
+body[data-lang="both"] .p-tl > li > span.zh { display: none; }   /* EN + 中文: each step's heading carries its Chinese; the detail lines stay English */
+body[data-lang="both"] .p-tl { gap: 16px; }
+body[data-lang="both"] .p-src { margin-top: 18px; }
+
+/* the Sentry issue itself, as captured */
+.p-shot { display: block; width: 100%; height: auto; margin: 0 0 20px; border-radius: 12px; box-shadow: 0 0 0 1px color-mix(in srgb, var(--heading) 12%, transparent); }
+body[data-lang="both"] .p-shot { margin-bottom: 14px; }
+.p-tl { gap: 18px; }
+.p-spec { margin-bottom: 22px; }
+.p-body h3 { margin-bottom: 14px; }
+body[data-lang="both"] .p-tl { gap: 12px; }
+body[data-lang="both"] .p-lead { font-size: 20px; line-height: 26px; }
+.p-incident .p-lead { margin-top: 0; margin-bottom: 4px; }
+.p-leadsub { margin-bottom: 18px; font-size: var(--card-text); line-height: var(--card-lh); color: var(--soft); }
+body[data-lang="both"] .p-leadsub .zh { margin-left: 8px; }
+body[data-lang="zh"] .p-leadsub .zh { font-size: var(--card-text-zh); line-height: var(--card-lh-zh); }
+body[data-lang="both"] .p-leadsub .zh { display: inline; margin-left: 10px; }
+body[data-lang="both"] .p-incident .p-lead .zh { margin-top: 0; }
+/* Takeaways: a section header in Maureen blue, not an eyebrow */
+.p-take h3 { font: 600 20px/26px var(--sans); color: var(--accent-text); text-transform: none; letter-spacing: 0; margin-bottom: 18px; }
+body[data-lang="both"] .p-take h3 .zh { margin-left: 8px; font-weight: 500; }
+body[data-lang="zh"] .p-take h3 .zh { font-size: 22px; }
+/* the subtext under the slide title */
+.p-lede { margin-top: 12px; text-align: center; font-size: var(--card-text); line-height: var(--card-lh); color: var(--body); }   /* as the other slides' ledes */
+body[data-lang="both"] .p-lede .zh { display: block; margin-top: 4px; }
+body[data-lang="zh"] .p-lede .zh { font-size: var(--card-text-zh); line-height: var(--card-lh-zh); }
+.p-incident .p-lead { margin-bottom: 18px; }
+.chapter.perf .p-lede { opacity: 0; }
+.chapter.perf.play .p-lede { animation: p-in 700ms cubic-bezier(0.32, 0.72, 0, 1) 300ms both; }
+@media (prefers-reduced-motion: reduce) { .chapter.perf .p-lede { opacity: 1; } }
+/* takeaways numbered by Maureen-blue circles, as the native slide's principles */
+.p-take article { display: grid; grid-template-columns: 32px 1fr; column-gap: 16px; align-items: start; }
+.p-take article > :not(.p-num) { grid-column: 2; }
+.p-num {
+  grid-row: 1 / span 2; display: grid; place-items: center; width: 32px; height: 32px; margin-top: 0px; border-radius: 50%;
+  background: var(--accent); color: #fff; font: 600 17px/1 var(--sans); font-variant-numeric: tabular-nums;
+}
+.p-take article + article { border-top: 0; padding-top: 0; margin-top: 28px; }   /* the numbers separate them: no dividers */
+.p-take h4 { font-size: 24px; line-height: 30px; }
+.p-num { margin-top: -1px; }
+body[data-lang="both"] .p-take article + article { margin-top: 20px; }
+body[data-lang="both"] .p-take h4 { font-size: 21px; line-height: 27px; }
+.p-take h3 { font-size: 26px; line-height: 32px; font-weight: 700; margin-bottom: 24px; }
+body[data-lang="both"] .p-take h3 { font-size: 24px; line-height: 30px; }
+.p-take h3 .zh { font-weight: 700; }
+body[data-lang="both"] .p-take h3 .zh { font-weight: 700; }
+body[data-lang="zh"] .p-take h3 .zh { font-size: 28px; line-height: 34px; }

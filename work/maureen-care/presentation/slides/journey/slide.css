@@ -1,0 +1,91 @@
+/* User journey map. A "fit" slide (1512 x 982 frame), one persona per step. Flat and square, a whiteboard
+   map rather than rounded cards: the persona panel on the left; on the right a header row of stages, a label
+   column, and a tinted band per row holding one flat note per stage, the stages split by vertical rules. */
+.chapter.journey.on { display: grid; grid-template-rows: auto 1fr; row-gap: 20px; }
+.chapter.journey { padding: 88px 32px 100px; }   /* wider than other slides: the map uses the whole frame */
+.j-title { text-align: center; margin-bottom: 0; }
+body[data-lang="both"] .j-title .en { margin-bottom: 4px; }
+.chapter.journey {
+  --band: #EEF2F2; --label: #E3EEF0;
+  --n-actions: #CFE3E7; --n-thoughts: #E4DDF0; --n-feelings: #F3E7CF; --n-pains: #F4D9D6;
+}
+:root[data-theme="dark"] .chapter.journey { --band: #262524; --label: #22383C; --n-actions: #2B4A50; --n-thoughts: #3A3346; --n-feelings: #463C2B; --n-pains: #4A2E2B; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .chapter.journey { --band: #262524; --label: #22383C; --n-actions: #2B4A50; --n-thoughts: #3A3346; --n-feelings: #463C2B; --n-pains: #4A2E2B; } }
+
+.jm { align-self: stretch; display: grid; grid-template-columns: 232px 1fr; gap: 12px; }
+
+/* the persona */
+.jm-persona { display: grid; grid-template-rows: auto 1fr; align-content: start; background: var(--card); }   /* one white tile; hairlines divide persona / scenario / goal */
+.jm-card { display: grid; justify-items: center; gap: 4px; padding: 20px 16px; text-align: center; }
+.jm-avatar { width: 96px; height: 96px; border-radius: 50%; object-fit: cover; margin-bottom: 8px; }
+.jm-card h3 { font: 600 20px/25px var(--sans); color: var(--heading); }
+body[data-lang="both"] .jm-card h3 .zh { display: none; }
+.jm-need { font: 500 15px/20px var(--sans); color: var(--accent-text); }
+body[data-lang="both"] .jm-need .en { display: block; }
+.jm-brief { padding: 16px 0; border-top: 1px solid var(--jm-hr); }
+.jm-brief > * { padding-inline: 16px; }   /* text keeps its inset; the dividers run edge to edge */
+.jm-persona { --jm-hr: color-mix(in srgb, var(--body) 12%, transparent); }
+.jm-brief h4 + p + h4 { padding-top: 16px; border-top: 1px solid var(--jm-hr); }
+.jm-brief h4 { font: 600 12px/16px var(--sans); color: var(--soft); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 4px; }
+.jm-brief h4 + p { margin-bottom: 16px; }
+body[data-lang="both"] .jm-brief h4 .zh { margin-left: 6px; }
+.jm-brief p { font-size: var(--card-text); line-height: var(--card-lh); color: var(--body); }
+body[data-lang="both"] .jm-brief p .en { display: block; margin-bottom: 2px; }
+
+/* the grid: label column + four stages; rules between stages */
+.jm-grid { --jm-gap: 8px; display: grid; grid-template-columns: 120px repeat(4, 1fr); grid-template-rows: auto repeat(4, 1fr); row-gap: var(--jm-gap); }   /* rows stretch to fill the height */
+.jm-corner { background: var(--label); }   /* fills the corner so the label column runs top to bottom */
+.jm-stage {
+  display: grid; place-items: center; padding: 14px 8px; margin-left: 8px; background: var(--accent); color: #fff;
+  font: 600 15px/20px var(--sans); text-transform: uppercase; letter-spacing: 0.06em; text-align: center;
+}
+body[data-lang="both"] .jm-stage .zh { margin-left: 6px; }
+.jm-stage { position: relative; }
+.jm-stage::before { content: ''; position: absolute; left: -4.75px; top: 0; bottom: 0; width: 1.5px; background: color-mix(in srgb, var(--heading) 55%, var(--bg)); }   /* the stage rule continues up between the headers */
+.jm-corner + .jm-stage::before { display: none; }
+.jm-label { display: grid; align-content: center; padding: 0 14px; background: var(--label); font: 600 15px/20px var(--sans); color: var(--heading); }
+body[data-lang="both"] .jm-label .zh { display: block; font-weight: 500; color: var(--soft); }
+.jm-cell { position: relative; padding-left: 8px; display: grid; }   /* no inset: notes share edges with the stage headers, labels and persona tile */
+.jm-cell::before { content: ''; position: absolute; left: 3.25px; top: calc(-1 * var(--jm-gap)); bottom: calc(-1 * var(--jm-gap)); width: 1.5px; background: color-mix(in srgb, var(--heading) 55%, var(--bg)); }   /* the stage rule, through the row gaps: solid, so where two cells' rules overlap in a gap it doesn't darken */
+.jm-label + .jm-cell::before { display: none; }
+.jm-cell:nth-last-child(-n+4)::before { bottom: 0; }   /* rules stop at the last row */
+.jm-note { padding: 12px 14px; font-size: var(--card-text); line-height: var(--card-lh); color: var(--heading); align-self: stretch; }
+body[data-lang="both"] .jm-note .en { display: block; margin-bottom: 2px; }
+body[data-lang="both"] .jm-note .zh { color: var(--body); font-size: 14px; line-height: 19px; }
+body[data-lang="zh"] .jm-note .zh { font-size: 16px; line-height: 22px; }
+.n-actions { background: var(--n-actions); }
+.n-thoughts { background: var(--n-thoughts); font-style: italic; }
+.n-thoughts .zh { font-style: normal; }
+.n-feelings { background: var(--n-feelings); }
+.n-pains { background: var(--n-pains); }
+.jm-emoji { display: block; font-size: 22px; line-height: 28px; margin-bottom: 2px; font-style: normal; }
+
+/* arriving (slide.js adds .play): the title, then the map */
+.chapter.journey .j-title, .chapter.journey .jm { opacity: 0; }
+.chapter.journey.play .j-title { animation: j-in 700ms cubic-bezier(0.32, 0.72, 0, 1) 200ms both; }
+.chapter.journey.play .jm { animation: j-in 800ms cubic-bezier(0.32, 0.72, 0, 1) 380ms both; }
+@keyframes j-in { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .chapter.journey .j-title, .chapter.journey .jm { opacity: 1; }
+  .chapter.journey.play * { animation: none !important; }
+}
+
+/* EN + 中文: twice the text, so tighter notes and title, and the map still clears the controls */
+body[data-lang="both"] .chapter.journey { row-gap: 12px; padding-top: 80px; }
+body[data-lang="both"] .jm-note { padding: 10px 12px; }
+body[data-lang="both"] .jm-stage { padding: 8px; }
+body[data-lang="both"] .jm-emoji { font-size: 18px; line-height: 22px; }
+body[data-lang="both"] .jm-grid { --jm-gap: 6px; }
+body[data-lang="both"] .jm-note { font-size: 15px; line-height: 20px; }
+
+/* step 0: both personas, side by side; → collapses Persona A into the map's left column (they share a
+   view-transition-name, so the tile morphs), → again swaps to Persona B */
+.jm-over { align-self: center; justify-self: center; display: flex; gap: 40px; align-items: stretch; }
+.jm-over .jm-persona { width: 380px; }
+.jm-over .jm-card { padding: 32px 24px 24px; }
+.jm-over .jm-avatar { width: 120px; height: 120px; }
+.jm-over .jm-brief { padding-top: 20px; padding-bottom: 24px; }
+.jm-over .jm-brief > * { padding-inline: 24px; }
+.chapter.journey .jm-over { opacity: 0; }
+.chapter.journey.play .jm-over { animation: j-in 800ms cubic-bezier(0.32, 0.72, 0, 1) 380ms both; }
+@media (prefers-reduced-motion: reduce) { .chapter.journey .jm-over { opacity: 1; } }

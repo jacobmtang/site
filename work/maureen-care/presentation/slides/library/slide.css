@@ -1,0 +1,341 @@
+/* Design library slide. Cards are all one size, so slide.js can page them exactly: how many fit across and
+   down at the MINIMUM size (320 x 304: 8 + 176 canvas + 112 footer + 8; 298 in EN + 中文) decides each page, then the cards
+   stretch to fill the page up to 440 x 400. The canvas takes the extra height; the footer stays put. The components are recreations; every value is from the app
+   (src/components/ui, src/theme) or the portfolio's recreations (_source/maureen-design-library). */
+
+.chapter.library.on { display: flex; flex-direction: column; overflow: hidden; }
+/* clear the chrome: the arrows' top is 84 from the bottom (44 + 40), then 12 of air. The progress bar is lower still */
+.chapter.library { padding-bottom: 96px; }
+.lib-head { display: flex; align-items: baseline; justify-content: space-between; gap: 24px; }
+
+.lib-grid {
+  --card-w: 320px; --card-h: 304px; --card-min-h: 304px; --gap: 16px;   /* w / h set by slide.js */
+  display: grid; grid-template-columns: repeat(var(--cols, 3), var(--card-w)); grid-auto-rows: var(--card-h);
+  gap: var(--gap); align-content: start;   /* left-aligned under the heading, even once the cards hit their cap */
+}
+.lib-card.is-off { display: none; }
+
+.lib-card {
+  min-width: 0; display: flex; flex-direction: column; padding: 8px; border-radius: 20px; overflow: hidden;
+  background: var(--card); border: 1px solid transparent;
+}
+.lib-canvas {
+  position: relative; flex: 1 1 auto; min-height: 150px;   /* the sheet-row menu is 151 */ border-radius: 14px; overflow: hidden;
+  display: grid; place-items: center; background: var(--bg);
+}
+.lib-card footer { display: grid; gap: 2px; padding: 12px 8px; }
+.lib-card .name { font: 600 15px/20px var(--sans); color: var(--heading); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* scoped to the modes that show Chinese: an unscoped `display: inline` out-ranks base.css's EN-mode hide */
+body:not([data-lang="en"]) .lib-card .name .zh { display: inline; margin-left: 6px; font-weight: 500; }
+body[data-lang="zh"] .lib-card .name .zh { margin-left: 0; font-weight: 600; }
+/* p.meta, not .meta: it must out-rank base.css's zh-mode rule, which makes .zh inherit its parent's size */
+.lib-card p.meta { font: 13px/18px var(--sans); color: var(--soft); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.lib-card p.meta.zh { font-family: 'Noto Sans SC', 'PingFang SC', var(--sans); }
+/* 4 under whichever description line is last: the Chinese one, or the English one in EN mode */
+.lib-card p.meta.zh, body[data-lang="en"] .lib-card p.meta.en { margin-bottom: 4px; }
+/* EN + 中文 shows both description lines (+20) and a two-line heading, so its minimum is the canvas floor:
+   8 + 150 + 132 + 8 = 298, which keeps two rows on a 900-tall window (measured: 614 free). slide.js reads --card-min-h */
+body[data-lang="both"] .lib-grid { --card-min-h: 298px; }
+/* inside a token chip: the descriptive word in one language at a time; EN + 中文 keeps the English beside the code */
+.tokens .en, .tokens .zh { display: inline; }
+body[data-lang="both"] .tokens .zh { display: none; }
+/* token names, two lines at most; the full list is in the title tooltip */
+.tokens { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 2px 4px; height: 40px; overflow: hidden; }
+/* rows of whole chips (18 + 2 + 18 = 38, inside 40), so a clipped row can never cut a chip's outline */
+.tokens code {
+  flex: none; height: 18px; padding: 1px 6px; border-radius: 6px;   /* Caption 1 (12/16) + 1 above and below = 18 */
+  font: 12px/16px ui-monospace, 'SF Mono', Menlo, monospace; color: var(--body); background: var(--bg); white-space: nowrap;
+  max-width: 100%; overflow: hidden; text-overflow: ellipsis;   /* one chip wider than the card ends in … */
+}
+/* a literal in the code rather than a token (an overlay alpha, a Lottie colour): marked, but quietly, since
+   these are literals on purpose and not something to fix */
+.tokens code.lit { background: transparent; box-shadow: inset 0 0 0 1px var(--border); color: var(--soft); }
+
+/* ---- the app's colours, light and dark (C / D in src/theme/colors.ts) ---- */
+.chapter.library {
+  --m-text: #2C2C2A; --m-soft: #8A8A84; --m-card: #FFFFFF; --m-divider: rgba(138,158,140,0.2);
+  --m-highlight: rgba(0,0,0,0.055); --m-danger: #CC071E; --m-teal: #45818E;
+  --m-rest: rgba(255,255,255,0.8); --m-on: #E3ECEE; --m-fill: rgba(0,0,0,0.04); --m-select: rgba(0,0,0,0.08);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .chapter.library {
+    --m-text: #F0EDE8; --m-soft: #6A6660; --m-card: #2B2A29; --m-divider: rgba(255,255,255,0.07);
+    --m-highlight: rgba(255,255,255,0.08); --m-danger: #CC071E; --m-rest: rgba(255,255,255,0.09); --m-on: rgba(255,255,255,0.09);
+    --m-fill: rgba(255,255,255,0.06); --m-select: rgba(255,255,255,0.12);
+  }
+}
+.lib-canvas { font-family: -apple-system, system-ui, 'SF Pro Text', sans-serif; color: var(--m-text); }
+.lib-canvas [data-press], .lib-canvas [data-toggle], .lib-canvas [data-choose] > *, .lib-canvas [data-swap],
+.lib-canvas [data-advance], .lib-canvas [data-replay], .c-step-btn, .c-tghost { cursor: pointer; -webkit-user-select: none; user-select: none; }
+.c-stack { display: grid; gap: 12px; width: 272px; }
+.c-row { display: flex; align-items: center; gap: 12px; position: relative; }
+
+/* PrimaryButton: one light source. Gradient ±12% of the fill, a top sheen, a bottom shade, a rim, a
+   shadow tinted from the fill. Light fills drop the sheen and take a dark rim. Press fades to 0.4. */
+.c-cta {
+  position: relative; display: block; width: 100%; padding: 16px 0; overflow: hidden; border: 0; border-radius: 100px;
+  font: 500 16px/20px -apple-system, system-ui, sans-serif; letter-spacing: 0.2px; color: #F4F4F4; text-align: center;
+  background: #45818E; box-shadow: 0 3px 10px rgba(26,49,54,0.18);
+  transition: transform 320ms cubic-bezier(.22,1,.36,1), opacity 200ms ease;
+}
+.c-cta::before {
+  content: ''; position: absolute; inset: 0;
+  background:
+    linear-gradient(rgba(255,255,255,0.30), rgba(255,255,255,0)) top / 100% 50% no-repeat,
+    linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.16)) bottom / 100% 34% no-repeat,
+    linear-gradient(rgb(91,144,156), rgb(61,114,125));
+}
+.c-cta::after { content: ''; position: absolute; inset: 0; border-radius: inherit; box-shadow: inset 0 0 0 1px rgba(255,255,255,0.2); }
+.c-cta span { position: relative; }
+.c-cta:active { transform: scale(0.97); opacity: 0.4; transition-duration: 100ms; }
+.c-cta.is-disabled { opacity: 0.4; box-shadow: 0 3px 10px rgba(26,49,54,0.06); pointer-events: none; }
+.c-cta.is-light { color: #2C2C2A; box-shadow: 0 3px 10px rgba(97,97,97,0.18); }
+.c-cta.is-light::before {
+  background: linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.10)) bottom / 100% 34% no-repeat, linear-gradient(#FFFFFF, #E0E0E0);
+}
+.c-cta.is-light::after { box-shadow: inset 0 0 0 1px rgba(0,0,0,0.10); }
+.c-cta.is-dark { box-shadow: 0 3px 10px rgba(17,17,16,0.18); }
+.c-cta.is-dark::before {
+  background:
+    linear-gradient(rgba(255,255,255,0.16), rgba(255,255,255,0)) top / 100% 50% no-repeat,
+    linear-gradient(rgba(0,0,0,0), rgba(0,0,0,0.16)) bottom / 100% 34% no-repeat,
+    linear-gradient(rgb(70,70,68), rgb(39,39,37));
+}
+
+/* Settings card (Settings.tsx + SheetRow): rows 12/16, icon 20 + 12, label 15; press = neutral fill */
+.c-group { width: 288px; border-radius: 20px; overflow: hidden; background: var(--m-card); }
+.c-srow { position: relative; display: flex; align-items: center; min-height: 44px; padding: 12px 16px; font-size: 15px; line-height: 20px; }
+.c-srow[data-press]:active { background: var(--m-highlight); }
+.c-icon { flex: none; width: 20px; height: 20px; margin-right: 12px; color: var(--m-text); }
+.c-label { flex: 1; }
+.c-value { color: var(--m-soft); }
+.c-chevron { width: 16px; height: 16px; color: var(--m-soft); opacity: 0.4; }
+.c-divider { height: 0.5px; margin: 0 16px; background: var(--m-divider); }
+.c-switch { position: relative; width: 51px; height: 31px; margin: -6px 0; border-radius: 16px; background: rgba(0,0,0,0.06); transition: background 200ms ease; }
+.c-switch.is-on { background: #45818E; }
+.c-switch i { position: absolute; top: 2px; left: 2px; width: 27px; height: 27px; border-radius: 50%; background: #fff; box-shadow: 0 3px 8px rgba(0,0,0,0.15), 0 1px 1px rgba(0,0,0,0.06); transition: transform 260ms cubic-bezier(.32,.72,0,1); }
+.c-switch.is-on i { transform: translateX(20px); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .c-switch:not(.is-on) { background: rgba(255,255,255,0.08); } }
+
+/* Sheet row (the Meal Plan folder menu): no scale, an instant grey fill that fades out over 260ms */
+.c-menu { width: 288px; }
+.c-mrow { position: relative; display: flex; align-items: center; padding: 15px 10px; border-radius: 12px; font-size: 15px; line-height: 20px; transition: background 260ms cubic-bezier(.33,1,.68,1); }
+.c-mrow .c-icon { color: var(--m-soft); }
+.c-mrow:active { background: var(--m-highlight); transition: none; }
+.c-mrow.is-danger, .c-mrow.is-danger .c-icon { color: var(--m-danger); }
+.c-menu .c-divider { margin: 0 10px; }
+
+/* Glass (FloatingHeader): 44 circles, a 44-tall pill with 14 semibold. Glass needs colour behind it. */
+.c-stripes { position: absolute; inset: -40%; display: flex; transform: rotate(-12deg); }
+.c-stripes i { flex: 1; }
+.c-stripes i:nth-child(1) { background: #45818E; } .c-stripes i:nth-child(2) { background: #BE6C3A; }
+.c-stripes i:nth-child(3) { background: #BC8A34; } .c-stripes i:nth-child(4) { background: #4E7E5C; }
+.c-stripes i:nth-child(5) { background: #3E6FA1; } .c-stripes i:nth-child(6) { background: #7C5B96; }
+.c-glass {
+  position: relative; display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; overflow: hidden;
+  color: #2C2C2A; background: rgba(255,255,255,0.35);
+  -webkit-backdrop-filter: blur(12px) saturate(180%); backdrop-filter: blur(12px) saturate(180%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), inset 0 0 0 0.5px rgba(255,255,255,0.4), 0 4px 16px rgba(0,0,0,0.12);
+  transition: transform 220ms cubic-bezier(.32,.72,0,1);
+}
+.c-glass:active { transform: scale(1.08); }
+.c-glass svg { width: 22px; height: 22px; }   /* HEADER_ICON_GLYPH; the chevron is Ionicons' own glyph */
+.c-glass svg.c-checkmark { width: 18px; height: 18px; }   /* FloatingHeader draws its check as Checkmark at 18 (the Lottie's check) */
+.c-glass.is-tinted { color: #F4F4F4; background: rgba(69,129,142,0.75); }
+.c-glass.is-pill { width: auto; padding: 0 16px; border-radius: 999px; font: 600 14px/18px -apple-system, system-ui, sans-serif; }
+.c-pro::after {
+  content: ''; position: absolute; top: -40px; bottom: -40px; left: -60px; width: 46px; transform: rotate(45deg);
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.75), transparent);
+  animation: c-sheen 3.2s cubic-bezier(.45,0,.55,1) infinite;
+}
+@keyframes c-sheen { 0%, 55% { left: -60px; } 100% { left: 140px; } }
+
+/* Notice (Notice.tsx): iOS text styles, 17 semibold title, 15 body, an outlined action that fills when held */
+.c-notice { display: grid; justify-items: center; gap: 8px; width: 288px; padding: 0 16px; text-align: center; zoom: 0.8; }   /* the app's spacing is 174 tall; the canvas floor is 150, so the whole notice is shown at 80%, proportions intact */
+/* Notice.tsx: gap 8, plus the icon's 8 below (icon → title 16) and the body's 8 below (body → action 16) */
+.c-notice-icon { width: 32px; height: 32px; margin-bottom: 8px; color: var(--m-soft); }
+.c-notice p { margin-bottom: 8px; }
+.c-notice b { font-size: 17px; line-height: 22px; font-weight: 600; }
+.c-notice p { font-size: 15px; line-height: 20px; color: var(--m-soft); }
+.c-notice-action { padding: 10px 20px; border: 1px solid var(--m-divider); border-radius: 20px; font-size: 15px; line-height: 20px; font-weight: 600; }
+.c-notice-action:active { background: var(--m-select); }
+
+/* ListSwitcher (default 26, as the Ladder uses it): wider than the card, so it runs off the edge and the
+   words dissolve into a 28px fade at both ends (EDGE_FADE), as the app's does */
+.c-lists {
+  display: flex; gap: 16px; align-self: center; width: 100%; padding: 0 28px; white-space: nowrap; overflow: hidden;
+  font-family: 'Merriweather', Georgia, serif; font-size: 26px; line-height: 34px;
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 28px, #000 calc(100% - 28px), transparent);
+          mask-image: linear-gradient(90deg, transparent, #000 28px, #000 calc(100% - 28px), transparent);
+}
+.c-lists span { font-weight: 300; color: var(--m-soft); transition: color 200ms ease; }
+.c-lists span.is-on { font-weight: 400; color: var(--m-text); }
+
+/* LensSwitch (LensSwitch.tsx): the active word sits in the left slot, the other GAP (16) past its END.
+   Choosing the other word slides both to each other's slot over 460ms on (.4,0,.2,1), opacity dipping to
+   0 at the midpoint so they never overlap; colour eases with the slide, the weight swaps at once.
+   slide.js measures both words at the active weight and sets the box width and each word's --x. */
+.c-lens { position: relative; height: 34px; font-family: 'Merriweather', Georgia, serif; font-size: 26px; line-height: 34px; }
+.c-lens span {
+  position: absolute; left: 0; top: 0; white-space: nowrap; font-weight: 300; color: var(--m-soft);
+  transform: translateX(var(--x, 0px));
+  transition: transform 460ms cubic-bezier(.4,0,.2,1), color 460ms cubic-bezier(.4,0,.2,1);
+}
+.c-lens span.is-on { font-weight: 400; color: var(--m-text); cursor: default; }
+.c-lens.is-dipping span { animation: c-lens-dip 460ms cubic-bezier(.42,0,.58,1); }
+@keyframes c-lens-dip { 50% { opacity: 0; } }
+
+/* Selection pills: 8/14, a 1.5 border, 14 medium; selected = teal border on a teal wash */
+.c-pills { display: flex; gap: 6px; }
+.c-pills span { padding: 8px 14px; border: 1.5px solid transparent; border-radius: 999px; background: var(--m-rest); font-size: 14px; line-height: 18px; font-weight: 500; transition: transform 320ms cubic-bezier(.22,1,.36,1); }
+.c-pills span:active { transform: scale(0.96); transition-duration: 120ms; }
+.c-pills span.is-on { background: var(--m-on); border-color: #45818E; }
+
+/* SelectFillDot: a 26px ring (r 12.2, stroke 1.6) and a teal disc that springs in a beat behind */
+.c-dot { position: relative; width: 34px; height: 34px; }
+.c-dot::before { content: ''; position: absolute; inset: 4px; border-radius: 50%; box-shadow: inset 0 0 0 1.6px var(--m-soft); transition: box-shadow 200ms ease; }
+.c-dot.is-on::before { box-shadow: inset 0 0 0 1.6px #45818E; }
+.c-dot i { position: absolute; inset: 7px; border-radius: 50%; background: #45818E; transform: scale(0); transition: transform 150ms cubic-bezier(.55,0,1,.45); }
+.c-dot.is-on i { transform: scale(1); transition: transform 420ms cubic-bezier(.34,1.56,.64,1) 70ms; }
+
+/* Theme pill (Settings themeBtn): border 1, 4/12, 12 medium; selected is a fill, not a border colour */
+.c-theme { display: flex; gap: 8px; }
+.c-theme span { padding: 4px 12px; border: 1px solid var(--m-divider); border-radius: 100px; font-size: 12px; line-height: 16px; font-weight: 500; color: var(--m-soft); }
+.c-theme span.is-on { background: var(--m-select); color: var(--m-text); }
+
+/* NumberStepper: radius 16, 10/16, gap 24; 36 buttons on the accent at 9%; value 24 semibold */
+.c-stepper { display: flex; align-items: center; gap: 24px; padding: 10px 16px; border-radius: 16px; background: var(--m-fill); }
+.c-step-btn { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 50%; background: rgba(69,129,142,0.094); color: #45818E; transition: opacity 150ms ease, transform 420ms cubic-bezier(.34,1.56,.64,1); }
+/* its own press, not DimPress: scale to 0.92 in 100ms, spring back (NumberStepper.tsx PRESS_SCALE) */
+.c-step-btn:active { transform: scale(0.92); transition: opacity 150ms ease, transform 100ms ease-out; }
+.c-step-btn svg { width: 18px; height: 18px; }
+.c-step-btn.is-off { opacity: 0.3; pointer-events: none; }
+.c-step-value { min-width: 48px; text-align: center; font-size: 24px; line-height: 29px; font-weight: 600; font-variant-numeric: tabular-nums; }
+
+/* CarouselIndicator: 6 dots 6 apart, the active one 18 long at 0.9, the rest 0.3 */
+.c-carousel { display: flex; align-items: center; gap: 6px; padding: 16px; }
+.c-carousel i { width: 6px; height: 6px; border-radius: 3px; background: var(--m-text); opacity: 0.3; transition: width 360ms cubic-bezier(.32,.72,0,1), opacity 360ms ease; }
+.c-carousel i.is-on { width: 18px; opacity: 0.9; }
+
+/* SuccessCheck: a teal disc, the check drawing on (replays on tap) */
+.c-check { width: 72px; height: 72px; }
+.c-check circle { fill: #45818E; transform-origin: center; animation: c-pop 420ms cubic-bezier(.34,1.56,.64,1) both; }
+.c-check path { fill: none; stroke: #F4F4F4; stroke-width: 5; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 40; stroke-dashoffset: 40; animation: c-draw 360ms ease-out 260ms forwards; }
+@keyframes c-pop { from { transform: scale(0.6); opacity: 0; } }
+@keyframes c-draw { to { stroke-dashoffset: 0; } }
+
+/* FeedSkeleton: the post card's bones, a highlight band sweeping across (1200ms, linear) */
+.c-skeleton { position: relative; width: 288px; height: 132px; border-radius: 28px; overflow: hidden; background: var(--m-card); border: 1px solid var(--m-divider); }
+.c-bones { display: grid; gap: 9px; padding: 20px; }
+.c-bone-row { display: flex; align-items: center; gap: 8px; margin-bottom: 7px; }
+.c-bones i { display: block; border-radius: 6px; background: rgba(0,0,0,0.07); }
+.c-bones .c-avatar { width: 28px; height: 28px; border-radius: 50%; }
+.c-skeleton::after {
+  content: ''; position: absolute; top: 0; bottom: 0; left: -200px; width: 200px;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.55), transparent);
+  animation: c-sweep 1200ms linear infinite;
+}
+@keyframes c-sweep { to { left: 100%; } }
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .c-bones i { background: rgba(255,255,255,0.09); }
+  :root:not([data-theme="light"]) .c-skeleton::after { background: linear-gradient(90deg, transparent, rgba(255,255,255,0.13), transparent); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .c-pro::after, .c-skeleton::after { animation: none; display: none; }
+  .c-check circle, .c-check path { animation: none; stroke-dashoffset: 0; }
+}
+
+/* WheelPicker: 5 rows of ITEM_H 44 (220), 24 semibold, a hairline band on the centre row. The scroll snaps
+   natively; slide.js tilts each row from its distance to the centre, as the app's worklet does. Duration
+   mode: two 64-wide wheels with hr / min (WheelPickerSheet). The canvas clips the outer rows. */
+.c-wheels { display: flex; align-items: center; gap: 20px; }
+.c-wgroup { display: flex; align-items: center; }
+.c-wheel { position: relative; width: 64px; height: 220px; }
+.c-wscroll { height: 220px; overflow-y: auto; scroll-snap-type: y mandatory; scrollbar-width: none; overscroll-behavior: contain; cursor: grab; -webkit-user-select: none; user-select: none; }
+.c-wscroll::-webkit-scrollbar { display: none; }
+.c-wscroll.is-dragging { scroll-snap-type: none; cursor: grabbing; }
+.c-wscroll b { display: grid; place-items: center; height: 44px; scroll-snap-align: center; font-size: 24px; line-height: 29px; font-weight: 600; font-variant-numeric: tabular-nums; }
+.c-wscroll::before, .c-wscroll::after { content: ''; display: block; height: 88px; }
+.c-band { position: absolute; left: 0; right: 0; top: 88px; height: 44px; pointer-events: none;
+  border-top: 0.5px solid rgba(0,0,0,0.10); border-bottom: 0.5px solid rgba(0,0,0,0.10); }
+.c-unit { margin-left: 6px; font-size: 15px; line-height: 20px; color: var(--m-soft); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .c-band { border-color: rgba(255,255,255,0.14); } }
+
+/* SwipeDeletePill: the row slides 92 left and uncovers a C.danger fill, the whole space the button. The
+   row's shadow falls into the well as a 20-wide gradient; "Delete" fades in over the middle of the drag.
+   Grocery row: 16 text, the selection ring on the right, 62 tall (34 + 14 x 2), on #FDFDFD / D.bgRaised.
+   Each time its page shows, the row starts closed and slides open; drag it, or tap it to close. */
+/* the groceries card: rows on #FDFDFD / D.bgRaised, hairline dividers 16 in. Delete removes the row at once
+   (red fill and all) and the card closes the gap over 300ms, as TheLadder's LinearTransition does */
+.c-gcard { width: 288px; border-radius: 20px; overflow: hidden; background: #FDFDFD; }
+.c-gwrap { height: 62.5px; overflow: hidden; transition: height 300ms cubic-bezier(.42,0,.58,1); }
+.c-gwrap.is-gone { height: 0; }
+.c-gwrap.is-gone .c-swipe { visibility: hidden; }
+.c-gdiv { display: block; height: 0.5px; margin: 0 16px; background: rgba(0,0,0,0.07); }
+.c-swipe { --tx: 0px; position: relative; overflow: hidden; touch-action: pan-y; }
+.c-del { position: absolute; top: 0; right: 0; bottom: 0; width: 92px; display: grid; place-items: center; cursor: pointer; background: #CC071E; transition: background 180ms cubic-bezier(.25,.46,.45,.94); }
+.c-del:active { background: #990516; transition-duration: 90ms; }
+.c-del-shadow { position: absolute; top: 0; bottom: 0; left: 0; width: 20px; background: linear-gradient(90deg, rgba(0,0,0,0.18), rgba(0,0,0,0.05), transparent); }
+.c-del span { position: relative; color: #fff; font-size: 13px; line-height: 16px; font-weight: 600; opacity: var(--label, 1); }
+.c-grow.is-static { transform: none; cursor: default; }
+.c-grow { position: relative; display: flex; align-items: center; min-height: 62px; padding: 14px 12px 14px 16px; background: #FDFDFD; transform: translateX(var(--tx)); cursor: grab; }
+.c-swipe.is-settling .c-grow { transition: transform 360ms cubic-bezier(.32,.72,0,1); }
+.c-gtext { flex: 1; font-size: 16px; line-height: 20px; }
+.c-grow .c-dot { margin-left: 10px; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .c-grow, :root:not([data-theme="light"]) .c-gcard { background: #2B2A29; } :root:not([data-theme="light"]) .c-gdiv { background: rgba(255,255,255,0.10); } }
+
+/* TimePill: a glass capsule, 15 medium on an 18 line, 16 each side. A phase change grows the capsule to
+   the new width over 650ms while the old text fades out (first half) and the new one fades in (second);
+   "Complete" draws its check once the capsule has settled. Tap to step timer → finishing → complete. */
+.c-tpill { position: relative; display: block; padding: 8px 0; border-radius: 24px; cursor: pointer; color: #2C2C2A;
+  background: rgba(255,255,255,0.35); -webkit-backdrop-filter: blur(12px) saturate(180%); backdrop-filter: blur(12px) saturate(180%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), inset 0 0 0 0.5px rgba(255,255,255,0.4), 0 4px 16px rgba(0,0,0,0.12);
+  transition: transform 220ms cubic-bezier(.32,.72,0,1); }
+.c-tpill:active { transform: scale(1.06); }
+.c-tin { position: relative; display: block; height: 18px; min-width: 76px; width: var(--w, 76px); transition: width 650ms cubic-bezier(.65,0,.35,1); }
+.c-tlayer { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; gap: 7px; padding: 0 16px; white-space: nowrap;
+  font-size: 15px; line-height: 18px; font-weight: 500; letter-spacing: 0.3px; font-variant-numeric: tabular-nums; opacity: 0; transition: opacity 325ms ease; }
+.c-tlayer.is-on { opacity: 1; transition-delay: 325ms; }
+.c-tlayer.is-instant { transition: none; }
+.c-tcheck { flex: none; width: 20.7px; height: 20.7px; margin-left: 1.65px; margin-right: -9.35px; overflow: visible; }
+/* TimePill's slot is 14 wide (5 in, -6 out) and the Lottie's final disc is 20.7 across, centred on it: so it
+   overhangs the slot by 3.35 a side and lands 6.65 from the pill's right edge, the same as above and below
+   ((34 - 20.7) / 2). The margins are the slot's, less that overhang */
+.c-tcheck circle { fill: none; stroke: rgba(0,0,0,0.16); stroke-width: 30.8; }
+.c-tcheck .c-tfill { fill: #45818E; stroke: none; transform-box: fill-box; transform-origin: center; transform: scale(0); }
+.c-tcheck path { fill: none; stroke: #fff; stroke-width: 30; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 222; stroke-dashoffset: 222; }
+.c-tlayer.is-drawn .c-tfill { transform: scale(1); transition: transform 300ms cubic-bezier(.34,1.56,.64,1); }
+.c-tlayer.is-drawn .c-tcheck path { stroke-dashoffset: 0; transition: stroke-dashoffset 280ms ease-out 180ms; }
+
+/* ComposerToolbar: ONE glass bar, radius 24, 48 tall, 6 in; 40 round icon buttons (22 glyph), 1 x 24
+   dividers 6 either side, labelled ghost buttons (20 glyph, 15 semibold, gap 8). Wider than the card, so
+   it scrolls, as it does on a narrow phone. "Post anonymously" toggles. */
+.c-toolbar { width: 288px; height: 48px; border-radius: 24px; overflow: hidden;
+  background: rgba(255,255,255,0.35); -webkit-backdrop-filter: blur(12px) saturate(180%); backdrop-filter: blur(12px) saturate(180%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.7), inset 0 0 0 0.5px rgba(255,255,255,0.4), 0 4px 16px rgba(0,0,0,0.12); }
+.c-tscroll { display: flex; align-items: center; height: 100%; padding: 0 6px; overflow-x: auto; scrollbar-width: none; }
+.c-tscroll::-webkit-scrollbar { display: none; }
+.c-tscroll::after { content: ''; flex: none; width: 6px; height: 1px; }   /* the end padding a scroller drops */
+.c-ion { width: 22px; height: 22px; fill: currentColor; flex: none; }
+.c-tbtn { flex: none; display: grid; place-items: center; width: 40px; height: 40px; border-radius: 20px; color: #8A8A84; transition: transform 220ms cubic-bezier(.22,1,.36,1); }
+.c-tbtn:active { transform: scale(0.85); transition-duration: 100ms; }
+.c-tdiv { flex: none; width: 1px; height: 24px; margin: 0 6px; background: rgba(0,0,0,0.12); }
+.c-tghost { flex: none; display: flex; align-items: center; gap: 8px; height: 40px; padding: 0 6px; white-space: nowrap;
+  font-size: 15px; line-height: 20px; font-weight: 600; color: #8A8A84; transition: transform 220ms cubic-bezier(.22,1,.36,1); }
+.c-tghost:active { transform: scale(0.97); transition-duration: 100ms; }
+.c-tghost .c-ion { width: 20px; height: 20px; }
+.c-tghost .c-ion.is-on, .c-tghost.is-on .c-ion.is-off { display: none; }
+.c-tghost.is-on .c-ion.is-on { display: block; }
+.c-tghost.is-on { color: #2C2C2A; }
+
+/* ---- arriving: the title rises, then the cards on the page rise in order, 60ms apart (slide.js sets --d).
+   Turning a page replays the cards' rise from 0. Same curve as every other slide */
+.chapter.library .lib-head { opacity: 0; }
+.chapter.library.play .lib-head { animation: lib-in 700ms cubic-bezier(0.32, 0.72, 0, 1) 200ms both; }
+.lib-card.is-in { animation: lib-in 640ms cubic-bezier(0.32, 0.72, 0, 1) var(--d, 0ms) both; }
+@keyframes lib-in { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .chapter.library .lib-head { opacity: 1; }
+  .chapter.library.play .lib-head, .lib-card.is-in { animation: none; }
+}

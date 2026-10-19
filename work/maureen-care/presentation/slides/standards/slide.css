@@ -1,0 +1,57 @@
+/* Established standards. A "fit" slide (1512 x 982 frame): title, then two numbered points side by side,
+   centred in the space below (plain text, no numbers). Card text uses the card tokens. */
+.chapter.standards.on { display: grid; grid-template-rows: auto 1fr; }
+.chapter.standards { padding-bottom: 96px; }
+.s-title { text-align: center; margin-bottom: 0; }
+body[data-lang="both"] .s-title .en { margin-bottom: 4px; }
+
+/* The phone (the craft demo, craft.css) centred, a point in the middle of the space on each side, vertically centred.
+   The lifted card spans ~440px across the centre, clear of both 300px points */
+.s-body { position: relative; display: grid; place-items: center; }
+.s-points { position: absolute; inset: 0; pointer-events: none; }
+/* --side centres each point in the space beside the phone (301 wide with its bezel) */
+.s-points .s-point { --side: calc((100% - 301px) / 4 - 150px); position: absolute; top: 0; bottom: 0; width: 300px; align-content: center; }   /* full height, content centred: the entrance owns transform */
+.s-points .s-point:nth-child(1) { left: var(--side); }
+.s-points .s-point:nth-child(2) { right: var(--side); }
+.s-point { display: grid; align-content: start; justify-items: start; gap: 12px; text-align: left; }
+.s-point h3 { font: 600 22px/28px var(--sans); color: var(--heading); }
+.s-point h3 .zh { font: 500 20px/25px 'Noto Sans SC', 'PingFang SC', var(--sans); }
+body[data-lang="both"] .s-point h3 .en { display: block; margin-bottom: 4px; }
+body[data-lang="zh"] .s-point h3 .zh { font-size: 28px; line-height: 34px; }
+.s-point p { font-size: var(--card-text); line-height: var(--card-lh); font-weight: var(--card-weight); color: var(--body); }
+.s-point p .zh { font-size: var(--card-text); line-height: var(--card-lh); }
+body[data-lang="both"] .s-point p .en { display: block; margin-bottom: 4px; }
+body[data-lang="zh"] .s-point p .zh { font-size: var(--card-text-zh); line-height: var(--card-lh-zh); }
+
+/* arriving (slide.js adds .play): the title rises, then the points left to right */
+.chapter.standards .s-title, .chapter.standards .s-point { opacity: 0; }
+.chapter.standards.play .s-title { animation: s-in 700ms cubic-bezier(0.32, 0.72, 0, 1) 200ms both; }
+.chapter.standards.play .s-point { animation: s-in 700ms cubic-bezier(0.32, 0.72, 0, 1) both; }
+.chapter.standards.play .s-point:nth-child(1) { animation-delay: 420ms; }
+.chapter.standards.play .s-point:nth-child(2) { animation-delay: 520ms; }
+@keyframes s-in { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .chapter.standards .s-title, .chapter.standards .s-point { opacity: 1; }
+  .chapter.standards.play * { animation: none !important; }
+  .chapter.standards.play .s-title { animation: none; }
+}
+
+/* the Dynamic Type sheet's table, as Apple's HIG sets it: a dark rule under the header, hairlines between rows */
+.sheet:has(.dt-ramp) { width: 760px; }
+.dt-ramp { width: 100%; border-collapse: collapse; margin-top: 20px; font: 400 15px/20px var(--sans); font-variant-numeric: tabular-nums; }
+.dt-ramp th { font-weight: 600; color: var(--heading); text-align: left; vertical-align: bottom; padding: 0 12px 10px 0; border-bottom: 1.5px solid var(--heading); }
+.dt-ramp td { color: var(--soft); padding: 8px 12px 8px 0; border-bottom: 1px solid var(--border); }   /* values stay Apple's English names */
+.dt-ramp tbody tr:last-child td { border-bottom: 0; }
+.dt-ramp td:first-child { color: var(--body); }
+
+/* the 4pt grid sheet: the value with a bar drawn at that width (2px per point), its use, Maureen examples */
+.sheet:has(.sg-table) { width: 880px; }
+.sg-table td { vertical-align: top; }
+.sg-table .sg-val { width: 132px; color: var(--heading); white-space: nowrap; }
+.sg-num { display: inline-block; width: 28px; font-variant-numeric: tabular-nums; }   /* the number first, so the column aligns */
+.sg-bar { display: inline-block; width: calc(var(--v) * 2px); height: 12px; border-radius: 2px; background: var(--accent); vertical-align: -1px; }
+.sg-table .sg-val { padding-right: 16px; }
+.sg-table .sg-use { width: 170px; color: var(--body); }
+.sg-table .sg-ex { color: var(--soft); }
+body[data-lang="both"] .sg-use .en { display: block; }
+body[data-lang="both"] .sg-ex .zh { display: none; }   /* EN + 中文: the examples stay English (they name code), so the table still fits */

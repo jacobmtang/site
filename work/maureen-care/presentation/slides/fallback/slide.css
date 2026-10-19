@@ -1,0 +1,72 @@
+/* Fallbacks. A "fit" slide (1512 x 982 frame): two screens side by side, the same screen with Liquid Glass and
+   with the fallback, each captioned above, with callout lines (as the native slide's) to what changes. */
+.chapter.fallback.on { display: grid; grid-template-rows: auto 1fr; }
+.chapter.fallback { padding-bottom: 96px; }
+.f-title { text-align: center; margin-bottom: 0; }
+body[data-lang="both"] .f-title .en { margin-bottom: 4px; }
+
+.f-body { display: flex; justify-content: center; align-items: center; gap: 120px; }
+.f-phone { display: grid; gap: 16px; justify-items: center; }
+.f-phone figcaption { display: grid; justify-items: center; gap: 2px; text-align: center; font-size: var(--card-text); line-height: var(--card-lh); color: var(--soft); }
+.f-phone figcaption b { font-weight: 600; color: var(--heading); }
+body[data-lang="both"] .f-phone figcaption .zh { margin-left: 6px; }
+body[data-lang="both"] .f-phone figcaption > span.zh { display: none; }
+body[data-lang="zh"] .f-phone figcaption .zh { font-size: var(--card-text-zh); line-height: var(--card-lh-zh); }
+.f-screen { --w: 294px; position: relative; width: var(--w); }
+.f-screen img { display: block; width: var(--w); height: auto; border-radius: 40px; box-shadow: 0 0 0 1px color-mix(in srgb, var(--heading) 10%, transparent); }
+
+/* callouts: label, then a line to a dot on the element */
+.f-call { position: absolute; top: var(--y); display: flex; align-items: center; transform: translateY(-50%); }
+.f-call.l { right: calc(100% - var(--x)); }
+.f-call.r { left: var(--x); }
+.f-call > span { width: 220px; flex: none; font-size: var(--card-text); line-height: var(--card-lh); font-weight: 600; color: var(--heading); }
+.f-call > span.zh { font-weight: 500; }
+.f-call.l > span { text-align: right; padding-right: 12px; }
+.f-call.r > span { padding-left: 12px; }
+body[data-lang="both"] .f-call { flex-wrap: wrap; }
+body[data-lang="both"] .f-call > span.zh { font-size: 14px; line-height: 19px; font-weight: 400; color: var(--body); }
+body[data-lang="both"] .f-call.l { display: grid; grid-template-columns: 220px auto; }
+body[data-lang="both"] .f-call.l > span.zh { grid-column: 1; }
+body[data-lang="both"] .f-call.l > i { grid-column: 2; grid-row: 1 / span 2; align-self: center; }
+body[data-lang="both"] .f-call.r { display: grid; grid-template-columns: auto 220px; }
+body[data-lang="both"] .f-call.r > i { grid-column: 1; grid-row: 1 / span 2; align-self: center; }
+body[data-lang="both"] .f-call.r > span { grid-column: 2; }
+body[data-lang="zh"] .f-call > span.zh { font-size: var(--card-text-zh); line-height: var(--card-lh-zh); }
+.f-call i { position: relative; flex: none; height: 1px; background: var(--heading); }
+.f-call.l i { width: calc(40px + var(--x)); }
+.f-call.r i { width: calc(40px + var(--w) - var(--x)); }
+.f-call i::after { content: ''; position: absolute; top: 50%; width: 9px; height: 9px; margin-top: -4.5px; border-radius: 50%; background: var(--heading); box-shadow: 0 0 0 2px #fff; }
+.f-call.l i::after { right: -4.5px; }
+.f-call.r i::after { left: -4.5px; }
+
+/* arriving (slide.js adds .play): the title, the screens, then the callouts */
+.chapter.fallback .f-title, .chapter.fallback .f-phone, .chapter.fallback .f-call { opacity: 0; }
+.chapter.fallback.play .f-title { animation: f-in 700ms cubic-bezier(0.32, 0.72, 0, 1) 200ms both; }
+.chapter.fallback.play .f-phone { animation: f-in 800ms cubic-bezier(0.32, 0.72, 0, 1) 400ms both; }
+.chapter.fallback.play .f-phone + .f-phone { animation-delay: 500ms; }
+.chapter.fallback.play .f-call { animation: f-fade 300ms ease-out 1100ms both; }
+@keyframes f-in { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes f-fade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .chapter.fallback .f-title, .chapter.fallback .f-phone, .chapter.fallback .f-call { opacity: 1; }
+  .chapter.fallback.play * { animation: none !important; }
+}
+body[data-lang="both"] .f-body { padding-top: 16px; }
+body[data-lang="both"] .f-phone figcaption b .zh { display: inline; margin-left: 6px; }
+
+/* step 2: Settings, with the two points on its left */
+.f-ctrl { gap: 72px; padding-right: 220px; }
+.f-points { width: 440px; display: grid; gap: 32px; }
+.f-points h3 { font: 600 22px/28px var(--sans); color: var(--heading); }
+.f-points h3 .zh { font-weight: 500; }
+body[data-lang="both"] .f-points h3 .zh { display: block; margin-top: 2px; font-size: 18px; line-height: 24px; color: var(--body); }
+body[data-lang="zh"] .f-points h3 .zh { font-size: 26px; line-height: 32px; }
+.f-points p { margin-top: 8px; text-wrap: pretty; font-size: var(--card-text); line-height: var(--card-lh); color: var(--body); }
+body[data-lang="both"] .f-points p .en { display: block; margin-bottom: 4px; }
+body[data-lang="both"] .f-points p .zh { font-size: 15px; line-height: 21px; color: var(--soft); }
+body[data-lang="zh"] .f-points p .zh { font-size: var(--card-text-zh); line-height: var(--card-lh-zh); }
+.chapter.fallback .f-points { opacity: 0; }
+.chapter.fallback.play .f-points { animation: f-in 800ms cubic-bezier(0.32, 0.72, 0, 1) 400ms both; }
+@media (prefers-reduced-motion: reduce) { .chapter.fallback .f-points { opacity: 1; } }
+.f-call.r > span { width: 240px; }
+body[data-lang="both"] .f-call.r { grid-template-columns: auto 240px; }

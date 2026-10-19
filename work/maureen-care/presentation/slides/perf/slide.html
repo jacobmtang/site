@@ -1,0 +1,40 @@
+<!-- Designing for real-world performance and limitations. Left: the incident (the Sentry issue, its details,
+     the session as a vertical timeline). Right: the takeaways. The first version (Oct 18) is in _trash/2026-10-18/perf-v1. -->
+<h2 class="p-title"><span class="en">Designing for real-world performance and limitations</span><span class="zh">为真实环境下的性能与限制而设计</span></h2>
+<p class="p-lede"><span class="en">Incident study: a user’s app crashed on first launch, leaving a bad first impression.</span><span class="zh">事故分析：一位用户首次打开应用就崩溃，留下了糟糕的第一印象。</span></p>
+<div class="p-body">
+  <section class="p-incident">
+    <img class="p-shot" src="img/perf/sentry-crash.webp" width="1552" height="254" alt="Sentry: EXC_BAD_ACCESS, Attempted to dereference null pointer, resolved in 1.2.0 (31)">
+    <dl class="p-spec">
+      <div><dt><span class="en">Date</span><span class="zh">日期</span></dt><dd><span class="en">Aug 25 2026 · 1 event, 1 user</span><span class="zh">2026 年 8 月 25 日 · 1 次事件，1 位用户</span></dd></div>
+      <div><dt><span class="en">Release</span><span class="zh">版本</span></dt><dd><span class="en">1.1.5 (29), the live App Store build</span><span class="zh">1.1.5 (29)，App Store 线上版本</span></dd></div>
+      <div><dt><span class="en">Device</span><span class="zh">设备</span></dt><dd><span class="en">iPhone XR · 3 GB RAM · iOS 18.7.9</span><span class="zh">iPhone XR · 3 GB 内存 · iOS 18.7.9</span></dd></div>
+      <div><dt><span class="en">Free memory at crash</span><span class="zh">崩溃时可用内存</span></dt><dd><span class="en"><b>89 MB</b> of 2.26 GB usable</span><span class="zh">2.26 GB 中仅剩 <b>89 MB</b></span></dd></div>
+    </dl>
+    <ol class="p-tl">
+      <li><b><span class="en">First launch after install</span><span class="zh">安装后首次启动</span></b><span class="en">A cold start</span><span class="zh">冷启动</span></li>
+      <li><b><span class="en">Everything loads at once</span><span class="zh">所有内容同时加载</span></b><span class="en">A heavy splash animation, background audio, haptic engine prewarming and an OTA update install</span><span class="zh">复杂的启动动画、背景音乐、预热触感引擎，以及安装 OTA 更新</span></li>
+      <li><b><span class="en">Memory runs out</span><span class="zh">内存几乎耗尽</span></b><span class="en">Only 89 MB left</span><span class="zh">仅剩 89 MB</span></li>
+      <li class="is-crash"><b><span class="en">The app crashes to the home screen</span><span class="zh">应用崩溃，退回主屏幕</span></b><span class="en">9.6 seconds after opening it</span><span class="zh">打开应用 9.6 秒后</span></li>
+    </ol>
+  </section>
+  <section class="p-take">
+    <h3><span class="en">Takeaways</span><span class="zh">收获</span></h3>
+    <article>
+      <span class="p-num" aria-hidden="true">1</span>
+      <h4><span class="en">Design with an engineering perspective</span><span class="zh">以工程视角做设计</span></h4>
+    </article>
+    <article>
+      <span class="p-num" aria-hidden="true">2</span>
+      <h4><span class="en">Consider performance on older devices</span><span class="zh">考虑旧设备上的性能</span></h4>
+    </article>
+    <article>
+      <span class="p-num" aria-hidden="true">3</span>
+      <h4><span class="en">Degrade gracefully: a non-Liquid Glass fallback for iOS 18 and below</span><span class="zh">优雅降级：为 iOS 18 及以下版本设计非 Liquid Glass 的降级样式</span></h4>
+    </article>
+    <article>
+      <span class="p-num" aria-hidden="true">4</span>
+      <h4><span class="en">The simulator isn't the real world</span><span class="zh">模拟器不等于真实环境</span></h4>
+    </article>
+  </section>
+</div>

@@ -1,0 +1,60 @@
+<!-- Fallbacks: the same screen (Community) with Liquid Glass on iOS 26 and later, and the fallback for iOS 18 and
+     below, side by side, with callouts to what changes. Screens: img/fallback/ (from the Desktop, Oct 18).
+     Step 1 (→): the comment composer, the same way.
+     Step 2: Settings, for user control (the haptics switch) and the bottom-edge fade iOS leaves out.
+     A callout's --y is its height on the 294px-wide screen; --x where its dot lands. -->
+<h2 class="f-title"><span class="en">Graceful degradation and user control</span><span class="zh">优雅降级与用户控制</span></h2>
+<div class="f-body" data-until="0">
+  <figure class="f-phone">
+    <figcaption><b>iOS 26+</b><span class="en">Liquid Glass</span><span class="zh">Liquid Glass</span></figcaption>
+    <div class="f-screen">
+      <img src="img/fallback/liquid-glass.webp" width="600" height="1305" alt="Community on iOS 27, with Liquid Glass header buttons and a floating tab bar">
+      <div class="f-call l" style="--x:8px; --y:61px"><span class="en">Glass header buttons</span><span class="zh">玻璃质感的导航栏按钮</span><i></i></div>
+      <div class="f-call l" style="--x:12px; --y:601px"><span class="en">Floating glass tab bar</span><span class="zh">悬浮的玻璃标签栏</span><i></i></div>
+    </div>
+  </figure>
+  <figure class="f-phone">
+    <figcaption><b><span class="en">iOS 18 and below</span><span class="zh">iOS 18 及以下</span></b><span class="en">Fallback</span><span class="zh">降级样式</span></figcaption>
+    <div class="f-screen">
+      <img src="img/fallback/fallback.webp" width="600" height="1301" alt="Community on iOS 18, with a plain header and a docked tab bar">
+      <div class="f-call r" style="--x:288px; --y:56px"><i></i><span class="en">Plain header buttons</span><span class="zh">普通导航栏按钮</span></div>
+      <div class="f-call r" style="--x:288px; --y:589px"><i></i><span class="en">Docked standard tab bar</span><span class="zh">固定在底部的标准标签栏</span></div>
+    </div>
+  </figure>
+</div>
+<div class="f-body" data-from="1" data-until="1">
+  <figure class="f-phone">
+    <figcaption><b>iOS 26+</b><span class="en">Liquid Glass</span><span class="zh">Liquid Glass</span></figcaption>
+    <div class="f-screen">
+      <img src="img/fallback/composer-liquid-glass.webp" width="600" height="1304" alt="The comment composer on iOS 26: a glass back button and a floating glass composer over the keyboard">
+      <div class="f-call l" style="--x:6px; --y:375px"><span class="en">Floating glass composer</span><span class="zh">悬浮的玻璃输入框</span><i></i></div>
+    </div>
+  </figure>
+  <figure class="f-phone">
+    <figcaption><b><span class="en">iOS 18 and below</span><span class="zh">iOS 18 及以下</span></b><span class="en">Fallback</span><span class="zh">降级样式</span></figcaption>
+    <div class="f-screen">
+      <img src="img/fallback/composer-fallback.webp" width="600" height="1301" alt="The comment composer on iOS 18: a solid composer docked above the keyboard">
+      <div class="f-call r" style="--x:289px; --y:361px"><i></i><span class="en">Solid composer above the keyboard</span><span class="zh">固定在键盘上方的实色输入框</span></div>
+    </div>
+  </figure>
+</div>
+<div class="f-body f-ctrl" data-from="2">
+  <div class="f-points">
+    <article>
+      <h3><span class="en">Let people turn haptics off</span><span class="zh">让用户可以关闭触感</span></h3>
+      <p><span class="en">One switch in Settings, for anyone who finds them distracting, or wants to save battery and performance on a lower-end device.</span><span class="zh">设置中只需一个开关，适合觉得触感干扰，或希望在低端设备上节省电量、提升性能的用户。</span></p>
+    </article>
+    <article>
+      <h3><span class="en">Recreate the edge fade where iOS won't</span><span class="zh">在 iOS 不提供的地方重建边缘渐隐</span></h3>
+      <p><span class="en">iOS 26+ blurs content scrolling under the bottom edge, but only when a tab bar or toolbar anchors it. Sheets and pushed screens have neither, so content just cut off. I recreate it with a gradient overlay in the page colour.</span><span class="zh">iOS 26+ 会模糊滚动到底部边缘下方的内容，但前提是有标签栏或工具栏作为锚点。底部面板和推入的页面两者都没有，内容会被直接截断。我用页面底色的渐变覆盖层重建了这一效果。</span></p>
+    </article>
+  </div>
+  <figure class="f-phone">
+    <figcaption><b><span class="en">Settings</span><span class="zh">设置</span></b></figcaption>
+    <div class="f-screen">
+      <img src="img/fallback/settings.webp" width="600" height="1304" alt="Maureen's Settings screen: a Haptics switch under Preferences, and the list fading out at the bottom edge">
+      <div class="f-call r" style="--x:270px; --y:406px"><i></i><span class="en">Haptics switch</span><span class="zh">触感开关</span></div>
+      <div class="f-call r" style="--x:282px; --y:612px"><i></i><span class="en">Recreated bottom-edge fade</span><span class="zh">重建的底部边缘渐隐</span></div>
+    </div>
+  </figure>
+</div>

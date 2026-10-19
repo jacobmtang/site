@@ -1,0 +1,88 @@
+/* Native-first principles. A "fit" slide (1512 x 982 frame). Title on top; below it, one screen recording at a
+   time, centred (→ switches), and the two principles, numbered, on a diagonal (top left, bottom right), with callout lines to native elements.
+   Card text uses base.css's card tokens. */
+.chapter.native.on { display: grid; grid-template-rows: auto 1fr; }
+.chapter.native { padding-bottom: 96px; }
+.n-title { text-align: center; margin-bottom: 0; }
+body[data-lang="both"] .n-title .en { margin-bottom: 4px; }
+
+/* the phone centred on the slide; the two principles, numbered, on a diagonal (top left, bottom right) */
+.n-body { position: relative; display: grid; place-items: center; }
+
+.n-points { position: absolute; inset: 0; pointer-events: none; }
+.n-point {
+  --edge: calc((100% - 636px) / 2);   /* the phone's top / bottom (636 tall, centred) */
+  position: absolute; width: 300px;
+  display: grid; align-content: start; justify-items: start; gap: 12px;
+  text-align: left;   /* plain text, no card; numbered by a Maureen-blue circle */
+}
+.n-num {
+  display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; margin-bottom: 4px;
+  background: var(--accent); color: #fff; font: 600 17px/1 var(--sans); font-variant-numeric: tabular-nums;
+}
+.n-point:nth-child(1) { left: 0; top: var(--edge); }        /* top left, flush with the phone's top */
+.n-point:nth-child(2) { right: 0; bottom: var(--edge); }    /* bottom right, flush with its bottom */
+.n-point h3 { font: 600 22px/28px var(--sans); color: var(--heading); }
+.n-point h3 .zh { font: 500 20px/25px 'Noto Sans SC', 'PingFang SC', var(--sans); }
+body[data-lang="both"] .n-point h3 .en { display: block; margin-bottom: 4px; }
+body[data-lang="zh"] .n-point h3 .zh { font-size: 28px; line-height: 34px; }
+.n-point p { font-size: var(--card-text); line-height: var(--card-lh); font-weight: var(--card-weight); color: var(--body); }
+.n-point p .zh { font-size: var(--card-text); line-height: var(--card-lh); }   /* the browser's own CJK breaking: it keeps punctuation off a line start (keep-all did not, on long sentences) */
+body[data-lang="both"] .n-point p .en { display: block; margin-bottom: 4px; }
+body[data-lang="zh"] .n-point p .zh { font-size: var(--card-text-zh); line-height: var(--card-lh-zh); }
+
+/* Phones: a 285 x 620 screen (the recordings are 1206 x 2622) in an 8px bezel. The callouts reach 202px
+   past each side (170 label + 32 line), clear of the 300px corner cards. */
+.n-stage { display: flex; justify-content: center; }
+.n-phone {
+  --sw: 285px; --sh: 620px;
+  position: relative; flex: none; padding: 8px; border-radius: 52px; background: #111;
+}
+.n-phone video { display: block; width: var(--sw); height: var(--sh); border-radius: 44px; object-fit: cover; background: #F2F2F2; }
+
+/* Callouts. --x/--y place the dot in screen px (from the screen's top left). A left callout reads
+   label, line, dot; a right one dot, line, label. The line runs 32px past the bezel. */
+.n-call { position: absolute; top: calc(8px + var(--y)); display: flex; align-items: center; transform: translateY(-50%); }
+.n-call.l { right: calc(100% - 8px - var(--x)); }
+.n-call.r { left: calc(8px + var(--x)); }
+.n-call i { position: relative; flex: none; height: 1px; background: var(--heading); }
+.n-call.l i { width: calc(32px + 8px + var(--x)); }
+.n-call.r i { width: calc(32px + 8px + var(--sw) - var(--x)); }
+.n-call i::after {
+  content: ''; position: absolute; top: 50%; width: 9px; height: 9px; margin-top: -4.5px; border-radius: 50%;
+  background: var(--heading); box-shadow: 0 0 0 2px #fff;
+}
+.n-call.l i::after { right: -4.5px; }
+.n-call.r i::after { left: -4.5px; }
+.n-label { width: 170px; flex: none; font-size: var(--card-text); line-height: var(--card-lh); font-weight: 600; color: var(--heading); }
+.n-call.l .n-label { text-align: right; padding-right: 12px; }
+.n-call.r .n-label { padding-left: 12px; }
+.n-label .zh { font-weight: 500; }
+body[data-lang="both"] .n-label .zh { display: block; margin-top: 2px; font-weight: 400; color: var(--body); }
+body[data-lang="zh"] .n-label .zh { font-size: var(--card-text-zh); line-height: var(--card-lh-zh); }
+
+/* arriving (slide.js adds .play): the title rises, the principles, the phones, then each callout draws its
+   line out from the dot and its label fades in */
+.chapter.native .n-title, .chapter.native .n-point, .chapter.native .n-phone, .chapter.native .n-label { opacity: 0; }
+.chapter.native .n-call i { transform: scaleX(0); }
+.chapter.native .n-call.l i { transform-origin: right; }
+.chapter.native .n-call.r i { transform-origin: left; }
+.chapter.native.play .n-title { animation: n-in 700ms cubic-bezier(0.32, 0.72, 0, 1) 200ms both; }
+.chapter.native.play .n-point { animation: n-in 700ms cubic-bezier(0.32, 0.72, 0, 1) both; }
+.chapter.native.play .n-point:nth-child(1) { animation-delay: 420ms; }
+.chapter.native.play .n-point:nth-child(2) { animation-delay: 520ms; }
+.chapter.native.play .n-phone { animation: n-in 800ms cubic-bezier(0.32, 0.72, 0, 1) both; }
+.chapter.native.play .n-phone:nth-child(1) { animation-delay: 560ms; }
+.chapter.native.play .n-phone:nth-child(2) { animation-delay: 660ms; }
+/* Callouts are driven by slide.js, which adds .is-on once its phone has risen and, for a timed callout,
+   only while its element is on screen in the recording: the line draws out from the dot, then the label */
+.chapter.native .n-call i { transition: transform 420ms cubic-bezier(0.32, 0.72, 0, 1) 120ms; }
+.chapter.native .n-label { transition: opacity 240ms ease-out; }
+.chapter.native .n-call.is-on i { transform: scaleX(1); transition-delay: 0ms; }
+.chapter.native .n-call.is-on .n-label { opacity: 1; transition-delay: 300ms; }
+@keyframes n-in { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .chapter.native .n-title, .chapter.native .n-point, .chapter.native .n-phone { opacity: 1; }
+  .chapter.native .n-call i, .chapter.native .n-label { transition: none; }
+  .chapter.native.play * { animation: none !important; }
+}

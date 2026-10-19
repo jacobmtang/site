@@ -1,0 +1,337 @@
+/* Shared styles for every slide. A slide's own styles live in slides/<id>/slide.css. */
+/* Tokens mirror src/theme (colors.ts, useTheme.ts). Text uses Apple leading; space sits on 4. */
+:root {
+  --bg: #F4F4F4;
+  --card: #FFFFFF;
+  --heading: #2C2C2A;
+  --body: #383838;
+  --soft: #8A8A84;
+  --border: rgba(138,158,140,0.2);
+  --accent: #45818E;
+  --accent-wash: #E3EEF0;
+  --accent-text: #2F6670;   /* teal deep enough for text on the wash: 5.45:1 */
+  --serif: 'Merriweather', Georgia, serif;
+  /* card text, one size for every card in the deck: Apple's Body (17/22) for English and for the Chinese
+     line in EN + 中文; a step up (Title 3, 20/25) in 中文 only, where Chinese is the only line */
+  --card-text: 17px; --card-lh: 22px; --card-weight: 400;
+  --card-text-zh: 20px; --card-lh-zh: 25px;
+  --sans: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Noto Sans SC', 'PingFang SC', sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #1C1A18; --card: #2B2A29; --heading: #F0EDE8; --body: #A8A49E; --soft: #A8A49E;
+    --border: rgba(255,255,255,0.07); --accent-wash: #22383C; --accent-text: #8CC0CA;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #1C1A18; --card: #2B2A29; --heading: #F0EDE8; --body: #A8A49E; --soft: #A8A49E;
+  --border: rgba(255,255,255,0.07); --accent-wash: #22383C; --accent-text: #8CC0CA;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  background: var(--bg); color: var(--body); font-family: var(--sans);
+  -webkit-font-smoothing: antialiased; overflow: hidden;
+}
+
+/* ---- chrome ---- */
+.bar {
+  position: fixed; inset: 0 0 auto 0; height: 56px; padding: 0 32px;
+  display: flex; align-items: center; justify-content: space-between; z-index: 2;
+}
+/* Jacob's signature: an inline <symbol> filled with currentColor, so it follows the theme.
+   (The portfolio uses a CSS mask, which Chrome blocks on file://.) */
+.home { padding: 0; border: 0; background: none; cursor: pointer; transition: opacity 150ms; }   /* the signature is the way home */
+.home:hover { opacity: 0.7; }
+.home:active { opacity: 0.5; }
+.signature { display: block; height: 32px; width: auto; aspect-ratio: 273.88 / 116.18; color: var(--heading); }   /* top left, as on the portfolio */
+/* Glass segmented control, after iOS 26: a frosted capsule, a top rim of light, and a raised
+   lens that springs between options. 40 tall: 4 + 32 + 4; the rim is an inset shadow, not a border. */
+:root {
+  --glass: rgba(255,255,255,0.55);
+  --glass-rim: inset 0 1px 0 rgba(255,255,255,0.9), inset 0 0 0 1px rgba(0,0,0,0.06);
+  --glass-shadow: 0 8px 24px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
+  --lens: rgba(255,255,255,0.95);
+  --lens-shadow: 0 2px 8px rgba(0,0,0,0.12), inset 0 1px 0 #FFFFFF;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --glass: rgba(52,49,46,0.55);
+    --glass-rim: inset 0 1px 0 rgba(255,255,255,0.14), inset 0 0 0 1px rgba(255,255,255,0.06);
+    --glass-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    --lens: rgba(255,255,255,0.16);
+    --lens-shadow: 0 2px 8px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+  }
+}
+.segmented {
+  position: relative; display: inline-flex; padding: 4px; border-radius: 100px;
+  background: var(--glass); box-shadow: var(--glass-rim), var(--glass-shadow);
+}
+.segmented .lens {
+  position: absolute; top: 4px; bottom: 4px; left: 0; width: 0; border-radius: 100px;
+  background: var(--lens); box-shadow: var(--lens-shadow);
+  transition: left 420ms cubic-bezier(0.32, 0.72, 0, 1), width 420ms cubic-bezier(0.32, 0.72, 0, 1), transform 200ms ease-out;
+}
+.segmented.instant .lens { transition: none; }
+.segmented.pressing .lens { transform: scale(1.06); }
+.segmented button {
+  position: relative; font: 500 13px/18px var(--sans); color: var(--soft);
+  background: none; border: 0; border-radius: 100px; padding: 7px 16px; cursor: pointer;
+  transition: color 200ms ease-out;
+}
+.segmented button[aria-pressed="true"] { color: var(--heading); }
+/* EN + 中文 as a mark, not a label: "A文", the translate symbol, so the middle option takes half the room.
+   The A sits a little high and the 文 a little low, as in Apple's translate icon */
+.segmented button.is-both { padding: 7px 12px; font-weight: 600; letter-spacing: -0.02em; }
+.segmented button.is-both > span { display: inline-flex; align-items: baseline; }
+.segmented button.is-both > span > span { font: 500 12px/18px 'Noto Sans SC', 'PingFang SC', var(--sans); margin-left: 1px; transform: translateY(1px); }
+.segmented button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.progress {
+  position: fixed; left: 32px; right: 32px; bottom: 24px; height: 4px;
+  display: flex; gap: 4px; z-index: 2;
+}
+.progress button {
+  position: relative; flex: 1; height: 4px; border: 0; border-radius: 2px; background: var(--border);
+  cursor: pointer; overflow: hidden;
+}
+/* each segment's fill eases to its width; outside a View Transition the CSS transition does it */
+.progress .fill {
+  position: absolute; top: 0; bottom: 0; left: 0; width: 0; border-radius: 2px; background: var(--accent);
+  view-transition-class: fill; transition: width 680ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+/* width is set by deck.js: 100% for past slides, step / steps for the current one, 0 ahead */
+/* ☠️ off during a View Transition: the NEW snapshot is taken right after the class flips, so a running
+   CSS transition would be captured at width 0 and the group would ease from nothing to nothing */
+html.vt .progress .fill { transition: none; }
+/* the first paint (a refresh on a later slide): segments start at their widths rather than all easing in */
+.progress.still .fill { transition: none; }
+
+/* ---- back / next: two small glass circles above the progress bar, bottom right. Quiet until hovered.
+   40 across (the segmented control's height); 8 apart; 16 above the bar (24 + 4 + 16 = 44). ---- */
+.arrows { position: fixed; right: 32px; bottom: 44px; display: flex; gap: 8px; z-index: 2; view-transition-name: arrows; }
+.arrows button {
+  width: 40px; height: 40px; border: 0; border-radius: 20px; display: grid; place-items: center; cursor: pointer;
+  background: var(--glass); box-shadow: var(--glass-rim), var(--glass-shadow); color: var(--heading);
+  opacity: 0.5; transition: opacity 200ms ease-out, transform 200ms ease-out;
+}
+.arrows button svg { width: 20px; height: 20px; }
+/* slide counter, left of the arrows: "5 / 8" */
+.arrows .count {
+  align-self: center; margin-right: 8px; min-width: 40px; text-align: right;
+  font: 500 13px/18px var(--sans); color: var(--soft); font-variant-numeric: tabular-nums; letter-spacing: 0.02em;
+}
+.arrows button:hover { opacity: 1; }
+.arrows button:active { transform: scale(0.92); }
+.arrows button:disabled { opacity: 0.16; cursor: default; }
+.arrows button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* ---- chapters ---- */
+main { height: 100%; }
+.chapter {
+  position: absolute; inset: 0; padding: 96px 64px 64px; overflow-y: auto;
+  display: none; opacity: 0; transition: opacity 240ms ease-out;
+}
+.chapter.on { display: block; }
+/* "fit" slides (deck.js fit()): a fixed 1512 x 982 frame, centred and scaled to the window as one piece.
+   Their own CSS is written for that frame in px, never vw / vh, which would measure the window instead */
+.chapter.fit { inset: auto; left: 50%; top: 50%; width: 1512px; height: 982px; overflow: hidden; padding: 96px 64px 64px;   /* the frame's own padding, so the narrow-window rule below never reaches it */
+  transform: translate(-50%, -50%) scale(var(--fit, 1)); }
+.chapter.shown { opacity: 1; }
+.inner { max-width: 880px; }
+
+/* Type = Apple's Dynamic Type (Large) — Large Title 34/41, Title 1 28/34, Title 2 22/28,
+   Title 3 20/25, Body 17/22, Subhead 15/20, Footnote 13/18, Caption 2 11/13. Space = multiples of 4. */
+h1, h2 { font-family: var(--serif); font-weight: 300; color: var(--heading); }
+h1 { font-size: 34px; line-height: 41px; margin-bottom: 16px; }
+h2 { font-size: 28px; line-height: 34px; margin-bottom: 24px; }
+.lede { font-size: 20px; line-height: 25px; color: var(--body); margin-bottom: 32px; max-width: 720px; }
+ul.points { list-style: none; display: grid; gap: 16px; margin-bottom: 32px; }
+ul.points li {
+  background: var(--card); border: 1px solid var(--border); border-radius: 20px;
+  padding: 16px 20px; font-size: 17px; line-height: 22px;
+}
+ul.points li strong { color: var(--heading); font-weight: 600; }
+
+/* bilingual: each line carries its Chinese beneath. Gaps sit BELOW the English, never above the Chinese. */
+/* Chinese takes its English partner's colour (inherit), never a softer one: body vs heading is barely
+   different in light but clearly softer in dark, so a demoted colour read differently per theme. Size alone
+   marks it secondary. */
+.zh { display: block; font-family: 'Noto Sans SC', 'PingFang SC', var(--sans); color: inherit; }
+/* one step under its English line, never two: CJK reads smaller than Latin at the same size */
+h1 .zh { font-size: 28px; line-height: 34px; }   /* Title 1 under Large Title */
+h2 .zh { font-size: 22px; line-height: 28px; }   /* Title 2 under Title 1 */
+.lede .zh { font-size: 20px; line-height: 25px; }   /* Title 3, level with the lede */
+li .zh { font-size: 17px; line-height: 22px; }   /* Body, level with the item */
+body[data-lang="both"] h1 .en, body[data-lang="both"] h2 .en { display: block; margin-bottom: 8px; }
+body[data-lang="both"] .lede .en, body[data-lang="both"] li .en { display: block; margin-bottom: 4px; }
+/* a line break only for 中文 mode, where the Chinese is the headline (in EN + 中文 it is one short line) */
+/* No orphans: a lone last character or word reads as a mistake, in either language. */
+h1, h2, p, li, .lede { text-wrap: pretty; }
+.nobr { white-space: nowrap; }
+.zh-br { display: none; }
+body[data-lang="zh"] .zh-br { display: inline; }
+/* !important on purpose: a slide's own `display` rule must never un-hide the other language */
+body[data-lang="en"] .zh { display: none !important; }
+body[data-lang="zh"] .en { display: none !important; }
+body[data-lang="zh"] .zh { color: inherit; font-size: inherit; line-height: inherit; }
+/* 中文 only: one step up from the English sizes, which were set for Latin and read small in Chinese.
+   Large Title has nothing above it on Apple's scale, so the hero takes 40/48 (an exception, still on 4). */
+body[data-lang="zh"] h1 { font-size: 40px; line-height: 48px; }
+body[data-lang="zh"] h2 { font-size: 34px; line-height: 41px; }
+body[data-lang="zh"] .lede { font-size: 22px; line-height: 28px; }
+body[data-lang="zh"] ul.points li { font-size: 20px; line-height: 25px; }
+
+/* 32 tall: 7 + Footnote 18 + 7 */
+.scene {
+  display: inline-flex; align-items: center; gap: 8px; padding: 7px 16px;
+  background: var(--accent-wash); color: var(--accent-text); border-radius: 100px;
+  font: 500 13px/18px var(--sans);
+}
+.scene::before { content: '📱'; }
+
+.todo {
+  border: 1px dashed var(--accent); border-radius: 20px; padding: 16px 20px;
+  color: var(--accent-text); font-size: 15px; line-height: 20px; margin-bottom: 16px;
+}
+
+/* ---- chapter transitions: View Transitions, as the portfolio site does (site.js + base.css).
+   A slide push on x: the old chapter leaves fully to one side as the new one enters from the
+   other, both on one spring. The header and progress bar have their own names, so they hold still. */
+html { --dir: 1; }
+html.back { --dir: -1; }
+.bar { view-transition-name: chrome; }
+.progress { view-transition-name: progress; }
+/* ☠️ A named element gets an OLD and a NEW snapshot, crossfaded by default. Both glass pills at once
+   doubled the translucent fill and the shadow mid-slide. Show the new snapshot only, unanimated. */
+::view-transition-group(chrome), ::view-transition-new(chrome),
+::view-transition-group(arrows), ::view-transition-new(arrows),
+::view-transition-group(progress), ::view-transition-new(progress) { animation: none; }
+::view-transition-old(chrome), ::view-transition-old(progress), ::view-transition-old(arrows) { display: none; }
+/* Fills: the ones changing are named (fill-N) for the length of a transition (deck.js show), so each GROUP eases from the old width to the new on the slide's spring.
+   Show one snapshot, stretched to the group: the new one when filling, the old one when emptying. */
+::view-transition-group(*.fill) { animation-duration: 680ms; animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1); }
+::view-transition-new(*.fill), ::view-transition-old(*.fill) { animation: none; width: 100%; height: 100%; }
+:root:not(.back)::view-transition-old(*.fill) { display: none; }
+:root.back::view-transition-new(*.fill) { display: none; }
+::view-transition-old(root) { animation: 680ms cubic-bezier(0.32, 0.72, 0, 1) both chapter-out; }
+::view-transition-new(root) { animation: 680ms cubic-bezier(0.32, 0.72, 0, 1) both chapter-in; }
+@keyframes chapter-out { to { transform: translateX(calc(var(--dir) * -100%)); } }
+@keyframes chapter-in { from { transform: translateX(calc(var(--dir) * 100%)); } }
+/* Inner steps (deck.js): the slide stays put. Its content crossfades, and any element with a
+   view-transition-name morphs from where it was to where it is. */
+:root.step::view-transition-group(*) { animation-duration: 520ms; animation-timing-function: cubic-bezier(0.32, 0.72, 0, 1); }
+:root.step::view-transition-old(root) { animation: 200ms ease-out both step-out; }
+:root.step::view-transition-new(root) { animation: 320ms ease-out both step-in; }
+@keyframes step-out { to { opacity: 0; } }
+@keyframes step-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
+
+/* Inner steps: anything marked data-from="N" appears at step N (and data-until="N" leaves after it). */
+.is-later { display: none !important; }
+
+/* Shown only when the deck cannot load its slides (opened as a file, or a slide is missing). */
+.deck-error {
+  position: fixed; inset: 0; display: grid; place-content: center; gap: 12px; padding: 32px; text-align: center;
+  font-size: 17px; line-height: 22px; color: var(--body);
+}
+.deck-error code { font: 13px/18px ui-monospace, Menlo, monospace; background: var(--card); padding: 8px 12px; border-radius: 8px; }
+
+@media (max-width: 720px) {
+  .bar { padding: 0 16px; }
+  .chapter { padding: 80px 16px 56px; }
+  .progress { left: 16px; right: 16px; }
+  .arrows { right: 16px; }
+}
+
+/* ---- definitions: a term that opens a sheet over the blurred deck (index.html, deck.js) ---- */
+.def {
+  /* a span with role=button, not a <button>: a button is an atomic box and can't wrap with the sentence */
+  display: inline; color: var(--accent-text); cursor: pointer;
+  white-space: nowrap;   /* a term reads as one unit: it moves to the next line whole, never split */
+  text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px;
+  text-decoration-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  pointer-events: auto;   /* terms can sit inside layers that ignore the pointer */
+  transition: text-decoration-color 160ms ease-out;
+}
+.def:hover { text-decoration-color: var(--accent); }
+.def:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 4px; }
+
+.sheet {
+  position: fixed; border: 0; margin: auto; padding: 32px; width: 560px; max-width: none; max-height: none;
+  border-radius: 28px; background: var(--card); color: var(--body); overflow: visible;
+  zoom: var(--fit, 1);   /* scales with the slides */
+  max-height: calc(100vh / var(--fit, 1) - 48px); overflow-y: auto;   /* a long sheet scrolls rather than leaving the screen */
+}
+/* while a sheet is up, CSS motion behind it pauses: the blur then rasterises a still page, not every frame */
+html.sheet-open .chapter, html.sheet-open .chapter * { animation-play-state: paused !important; }
+.sheet::backdrop { background: rgba(244,244,244,0.45); -webkit-backdrop-filter: blur(24px) saturate(1.1); backdrop-filter: blur(24px) saturate(1.1); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .sheet::backdrop { background: rgba(28,26,24,0.5); } }
+:root[data-theme="dark"] .sheet::backdrop { background: rgba(28,26,24,0.5); }
+.sheet[open] { animation: sheet-in 460ms cubic-bezier(0.32, 0.72, 0, 1) both; }
+.sheet[open]::backdrop { animation: sheet-fade 300ms ease-out both; }
+.sheet.is-closing { animation: sheet-out 180ms ease-in both; }
+.sheet.is-closing::backdrop { animation: sheet-fade 180ms ease-in reverse both; }
+@keyframes sheet-in { from { opacity: 0; transform: translateY(24px) scale(0.98); } to { opacity: 1; transform: none; } }
+@keyframes sheet-out { to { opacity: 0; transform: translateY(12px) scale(0.98); } }
+@keyframes sheet-fade { from { opacity: 0; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .sheet[open], .sheet[open]::backdrop, .sheet.is-closing, .sheet.is-closing::backdrop { animation: none; } }
+
+.sheet-close {
+  position: absolute; top: 20px; right: 20px; width: 36px; height: 36px; border: 0; border-radius: 18px;
+  display: grid; place-items: center; cursor: pointer; background: var(--bg); color: var(--heading);
+}
+.sheet-close svg { width: 18px; height: 18px; }
+.sheet-close { transition: opacity 120ms ease-out; }
+.sheet-close:hover { opacity: 0.8; }
+.sheet-close:active { opacity: 0.5; transition-duration: 0ms; }   /* a dim press, the iOS way: down at once, back on release */
+.sheet-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* content conventions inside a sheet: a title, a lede, then anything (a table, a figure), then a note */
+.sheet-title { font: 600 28px/34px var(--sans); color: var(--heading); margin: 0 48px 8px 0; }
+.sheet-lede, .sheet-note { font-size: var(--card-text); line-height: var(--card-lh); color: var(--body); }
+.sheet-note { color: var(--soft); margin-top: 16px; font-size: 13px; line-height: 18px; }   /* a caption: Footnote size */
+.sheet-note a { color: inherit; text-decoration: underline; text-decoration-color: color-mix(in srgb, currentColor 40%, transparent); text-underline-offset: 3px; }
+.sheet-note a:hover { text-decoration-color: currentColor; }
+body[data-lang="both"] .sheet-lede .en { display: block; margin-bottom: 4px; }
+body[data-lang="both"] .sheet-note .zh::before { content: " · "; }   /* the caption stays one line: EN · 中文 */
+body[data-lang="zh"] .sheet-lede .zh { font-size: var(--card-text-zh); line-height: var(--card-lh-zh); }
+
+/* ---------- the slide menu: a glass circle beside the language control; it opens every slide's title in the sheet ---------- */
+.bar-right { display: flex; align-items: center; gap: 12px; }
+.menu-btn {
+  width: 40px; height: 40px; border: 0; border-radius: 20px; display: grid; place-items: center; cursor: pointer;
+  background: var(--glass); box-shadow: var(--glass-rim), var(--glass-shadow); color: var(--heading);
+  transition: opacity 120ms ease-out;
+}
+.menu-btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; }
+.menu-btn:hover { opacity: 0.8; }
+.menu-btn:active { opacity: 0.5; transition-duration: 0ms; }
+.menu-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.sheet:has(.toc) { width: 560px; }
+.toc { list-style: none; display: grid; gap: 2px; margin: 4px 0 0; padding: 0; }
+.toc button {
+  width: 100%; display: grid; grid-template-columns: 32px 1fr; gap: 12px; align-items: baseline; text-align: left;
+  padding: 10px 12px; border: 0; border-radius: 12px; background: none; cursor: pointer; color: var(--heading);
+  font: 500 17px/22px var(--sans); transition: background-color 120ms ease-out;
+}
+.toc button:hover { background: var(--bg); }
+.toc button:active { opacity: 0.6; }
+.toc .n { font: 500 15px/22px var(--sans); color: var(--soft); font-variant-numeric: tabular-nums; }
+.toc .t .zh { font-weight: 400; }
+body[data-lang="both"] .toc .t .en { display: block; }
+body[data-lang="both"] .toc .t .zh { display: block; font-size: 14px; line-height: 19px; color: var(--body); }
+.toc button[aria-current="true"] { background: var(--accent-wash); }
+.toc button[aria-current="true"] .n, .toc button[aria-current="true"] .t { color: var(--accent-text); }
+.toc br { display: none; }   /* a slide title's own line breaks don't apply in the list */
+.toc .t .en + .zh { margin-left: 0; }
+body[data-lang="both"] .sheet:has(.toc) .sheet-title .zh { display: inline; margin-left: 10px; font-weight: 500; }
+.toc .nobr { white-space: normal; }   /* titles wrap freely in the list */
+/* the slide menu sits straight on the blur: no card */
+.sheet:has(.toc) { background: transparent; padding: 24px 0; overflow: visible; }
+.sheet:has(.toc) .sheet-title { margin-left: 12px; }
+.sheet:has(.toc) .sheet-close { background: var(--card); }
+.toc button:hover { background: color-mix(in srgb, var(--card) 70%, transparent); }

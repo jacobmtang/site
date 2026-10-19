@@ -1,0 +1,17 @@
+[
+  { "id": "title", "class": "hero", "css": true, "js": true, "fit": true },
+  { "id": "user", "class": "user", "css": true, "js": true, "fit": true },
+  { "id": "market", "class": "market", "css": true, "js": true, "fit": true },
+  { "id": "journey", "class": "journey", "css": true, "js": true, "fit": true },
+  { "id": "apps", "class": "apps", "css": true, "js": true, "fit": true },
+  { "id": "native", "class": "native", "css": true, "js": true, "fit": true },
+  { "id": "library", "class": "library", "css": true, "js": true },
+  { "id": "motion", "class": "motion", "css": true, "js": true, "fit": true },
+  { "id": "standards", "class": "standards", "css": true, "js": true, "fit": true },
+  { "id": "stack", "class": "stack", "css": true, "js": true, "fit": true },
+  { "id": "ai", "class": "ai", "css": true, "js": true, "fit": true },
+  { "id": "perf", "class": "perf", "css": true, "js": true, "fit": true },
+  { "id": "fallback", "class": "fallback", "css": true, "js": true, "fit": true },
+  { "id": "outcomes", "class": "outcomes", "css": true, "js": true, "fit": true },
+  { "id": "assets", "class": "assets", "css": true, "js": true, "fit": true }
+]

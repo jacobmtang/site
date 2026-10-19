@@ -1,0 +1,63 @@
+/* ---- screen wall, vertical (title chapter): the portfolio's slide 05 on its side. Each column holds its
+   screens repeated, then doubled, and slides by exactly one set, so the loop is seamless. Transform-only;
+   top and bottom fade out. Paused while the chapter is hidden, and for reduced motion. */
+/* Three columns, the mockup in the true centre: equal 1fr sides around it, the title on the left, the wall
+   on the right. The hand rises from the bottom edge (no bottom padding here), its wrist fading out. */
+.chapter.hero { display: none; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); column-gap: 48px; align-items: center; overflow: hidden; padding-top: 0; padding-bottom: 0; }
+.chapter.hero.on { display: grid; }
+.chapter.hero { --frame-h: 982px; --h: 705px; }   /* the slide is "fit" (a 1512 x 982 frame): sizes in px, never vh. The hand: 705 */
+.hero-phone {
+  /* Kept at its size and pushed UP until the PHONE's centre sits on the window's centre. The phone spans
+     the image's top 75% (centre at 37.6%); bottom-aligned, that centre is at FRAME - 0.624H, so lift by
+     0.624H - FRAME / 2. The forearm then ends above the bottom edge, with a short fade. */
+  position: relative; margin: 0; align-self: end; height: var(--h); aspect-ratio: 1100 / 1294;
+  /* the PHONE is centred, not the picture: it sits ~72% across the image (the wrist fills the left), so
+     shift left by the difference. The wrist reaches toward the title only in the bottom third, below it. */
+  transform: translate(-22%, calc(0.624 * var(--h) - var(--frame-h) / 2));
+  /* an eased fade (slow start, long tail) over the last 20%: no visible line where it begins */
+  -webkit-mask-image: linear-gradient(to bottom, #000 80%, rgba(0,0,0,0.94) 84%, rgba(0,0,0,0.78) 88%, rgba(0,0,0,0.52) 92%, rgba(0,0,0,0.24) 96%, rgba(0,0,0,0.06) 98.5%, transparent);
+          mask-image: linear-gradient(to bottom, #000 80%, rgba(0,0,0,0.94) 84%, rgba(0,0,0,0.78) 88%, rgba(0,0,0,0.52) 92%, rgba(0,0,0,0.24) 96%, rgba(0,0,0,0.06) 98.5%, transparent);
+}
+.hp-hand { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* the screens, under the hand, cut to the screen's exact shape (the mask is the mockup's own hole, dilated
+   2px so no hairline of slide shows between screen and bezel) */
+.hp-screen {
+  position: absolute; inset: 0;
+  -webkit-mask: url(../../img/hand-screen-mask.png) 0 0 / 100% 100% no-repeat;
+          mask: url(../../img/hand-screen-mask.png) 0 0 / 100% 100% no-repeat;
+}
+/* the screen's box inside the image, measured from the mask: 571, 14, 441 x 948 of 1100 x 1294 */
+.hp-glass { position: absolute; left: 51.909%; top: 1.082%; width: 40.091%; height: 73.261%; container-type: inline-size; background: #fff; }
+.hp-glass img {
+  position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top;
+  opacity: 0;
+}
+.hp-glass img.is-on { opacity: 1; }
+/* the white the screens fade through; slide.js drives its opacity */
+.hp-white { position: absolute; inset: 0; background: #fff; opacity: 0; transition: opacity var(--fade, 360ms) ease-in-out; }
+.hp-white.is-on { opacity: 1; }
+/* iPhone 16 Pro's island (126 x 37 pt on a 402 pt screen, 11 pt down), a touch larger so it covers the
+   islands some captures already carry */
+.hp-island { position: absolute; left: 50%; top: 2.8cqi; width: 32.4cqi; height: 9.6cqi; transform: translateX(-50%); border-radius: 999px; background: #000; }
+/* the wall runs the full height of the window, under the header, so its fades sit at the window's edges
+   rather than inside the slide's padding (which made it stop short at the top) */
+.chapter.hero .screen-wall { justify-self: end; align-self: stretch; height: var(--frame-h); }
+.screen-wall {
+  --wall-w: 140px; --wall-gap: 16px;
+  display: flex; gap: var(--wall-gap); height: calc(var(--frame-h) - 160px); overflow: clip; pointer-events: none;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 16%, #000 84%, transparent);
+          mask-image: linear-gradient(to bottom, transparent, #000 16%, #000 84%, transparent);
+}
+.wall-col { display: flex; flex-direction: column; gap: var(--wall-gap); height: max-content; animation: wall-rise var(--wall-dur, 60s) linear infinite; will-change: transform; }
+.wall-col:nth-child(even) { animation-direction: reverse; }
+.wall-col img { display: block; width: var(--wall-w); height: auto; aspect-ratio: 300 / 652; border-radius: 13.7% / 6.3%; box-shadow: 0 0 0 1px var(--border); background: var(--card); }
+@keyframes wall-rise { from { transform: translateY(0); } to { transform: translateY(calc(-50% - var(--wall-gap) / 2)); } }
+/* narrower: the wall goes first, then the mockup shrinks beside the title, then the title stands alone */
+/* no narrow-window rules: the frame is always 1512 wide and scales as one piece (deck.js fit) */
+@media (prefers-reduced-motion: reduce) { .wall-col { animation: none; } }
+.chapter.hero .inner { position: relative; z-index: 1; }   /* the title stays above the wrist if they ever meet */
+/* The headline may run past its column into the hand's box: the box is wider than the hand at the title's
+   height (its left fifth is forearm, which only rises to the bottom third). So the gap and 18% of the box
+   are free. That lets 中文's two lines stay two. */
+.chapter.hero h1 { margin-right: calc(-48px - var(--h) * 1100 / 1294 * 0.18); }   /* the headline only: the subtitle sits lower, where the palm reaches left */
+body[data-lang="zh"] .chapter.hero h1 { font-size: 36px; line-height: 44px; }   /* 13 characters a line must fit: 36 x 13 = 468 */

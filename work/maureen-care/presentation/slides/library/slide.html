@@ -1,0 +1,206 @@
+<!-- Tokens: the names each component's source references; an outlined chip with no fill is a LITERAL in the code, not a token.
+     Design library: the major components, recreated from the app's values (src/components/ui and the
+     portfolio's _source/maureen-design-library). Uniform cards in a grid; slide.js pages them to fit. -->
+<header class="lib-head">
+  <h2><span class="en">Ensuring consistency with a component library</span><span class="zh">以组件库确保设计一致性</span></h2>
+</header>
+
+<div class="lib-grid">
+
+  <article class="lib-card">
+    <div class="lib-canvas"><div class="c-stack">
+      <button class="c-cta" type="button" tabindex="-1"><span>Continue</span></button>
+      <button class="c-cta is-disabled" type="button" tabindex="-1"><span>Continue</span></button>
+    </div></div>
+    <footer><b class="name"><span class="en">Primary button</span><span class="zh">主按钮</span></b><p class="meta en">Accent · disabled · PrimaryButton</p><p class="meta zh">主色 · 禁用 · PrimaryButton</p><p class="tokens" title="C.maureen · C.warmWhite · DISABLED_OPACITY 0.4"><code>C.maureen</code> <code>C.warmWhite</code> <code>DISABLED_OPACITY 0.4</code></p></footer>
+  </article>
+
+  <article class="lib-card">
+    <div class="lib-canvas"><div class="c-stack">
+      <button class="c-cta is-light" type="button" tabindex="-1"><span>Continue</span></button>
+      <button class="c-cta is-dark" type="button" tabindex="-1"><span>Continue</span></button>
+    </div></div>
+    <footer><b class="name"><span class="en">Primary button</span><span class="zh">主按钮</span></b><p class="meta en">Light fill · dark fill</p><p class="meta zh">浅色填充 · 深色填充</p><p class="tokens" title="light: fill C.white, label C.textDark · dark: fill C.textDark, label C.white"><code><span class="en">fill</span><span class="zh">填充</span> C.white</code> <code><span class="en">label</span><span class="zh">文字</span> C.textDark</code> <code><span class="en">fill</span><span class="zh">填充</span> C.textDark</code> <code><span class="en">label</span><span class="zh">文字</span> C.white</code></p></footer>
+  </article>
+
+  <article class="lib-card">
+    <div class="lib-canvas"><div class="c-group">
+      <div class="c-srow" data-press>
+        <svg class="c-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M430.11 347.9c-6.6-6.1-16.3-7.6-24.6-9-11.5-1.9-15.9-4-22.6-10-14.3-12.7-14.3-31.1 0-43.8l30.3-26.9c46.4-41 46.4-108.2 0-149.2-34.2-30.1-80.1-45-127.8-45-55.7 0-113.9 20.3-158.8 60.1-83.5 73.8-83.5 194.7 0 268.5 41.5 36.7 97.5 55 152.9 55.4h1.7c55.4 0 110-17.9 148.8-52.4 14.4-12.7 11.99-36.6.1-47.7z" fill="none" stroke="currentColor" stroke-width="32"/><circle cx="144" cy="208" r="32" fill="currentColor"/><circle cx="152" cy="311" r="32" fill="currentColor"/><circle cx="224" cy="144" r="32" fill="currentColor"/><circle cx="256" cy="367" r="48" fill="currentColor"/><circle cx="328" cy="144" r="32" fill="currentColor"/></svg>
+        <span class="c-label">Manage profile</span>
+        <svg class="c-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 3l5 5-5 5" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </div>
+      <div class="c-divider"></div>
+      <div class="c-srow" data-press>
+        <svg class="c-icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 2.5a7.5 7.5 0 0 1 0 15z" fill="currentColor"/></svg>
+        <span class="c-label">Appearance</span>
+        <span class="c-value">System</span>
+      </div>
+      <div class="c-divider"></div>
+      <div class="c-srow">
+        <svg class="c-icon" viewBox="0 0 20 20" aria-hidden="true"><path d="M2 10h3.5l2-5 3 10 2-5H18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <span class="c-label">Haptics</span>
+        <span class="c-switch is-on" data-toggle><i></i></span>
+      </div>
+    </div></div>
+    <footer><b class="name"><span class="en">Settings row</span><span class="zh">设置行</span></b><p class="meta en">Chevron · value · native switch · SettingsRow</p><p class="meta zh">箭头 · 数值 · 原生开关 · SettingsRow</p><p class="tokens" title="C.textDark / D.textBright · C.textSoft / D.textMid · C.border / D.border · C.white / D.bgRaised"><code>C.textDark / D.textBright</code> <code>C.textSoft / D.textMid</code> <code>C.white / D.bgRaised</code></p></footer>
+  </article>
+
+  <article class="lib-card">
+    <div class="lib-canvas"><div class="c-menu">
+      <div class="c-mrow" data-press>
+        <svg class="c-icon" viewBox="0 0 512 512" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32" d="M364.13 125.25L87 403l-23 45 44.99-23 277.76-277.13-22.62-22.62zM420.69 68.69l-22.62 22.62 22.62 22.63 22.62-22.63a16 16 0 000-22.62h0a16 16 0 00-22.62 0z"/></svg>
+        <span>Rename folder</span>
+      </div>
+      <div class="c-divider"></div>
+      <div class="c-mrow" data-press>
+        <svg class="c-icon" viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.5"/><circle cx="7" cy="8" r="1.3" fill="currentColor"/><circle cx="11" cy="6.5" r="1.3" fill="currentColor"/><circle cx="13.5" cy="10" r="1.3" fill="currentColor"/></svg>
+        <span>Change color</span>
+      </div>
+      <div class="c-divider"></div>
+      <div class="c-mrow is-danger" data-press>
+        <svg class="c-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M112 112l20 320c.95 18.49 14.4 32 32 32h184c17.67 0 30.87-13.51 32-32l20-320" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><path stroke="currentColor" stroke-linecap="round" stroke-width="32" d="M80 112h352"/><path d="M192 112V72h0a23.93 23.93 0 0124-24h80a23.93 23.93 0 0124 24h0v40M256 176v224M184 176l8 224M328 176l-8 224" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/></svg>
+        <span>Delete folder</span>
+      </div>
+    </div></div>
+    <footer><b class="name"><span class="en">Sheet row</span><span class="zh">面板行</span></b><p class="meta en">Press lays down a fill, never a scale · SheetRow</p><p class="meta zh">按下时铺上底色，而不是缩放 · SheetRow</p><p class="tokens" title="C.textDark / D.textBright · C.textSoft / D.textSoft · C.danger / D.danger"><code>C.textDark / D.textBright</code> <code>C.textSoft / D.textSoft</code> <code>C.danger / D.danger</code></p></footer>
+  </article>
+
+  <article class="lib-card">
+    <div class="lib-canvas"><div class="c-gcard">
+      <div class="c-grow is-static"><span class="c-gtext">Spinach</span><span class="c-dot is-on" data-toggle><i></i></span></div>
+      <div class="c-gwrap"><i class="c-gdiv" aria-hidden="true"></i><div class="c-swipe" data-swipe>
+        <span class="c-del" data-delete><i class="c-del-shadow" aria-hidden="true"></i><span>Delete</span></span>
+        <div class="c-grow"><span class="c-gtext">Oat milk</span><span class="c-dot" data-toggle><i></i></span></div>
+      </div></div>
+    </div></div>
+    <footer><b class="name"><span class="en">Swipe to delete</span><span class="zh">滑动删除</span></b><p class="meta en">The whole revealed space is the button · SwipeDeletePill</p><p class="meta zh">露出的整块区域都是按钮 · SwipeDeletePill</p><p class="tokens" title="SWIPE_REVEAL 92 · C.danger · pressed #990516"><code>SWIPE_REVEAL 92</code> <code>C.danger</code> <code class="lit"><span class="en">pressed</span><span class="zh">按下</span> #990516</code></p></footer>
+  </article>
+
+  <article class="lib-card">
+    <div class="lib-canvas is-glass">
+      <div class="c-stripes" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <div class="c-row">
+        <span class="c-glass" data-press><svg viewBox="0 6 512 512" aria-hidden="true"><path d="M322 95Q322 95 322 95Q329 93 337.0 96.5Q345 100 349 107Q355 118 349 129Q348 132 283 197Q283 197 218 262L283 327Q348 392 349 395Q353 402 351 410Q350 419 342.5 425.0Q335 431 326 430Q319 429 309.0 420.0Q299 411 239 351Q178 290 169.0 280.0Q160 270 160.0 262.0Q160 254 168.5 244.5Q177 235 237 175Q309 102 313.5 99.0Q318 96 322 95Z" fill="currentColor"/></svg></span>
+        <span class="c-glass is-tinted" data-press><svg class="c-checkmark" viewBox="0 0 185.5 185.5" aria-hidden="true"><polyline points="15,96 66.5,146.5 170.5,39" fill="none" stroke="currentColor" stroke-width="30" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="c-glass is-pill" data-press>Done</span>
+      </div>
+    </div>
+    <footer><b class="name"><span class="en">Glass buttons</span><span class="zh">玻璃按钮</span></b><p class="meta en">Plain · tinted · pill · FloatingHeader</p><p class="meta zh">普通 · 着色 · 胶囊 · FloatingHeader</p><p class="tokens" title="HEADER_ICON_SIZE 44 · HEADER_ICON_GLYPH 22 · C.textDark / D.textBright · C.warmWhite"><code>HEADER_ICON_SIZE 44</code> <code>HEADER_ICON_GLYPH 22</code> <code>C.textDark / D.textBright</code> <code>C.warmWhite</code></p></footer>
+  </article>
+
+  <article class="lib-card">
+    <div class="lib-canvas is-glass">
+      <div class="c-stripes" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <span class="c-glass is-pill c-pro" data-press>Get Pro</span>
+    </div>
+    <footer><b class="name"><span class="en">Get Pro pill</span><span class="zh">Pro 升级按钮</span></b><p class="meta en">Glass with a crossing sheen · UnlockProPill</p><p class="meta zh">玻璃质感，一道光泽划过 · UnlockProPill</p><p class="tokens" title="HEADER_ICON_SIZE 44 · sheen rgba(255,255,255,.75)"><code>HEADER_ICON_SIZE 44</code> <code class="lit"><span class="en">sheen</span><span class="zh">光泽</span> rgba(255,255,255,.75)</code></p></footer>
+  </article>
+
+  <article class="lib-card">
+    <div class="lib-canvas is-glass">
+      <div class="c-stripes" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+      <span class="c-tpill" data-tpill><span class="c-tin"><span class="c-tlayer is-on"></span><span class="c-tlayer"></span></span></span>
+    </div>
+    <footer><b class="name"><span class="en">Time pill</span><span class="zh">计时胶囊</span></b><p class="meta en">Timer, finishing, complete: one capsule morphs · TimePill</p><p class="meta zh">计时、收尾、完成：同一个胶囊变形 · TimePill</p><p class="tokens" title="HEADER_TOP_GAP 2 · C.textDark / D.textBright"><code>HEADER_TOP_GAP 2</code> <code>C.textDark / D.textBright</code></p></footer>
+  </article>
+
+  <article class="lib-card">
+    <div class="lib-canvas">
+      <div class="c-toolbar"><div class="c-tscroll">
+        <span class="c-tbtn" data-press><svg class="c-ion" viewBox="0 6 512 512" aria-hidden="true"><path d="M259 70Q399 70 416.0 70.5Q433 71 443 76Q471 89 479 119Q480 125 480.0 262.0Q480 399 479 405Q470 437 440 449Q431 453 411.5 453.5Q392 454 256.0 454.0Q120 454 100.5 453.5Q81 453 72 449Q42 437 33 405Q32 399 32.0 262.0Q32 125 33 119Q41 89 69 76Q76 73 81.0 72.0Q86 71 87.5 70.5Q89 70 259 70ZM428 104 423 102H256H89L84 104Q68 111 65 128Q64 134 64 228V322L113 278Q163 235 168 232Q190 220 212 231Q220 235 266 281L312 327L327 313Q344 295 355 292Q360 290 369.5 290.0Q379 290 386 292Q395 295 424 320L448 339V237Q448 134 447 128Q444 111 428 104ZM325 135Q349 130 367.0 145.5Q385 161 384 185Q383 202 371 214Q360 227 342.5 229.5Q325 232 311 223Q295 213 290 196Q286 183 290 169Q298 141 325 135ZM343 168Q341 166 336.0 166.5Q331 167 329 168Q322 171 320.5 178.5Q319 186 324 192Q332 201 342 197Q347 194 350 189Q354 182 351 176Q348 170 343 168ZM198 260Q189 255 179 263Q177 265 120 315L64 365V379Q64 393 65 398Q69 413 85 420L90 422H154L217 423L253 386L290 350L245 306Q201 261 198 260ZM378 324Q378 324 378 324Q375 322 370.5 322.0Q366 322 364 323Q362 323 313.0 372.0Q264 421 264 422Q264 422 343 422Q343 422 422 422L427 420Q448 412 448 387Q448 387 448 381L415 354Q381 326 378 324Z"/></svg></span>
+        <i class="c-tdiv" aria-hidden="true"></i>
+        <span class="c-tghost" data-toggle><svg class="c-ion is-off" viewBox="0 6 512 512" aria-hidden="true"><path d="M77 71Q80 70 81.0 70.5Q82 71 85.0 71.5Q88 72 266.5 250.0Q445 428 446 431Q451 442 442 450Q439 453 435 454Q434 454 433 454Q429 455 410.0 437.0Q391 419 281 310Q258 286 245 273Q66 94 65 91Q63 84 66.5 78.0Q70 72 77 71ZM235 103Q241 102 258.0 102.5Q275 103 282 104Q340 110 393.0 144.5Q446 179 485 236Q495 251 495 262Q495 270 492 277Q482 297 453 329Q428 356 421 358Q421 359 410.0 348.5Q399 338 399.0 337.0Q399 336 411 325Q437 302 457 273Q463 263 463 262Q463 258 442 232Q422 207 398 188Q353 152 304 140Q281 134 256 135Q232 135 211 139L203 141L191 129Q181 119 180.5 117.0Q180 115 187 113Q207 106 235 103ZM242 167Q247 166 257.5 166.5Q268 167 273 168Q302 173 323.5 194.0Q345 215 350 245Q352 255 351.5 269.5Q351 284 348 285Q347 285 290.0 228.0Q233 171 233 170Q233 168 242 167ZM82 175Q91 167 92.5 167.0Q94 167 104 178L115 189L108 194Q81 219 56 252L48 262L54 271Q81 311 115 338Q158 372 207 384Q229 390 256 390Q281 390 301 385Q308 383 309 383Q309 383 321.0 395.0Q333 407 333 408Q333 409 317 414Q249 432 180 410Q118 389 66 336Q29 299 19 276Q14 264 18 252Q21 242 42.0 217.0Q63 192 82 175ZM163 240Q163 240 163 240Q163 239 164.0 239.0Q165 239 222.0 296.0Q279 353 279 354Q278 357 262.5 357.5Q247 358 238 356Q221 353 209 346Q186 333 173.0 311.0Q160 289 160 263Q160 244 163 240Z"/></svg><svg class="c-ion is-on" viewBox="0 6 512 512" aria-hidden="true"><path d="M77 71Q80 70 81.0 70.5Q82 71 85.0 71.5Q88 72 266.5 250.0Q445 428 446 431Q451 442 442 450Q439 453 435 454Q434 454 433 454Q429 455 410.0 437.0Q391 419 281 310Q258 286 245 273Q66 94 65 91Q63 84 66.5 78.0Q70 72 77 71ZM235 103Q240 102 261.5 103.0Q283 104 289 105Q358 115 418 163Q445 185 466 211Q486 235 492 247Q498 260 494 271Q490 285 465 315Q454 328 439.0 343.0Q424 358 421 358Q419 358 384.0 322.5Q349 287 349.0 286.5Q349 286 350.5 279.5Q352 273 352.0 262.0Q352 251 350 244Q345 215 323.5 194.0Q302 173 273 168Q254 164 234 169Q231 169 206.5 144.5Q182 120 181.5 118.5Q181 117 182 115Q188 109 226 104Q233 103 235 103ZM88 170Q92 167 92.5 167.0Q93 167 127.0 201.0Q161 235 162 236Q163 238 162 245Q159 262 162 279Q166 304 183.5 324.5Q201 345 225 353Q250 361 273 356Q280 355 281.5 356.0Q283 357 307.0 381.0Q331 405 331 407Q331 410 314 414Q198 444 94 362Q85 355 68.0 338.0Q51 321 44 312Q25 287 19 277Q17 271 17.0 262.5Q17 254 19 249Q24 239 46 213Q53 204 68.5 188.5Q84 173 88 170ZM268 199Q282 201 295.5 212.0Q309 223 315 237Q322 254 318 254Q316 254 290.0 228.0Q264 202 264.0 200.5Q264 199 268 199ZM193 271Q193 271 193 271Q194 270 195.0 270.0Q196 270 222 296Q230 303 234 308Q251 325 246 325Q237 325 223 317Q205 306 197 286Q192 274 193 271Z"/></svg>Post anonymously</span>
+        <i class="c-tdiv" aria-hidden="true"></i>
+        <span class="c-tghost" data-press><svg class="c-ion" viewBox="0 6 512 512" aria-hidden="true"><path d="M304 39Q306 38 374.5 38.5Q443 39 446 39Q457 42 466.0 50.5Q475 59 478 70Q480 75 480 138Q481 211 477 219Q475 223 349.0 349.0Q223 475 218 479Q194 495 170 479Q165 476 103.5 414.5Q42 353 39 348Q32 338 32 325Q32 312 38 302Q40 297 167 171Q262 76 280.0 58.5Q298 41 304 39ZM375 70H313L190 193Q67 316 65 319Q63 324 66 330Q67 333 127 393Q176 442 183.5 448.5Q191 455 197 454Q200 453 324 329L448 205V143Q448 80 446.5 76.5Q445 73 441.5 71.5Q438 70 375 70ZM373 104Q373 104 373 104Q386 99 398 105Q413 112 415.5 128.5Q418 145 406 156Q393 170 374.5 164.0Q356 158 352 139Q351 128 357.0 118.0Q363 108 373 104Z"/></svg>Add tag</span>
+      </div></div>
+    </div>
+    <footer><b class="name"><span class="en">Composer toolbar</span><span class="zh">编辑工具栏</span></b><p class="meta en">One glass bar that scrolls when narrow · ComposerToolbar</p><p class="meta zh">一整条玻璃栏，窄屏可滚动 · ComposerToolbar</p><p class="tokens" title="C.textSoft / D.textMid · divider rgba(0,0,0,.12)"><code>C.textSoft / D.textMid</code> <code class="lit"><span class="en">divider</span><span class="zh">分隔线</span> rgba(0,0,0,.12)</code></p></footer>
+  </article>
+
+  <article class="lib-card">
+    <div class="lib-canvas"><div class="c-notice">
+      <svg class="c-notice-icon" viewBox="0 0 512 512" aria-hidden="true"><path d="M350.54 148.68l-26.62-42.06C318.31 100.08 310.62 96 302 96h-92c-8.62 0-16.31 4.08-21.92 10.62l-26.62 42.06C155.85 155.23 148.62 160 140 160H80a32 32 0 00-32 32v192a32 32 0 0032 32h352a32 32 0 0032-32V192a32 32 0 00-32-32h-59c-8.65 0-16.85-4.77-22.46-11.32z" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="32"/><circle cx="256" cy="272" r="80" fill="none" stroke="currentColor" stroke-width="32"/></svg>
+      <b>Camera access is off</b>
+      <p>Turn it on in Settings, or choose a photo from your library.</p>
+      <span class="c-notice-action" data-press>Open Settings</span>
+    </div></div>
+    <footer><b class="name"><span class="en">Notice</span><span class="zh">提示</span></b><p class="meta en">Empty and permission states · Notice</p><p class="meta zh">空状态与权限状态 · Notice</p><p class="tokens" title="t.heading · t.soft · t.border"><code>t.heading</code> <code>t.soft</code> <code>t.border</code></p></footer>
+  </article>
+
+  <article class="lib-card">
+    <div class="lib-canvas"><div class="c-lens" data-lens>
+      <span class="is-on">Week</span><span>Month</span>
+    </div></div>
+    <footer><b class="name"><span class="en">Lens switch</span><span class="zh">视角切换</span></b><p class="meta en">Two words, one active · LensSwitch</p><p class="meta zh">两个词，一个选中 · LensSwitch</p><p class="tokens" title="C.textDark / D.textBright · C.textSoft / D.textSoft · Merriweather 400 / 300"><code>C.textDark / D.textBright</code> <code>C.textSoft / D.textSoft</code> <code>Merriweather 400 / 300</code></p></footer>
+  </article>
+
+  <article class="lib-card">
+    <div class="lib-canvas"><div class="c-lists" data-choose>
+      <span class="is-on">Climb</span><span>To-do</span><span>Groceries</span>
+    </div></div>
+    <footer><b class="name"><span class="en">List switcher</span><span class="zh">列表切换</span></b><p class="meta en">The Ladder tab's lists · ListSwitcher</p><p class="meta zh">Ladder 标签页的列表 · ListSwitcher</p><p class="tokens" title="C.textDark / D.textBright · C.textSoft / D.textSoft · GAP 16"><code>C.textDark / D.textBright</code> <code>C.textSoft / D.textSoft</code> <code>GAP 16</code></p></footer>
+  </article>
+
+  <article class="lib-card">
+    <div class="lib-canvas"><div class="c-pills" data-choose>
+      <span>she/her</span><span>he/him</span><span class="is-on">they/them</span><span>+</span>
+    </div></div>
+    <footer><b class="name"><span class="en">Selection pills</span><span class="zh">选择胶囊</span></b><p class="meta en">Multi-select, never a dropdown</p><p class="meta zh">多选，不用下拉菜单</p><p class="tokens" title="C.textDark / D.textBright · C.textSoft · C.maureen"><code>C.textDark / D.textBright</code> <code>C.textSoft</code> <code>C.maureen</code></p></footer>
+  </article>
+
+  <article class="lib-card">
+    <div class="lib-canvas"><div class="c-row">
+      <span class="c-dot is-on" data-toggle><i></i></span>
+      <span class="c-dot" data-toggle><i></i></span>
+      <span class="c-dot is-on" data-toggle><i></i></span>
+    </div></div>
+    <footer><b class="name"><span class="en">Selection dot</span><span class="zh">选择圆点</span></b><p class="meta en">A ring and a disc, not a check · SelectFillDot</p><p class="meta zh">圆环加实心圆，而不是勾选 · SelectFillDot</p><p class="tokens" title="C.maureen · C.textSoft / D.textSoft"><code>C.maureen</code> <code>C.textSoft / D.textSoft</code></p></footer>
+  </article>
+
+  <article class="lib-card">
+    <div class="lib-canvas"><div class="c-theme" data-choose>
+      <span>Light</span><span class="is-on">System</span><span>Dark</span>
+    </div></div>
+    <footer><b class="name"><span class="en">Theme pill</span><span class="zh">主题胶囊</span></b><p class="meta en">Selection is a fill · Settings</p><p class="meta zh">选中用填充表示 · Settings</p><p class="tokens" title="C.border / D.border · C.textDark / D.textBright · C.textSoft / D.textMid"><code>C.border / D.border</code> <code>C.textDark / D.textBright</code> <code>C.textSoft / D.textMid</code></p></footer>
+  </article>
+
+  <article class="lib-card">
+    <div class="lib-canvas"><div class="c-stepper">
+      <span class="c-step-btn" data-delta="-1"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9h10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+      <b class="c-step-value">3</b>
+      <span class="c-step-btn" data-delta="1"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M4 9h10M9 4v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span>
+    </div></div>
+    <footer><b class="name"><span class="en">Number stepper</span><span class="zh">数字步进器</span></b><p class="meta en">Scale press + a haptic per step · NumberStepper</p><p class="meta zh">按下缩放，每一步都有触感反馈 · NumberStepper</p><p class="tokens" title="C.maureen · C.textDark / D.textBright"><code>C.maureen</code> <code>C.textDark / D.textBright</code></p></footer>
+  </article>
+
+  <article class="lib-card">
+    <div class="lib-canvas"><div class="c-wheels">
+      <div class="c-wgroup"><div class="c-wheel" data-wheel="0,12,0" data-value="1"><div class="c-wscroll"></div><i class="c-band" aria-hidden="true"></i></div><span class="c-unit">hr</span></div>
+      <div class="c-wgroup"><div class="c-wheel" data-wheel="0,59,1" data-value="15"><div class="c-wscroll"></div><i class="c-band" aria-hidden="true"></i></div><span class="c-unit">min</span></div>
+    </div></div>
+    <footer><b class="name"><span class="en">Wheel picker</span><span class="zh">滚轮选择器</span></b><p class="meta en">Native snap, a 3D curve, a haptic per tick · WheelPicker</p><p class="meta zh">原生吸附，3D 弧面，每格一次触感 · WheelPicker</p><p class="tokens" title="ITEM_H 44 · C.textDark / D.textBright · band rgba(0,0,0,.10)"><code>ITEM_H 44</code> <code>C.textDark / D.textBright</code> <code class="lit"><span class="en">band</span><span class="zh">选中线</span> rgba(0,0,0,.10)</code></p></footer>
+  </article>
+
+  <article class="lib-card">
+    <div class="lib-canvas"><div class="c-carousel" data-advance>
+      <i></i><i></i><i></i><i></i><i></i>
+    </div></div>
+    <footer><b class="name"><span class="en">Carousel dots</span><span class="zh">轮播圆点</span></b><p class="meta en">Active dot stretches to 18 · CarouselIndicator</p><p class="meta zh">当前圆点拉长到 18 · CarouselIndicator</p><p class="tokens" title="color prop: t.heading · C.textSoft / D.textSoft"><code><span class="en">color prop:</span><span class="zh">color 属性：</span> t.heading · C.textSoft / D.textSoft</code></p></footer>
+  </article>
+
+  <article class="lib-card">
+    <div class="lib-canvas"><svg class="c-check" viewBox="0 0 64 64" data-replay aria-hidden="true">
+      <circle cx="32" cy="32" r="28"/><path d="M20 33l8 8 16-17"/>
+    </svg></div>
+    <footer><b class="name"><span class="en">Success check</span><span class="zh">完成勾选</span></b><p class="meta en">A Lottie in the signature brand colour · SuccessCheck</p><p class="meta zh">使用品牌主色的 Lottie 动画 · SuccessCheck</p><p class="tokens" title="success-check-maureen.json · #45818E · #579AAA · #FFFFFF"><code>success-check-maureen.json</code> <code class="lit">#45818E</code> <code class="lit">#579AAA</code> <code class="lit">#FFFFFF</code></p></footer>
+  </article>
+
+  <article class="lib-card">
+    <div class="lib-canvas"><div class="c-skeleton" aria-hidden="true">
+      <div class="c-bones"><div class="c-bone-row"><i class="c-avatar"></i><i style="width:110px;height:11px"></i></div><i style="width:82%;height:13px"></i><i style="width:55%;height:13px"></i></div>
+    </div></div>
+    <footer><b class="name"><span class="en">Feed skeleton</span><span class="zh">信息流骨架屏</span></b><p class="meta en">Mirrors the post card, so nothing shifts · FeedSkeleton</p><p class="meta zh">与帖子卡片同构，加载后不跳动 · FeedSkeleton</p><p class="tokens" title="rgba(0,0,0,.07) · rgba(255,255,255,.55)"><code class="lit">rgba(0,0,0,.07)</code> <code class="lit">rgba(255,255,255,.55)</code></p></footer>
+  </article>
+
+</div>

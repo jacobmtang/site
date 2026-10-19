@@ -1,0 +1,44 @@
+/* Workflow and tech stack. A "fit" slide (1512 x 982 frame): a ruled list, category | tool | what it's for. */
+.chapter.stack.on { display: grid; grid-template-rows: auto 1fr; }
+.chapter.stack { padding-bottom: 96px; }
+.s-title { text-align: center; margin-bottom: 0; }
+body[data-lang="both"] .s-title .en { margin-bottom: 4px; }
+
+.s-list { align-self: center; justify-self: center; width: 1080px; --s-rule: color-mix(in srgb, var(--heading) 14%, var(--bg)); }
+.s-row { display: grid; grid-template-columns: 180px 260px 1fr; gap: 32px; align-items: center; padding: 20px 0; border-top: 1.5px solid var(--s-rule); }
+.s-row:last-child { border-bottom: 1.5px solid var(--s-rule); }
+.s-row:has(.s-cat:empty) { border-top-style: dashed; }   /* DeepSeek sits under AI with Claude */
+.s-cat { font: 600 13px/18px var(--sans); color: var(--accent-text); text-transform: uppercase; letter-spacing: 0.06em; }
+body[data-lang="both"] .s-cat .zh { margin-left: 8px; letter-spacing: 0; }
+.s-tool { display: flex; align-items: center; gap: 12px; }
+.s-tool img { width: 28px; height: auto; }
+.s-tool b { font: 600 22px/28px var(--sans); color: var(--heading); }
+.s-row p { font-size: var(--card-text); line-height: var(--card-lh); color: var(--body); }
+body[data-lang="both"] .s-row p .en { display: block; margin-bottom: 2px; }
+body[data-lang="both"] .s-row p .zh { font-size: 15px; line-height: 21px; color: var(--soft); }
+body[data-lang="zh"] .s-row p .zh { font-size: var(--card-text-zh); line-height: var(--card-lh-zh); }
+body[data-lang="both"] .s-row { padding: 14px 0; }
+
+.chapter.stack .s-title, .chapter.stack .s-row { opacity: 0; }
+.chapter.stack.play .s-title { animation: s-in 700ms cubic-bezier(0.32, 0.72, 0, 1) 200ms both; }
+.chapter.stack.play .s-row { animation: s-in 700ms cubic-bezier(0.32, 0.72, 0, 1) both; }
+.chapter.stack.play .s-row:nth-child(1) { animation-delay: 360ms; } .chapter.stack.play .s-row:nth-child(2) { animation-delay: 420ms; }
+.chapter.stack.play .s-row:nth-child(3) { animation-delay: 480ms; } .chapter.stack.play .s-row:nth-child(4) { animation-delay: 540ms; }
+.chapter.stack.play .s-row:nth-child(5) { animation-delay: 600ms; } .chapter.stack.play .s-row:nth-child(6) { animation-delay: 660ms; }
+@keyframes s-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) { .chapter.stack .s-title, .chapter.stack .s-row { opacity: 1; } .chapter.stack.play * { animation: none !important; } }
+/* single-colour brand marks (img/stack/*.svg, from the portfolio's logos) take the heading colour, so they follow the theme */
+.s-logo { width: 26px; height: 26px; flex: none; background: var(--heading); -webkit-mask: var(--logo) center / contain no-repeat; mask: var(--logo) center / contain no-repeat; }
+.s-tool:not(:has(img, .s-logo)) { padding-left: 40px; }   /* no logo yet: names still line up */
+.s-row { padding: 17px 0; }
+.chapter.stack.play .s-row:nth-child(7) { animation-delay: 720ms; }
+.s-tool img[src*="photoshop"] { width: 26px; border-radius: 5px; }
+.s-tool img[src*="webflow"] { width: 26px; }
+.s-row { padding: 14px 0; }
+body[data-lang="both"] .s-row { padding: 10px 0; }
+body[data-lang="both"] .chapter.stack { padding-top: 76px; }
+.chapter.stack.play .s-row:nth-child(8) { animation-delay: 780ms; }
+/* the category column, larger: sentence case, as a row label */
+.s-cat { font: 600 17px/22px var(--sans); text-transform: none; letter-spacing: 0; }
+body[data-lang="both"] .s-cat .zh { display: block; margin: 2px 0 0; font-weight: 500; font-size: 15px; line-height: 20px; }
+body[data-lang="zh"] .s-cat .zh { font-size: 20px; line-height: 25px; }

@@ -1,0 +1,52 @@
+/* Popular consumer apps are prioritizing a native approach. A "fit" slide (1512 x 982 frame): title, a hairline grid of three apps (icon + name, the screen, the native patterns it uses); the takeaway line sits under the title. */
+.chapter.apps.on { display: grid; grid-template-rows: auto auto 1fr; }
+.chapter.apps { padding-bottom: 96px; }
+.a-title { text-align: center; margin-bottom: 0; }
+body[data-lang="both"] .a-title .en { margin-bottom: 4px; }
+
+/* a straight-edged grid, no fill: a hairline box around the three apps, split by full-height dividers */
+.a-row { display: flex; justify-self: center; align-items: stretch; align-self: center; margin-top: 24px; border: 1px solid var(--grid-line); }
+.chapter.apps { --grid-line: rgba(0,0,0,0.12); }
+:root[data-theme="dark"] .chapter.apps { --grid-line: rgba(255,255,255,0.12); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .chapter.apps { --grid-line: rgba(255,255,255,0.12); } }
+.a-app { display: flex; flex-direction: column; gap: 16px; width: 320px; padding: 28px 32px; }   /* name, screen, points */
+.a-app + .a-app { border-left: 1px solid var(--grid-line); }   /* divider, edge to edge */
+.a-phone { align-self: center; }   /* no bezel: just the screen, centred in the card */
+.a-screen {
+  position: relative; width: 214px; height: 465px; border-radius: 34px; overflow: hidden;   /* 1206 x 2622 */
+  background: var(--card); display: grid; place-items: center;
+  box-shadow: 0 0 0 1px var(--border);   /* a hairline edge, as the title slide's screen wall: light screens would melt into the page */
+}
+body[data-lang="both"] .a-screen { width: 166px; height: 360px; border-radius: 28px; }   /* EN + 中文: two-line points need the room */
+.a-screen img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: top; }
+.a-missing { font: 400 13px/18px var(--sans); color: var(--soft); }
+.a-app figcaption { display: grid; justify-items: start; gap: 8px; text-align: left; }   /* the points, left-aligned */
+.a-name { display: flex; align-items: center; gap: 10px; }   /* app icon + name, top left of the card */
+.a-name img { width: 40px; height: 40px; display: block; }
+.a-name b { font: 600 22px/28px var(--sans); color: var(--heading); }
+.a-points { list-style: none; display: grid; gap: 6px; }
+.a-points li { font-size: var(--card-text); line-height: var(--card-lh); color: var(--body); }
+.a-points li .zh { font-size: var(--card-text); line-height: var(--card-lh); }
+body[data-lang="both"] .a-points li .en { display: block; margin-bottom: 2px; }
+body[data-lang="both"] .a-points { gap: 10px; }
+body[data-lang="zh"] .a-points li .zh { font-size: var(--card-text-zh); line-height: var(--card-lh-zh); }
+
+.a-note { margin-top: 12px; text-align: center; font-size: var(--card-text); line-height: var(--card-lh); color: var(--body); }
+body[data-lang="both"] .a-note .en { display: block; margin-bottom: 4px; }
+body[data-lang="zh"] .a-note .zh { font-size: var(--card-text-zh); line-height: var(--card-lh-zh); }
+
+/* arriving (slide.js adds .play): the title rises, the line under it, then the phones left to right */
+.chapter.apps .a-title, .chapter.apps .a-row, .chapter.apps .a-app, .chapter.apps .a-note { opacity: 0; }
+.chapter.apps.play .a-row { animation: a-fade 500ms ease-out 360ms both; }   /* the grid, then its three cells rise into it */
+.chapter.apps.play .a-title { animation: a-in 700ms cubic-bezier(0.32, 0.72, 0, 1) 200ms both; }
+.chapter.apps.play .a-app { animation: a-in 800ms cubic-bezier(0.32, 0.72, 0, 1) both; }
+.chapter.apps.play .a-app:nth-child(1) { animation-delay: 420ms; }
+.chapter.apps.play .a-app:nth-child(2) { animation-delay: 520ms; }
+.chapter.apps.play .a-app:nth-child(3) { animation-delay: 620ms; }
+.chapter.apps.play .a-note { animation: a-in 700ms cubic-bezier(0.32, 0.72, 0, 1) 300ms both; }
+@keyframes a-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes a-in { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .chapter.apps .a-title, .chapter.apps .a-row, .chapter.apps .a-app, .chapter.apps .a-note { opacity: 1; }
+  .chapter.apps.play * { animation: none !important; }
+}

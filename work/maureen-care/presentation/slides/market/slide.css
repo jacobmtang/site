@@ -1,0 +1,260 @@
+/* Validating product-market fit. Title at the top (as the user slide's), cohorts centred in the space below.
+   A cohort is a label with its apps floating beneath: iOS icons, one shape for all (Apple's 22.37% corner),
+   their names under them as on a home screen. */
+.chapter.market.on { display: grid; grid-template-rows: auto 1fr; }
+.chapter.market { padding-bottom: 96px; }   /* clear the arrows (top at 84 from the bottom) */
+.m-title { text-align: center; margin-bottom: 0; }
+body[data-lang="both"] .m-title .en { margin-bottom: 4px; }
+
+.m-cohorts { display: flex; justify-content: center; align-items: start; align-self: center; gap: 64px; }   /* labels share one line */
+.m-cohort { width: 384px; display: grid; justify-items: center; align-content: start; gap: 32px; }   /* equal columns, so the pros / cons cards line up */
+.m-label { font: 600 28px/34px var(--sans); color: var(--accent-text); }   /* sans: only slide titles are serif; Maureen blue, as the stat numbers */
+.m-label .zh { font: 500 22px/28px 'Noto Sans SC', 'PingFang SC', var(--sans); }
+body[data-lang="both"] .m-label .en { display: block; margin-bottom: 4px; text-align: center; }
+body[data-lang="both"] .m-label { text-align: center; }
+body[data-lang="zh"] .m-label .zh { font-size: 34px; line-height: 41px; }
+
+.m-apps { list-style: none; display: flex; gap: 40px; }
+.m-app { display: grid; justify-items: center; gap: 16px; }
+.m-app img {
+  display: block; width: 128px; height: 128px; border-radius: 22.37%;   /* no shadow: a snapshot drops it mid-move */
+}
+.m-app > span { font: 500 17px/22px var(--sans); color: var(--body); text-align: center; }
+body[data-lang="both"] .m-app > span .en { display: block; }
+.m-app > span .zh { font-size: 17px; line-height: 22px; }
+/* the apps cohort stacks, as an App Store search list: icon left, name over its store subtitle */
+.m-apps.is-list { flex-direction: column; gap: 24px; }
+.is-list .m-app { grid-template-columns: auto auto; justify-content: start; justify-items: start; align-items: center; column-gap: 20px; }
+.is-list .m-app img { width: 96px; height: 96px; }
+.is-list .m-app-text { display: grid; gap: 4px; text-align: left; }
+.m-name { font: 600 20px/25px var(--sans); color: var(--heading); }
+.m-sub { font: 15px/20px var(--sans); color: var(--soft); }
+.m-app .m-sub .zh { font-size: 15px; line-height: 20px; }
+body[data-lang="both"] .m-sub .zh { display: block; }
+
+/* the worksheet: a sheet of paper, not an icon. Square corners, a paper shadow, tilted as if set down */
+.m-sheet img {
+  width: 280px; height: auto; aspect-ratio: 600 / 832; border-radius: 6px;
+  outline: 1px solid var(--border); outline-offset: -1px;   /* an edge instead of a shadow: a snapshot drops shadows mid-move */
+}
+.chapter.market.play .m-sheet img { animation: m-float-sheet 7.2s ease-in-out infinite; }
+@keyframes m-float-sheet {
+  0%, 100% { transform: rotate(-4deg) translateY(0); }
+  50% { transform: rotate(-2.5deg) translateY(-10px); }
+}
+.m-sheet img { transform: rotate(-4deg); }
+
+/* ---- motion ----
+   Arriving (slide.js adds .play): the title rises, the label follows, then each icon pops in on a spring
+   (on the li) and, once in, floats (on the img, so the two transforms never fight). The floats are out of
+   phase so the pair never moves in step. */
+.chapter.market .m-title, .chapter.market .m-label, .chapter.market .m-app { opacity: 0; }
+.chapter.market.play .m-title { animation: m-in 700ms cubic-bezier(0.32, 0.72, 0, 1) 200ms both; }
+.chapter.market.play .m-label { animation: m-in 700ms cubic-bezier(0.32, 0.72, 0, 1) 420ms both; }
+.chapter.market.play .m-cohort:nth-of-type(2) .m-label { animation-delay: 560ms; }
+.chapter.market.play .m-app { animation: m-pop 760ms cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.chapter.market.play .m-cohort:nth-of-type(1) .m-app { animation-delay: 620ms; }
+.chapter.market.play .m-cohort:nth-of-type(2) .m-app:nth-child(1) { animation-delay: 780ms; }
+.chapter.market.play .m-cohort:nth-of-type(2) .m-app:nth-child(2) { animation-delay: 900ms; }
+.chapter.market.play .m-cohort:nth-of-type(2) .m-app:nth-child(3) { animation-delay: 1020ms; }
+.chapter.market.play .m-app img { animation: m-float 5.6s ease-in-out infinite; }
+.chapter.market.play .m-app:nth-child(2) img { animation-duration: 6.4s; animation-delay: -2.1s; }
+.chapter.market.play .m-app:nth-child(3) img { animation-duration: 6s; animation-delay: -4.3s; }
+.chapter.market.play .m-sheet img { animation-name: m-float-sheet; animation-duration: 7.2s; }
+@keyframes m-in { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: none; } }
+@keyframes m-pop { from { opacity: 0; transform: translateY(16px) scale(0.6); } to { opacity: 1; transform: none; } }
+@keyframes m-float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(-1.5deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .chapter.market .m-title, .chapter.market .m-label, .chapter.market .m-app { opacity: 1; }
+  .chapter.market.play .m-title, .chapter.market.play .m-label, .chapter.market.play .m-app,
+  .chapter.market.play .m-app img { animation: none; }
+}
+
+/* the forum: a thread as a skeleton card (avatars, name bars, text lines, votes), tilted the other way to
+   the worksheet. Drawn, not a screenshot, so it stands for forums in general */
+.m-thread {
+  width: 216px; padding: 12px; border-radius: 16px; background: var(--card); border: 1px solid transparent;
+  zoom: 1.4;   /* drawn at 216, shown at ~300: zoom scales the whole drawing and its layout box together */
+  display: grid; gap: 8px; transform: rotate(3deg);
+}
+.m-post { display: grid; grid-template-columns: 20px 1fr; column-gap: 8px; row-gap: 6px; align-items: center; padding: 8px; border-radius: 12px; background: var(--bg); }
+.m-post.is-reply { margin-left: 16px; }
+.m-av { width: 20px; height: 20px; border-radius: 10px; background: var(--accent); opacity: 0.35; }
+.m-post.is-reply:nth-child(3) .m-av { background: #C4956A; }
+.m-post b { height: 8px; border-radius: 4px; background: var(--heading); opacity: 0.22; }
+.m-line { grid-column: 1 / -1; height: 6px; border-radius: 3px; background: var(--heading); opacity: 0.12; }
+.m-post small { grid-column: 1 / -1; font: 500 11px/13px var(--sans); color: var(--soft); }
+.chapter.market.play .m-forum .m-thread { animation: m-float-thread 6.8s ease-in-out -1.4s infinite; }
+@keyframes m-float-thread {
+  0%, 100% { transform: rotate(3deg) translateY(0); }
+  50% { transform: rotate(1.5deg) translateY(-10px); }
+}
+.chapter.market.play .m-cohort:nth-of-type(3) .m-label { animation-delay: 700ms; }
+.chapter.market.play .m-cohort:nth-of-type(3) .m-app { animation-delay: 1140ms; }
+@media (prefers-reduced-motion: reduce) { .chapter.market.play .m-forum .m-thread { animation: none; } }
+
+/* the forum's reach: three communities, their members, the total */
+.m-subs { list-style: none; display: grid; gap: 4px; margin-top: -8px; font: 15px/20px var(--sans); color: var(--soft); text-align: center; }
+.m-subs b { font-weight: 600; color: var(--body); font-variant-numeric: tabular-nums; }
+.m-total { font: 600 20px/25px var(--sans); color: var(--heading); }
+.m-total .zh { font-size: 20px; line-height: 25px; }
+body[data-lang="both"] .m-total .en { display: block; }
+
+/* subreddit numbers: K in EN and EN + 中文 (the list shows once), 万 in 中文 only */
+body[data-lang="both"] .m-subs .zh { display: none !important; }
+body[data-lang="zh"] .m-subs b .zh { display: inline; }
+/* base.css stacks a list item's English on its own line in EN + 中文; here the number sits beside its name */
+body[data-lang="both"] .m-subs .en { display: inline; margin: 0; }
+
+/* ---- step 1: the visuals collapse, a pros / cons card rises under each ----
+   deck.js sets data-step on the slide. The visual blocks are NAMED only during a step (:root.step), so the
+   inner-step View Transition morphs each from its full to its compact size on the deck's spring, while a
+   slide change still pushes the whole slide as one picture. */
+:root.step .chapter.market .m-cohort:nth-of-type(1) .m-apps { view-transition-name: m-vis-1; }
+:root.step .chapter.market .m-cohort:nth-of-type(2) .m-apps { view-transition-name: m-vis-2; }
+:root.step .chapter.market .m-cohort:nth-of-type(3) .m-apps { view-transition-name: m-vis-3; }
+:root.step .chapter.market .m-cohort:nth-of-type(1) .m-label { view-transition-name: m-lab-1; }
+:root.step .chapter.market .m-cohort:nth-of-type(2) .m-label { view-transition-name: m-lab-2; }
+:root.step .chapter.market .m-cohort:nth-of-type(3) .m-label { view-transition-name: m-lab-3; }
+
+.chapter.market[data-step="1"] .m-cohort { gap: 20px; }
+.chapter.market[data-step="1"] .m-apps { height: 112px; align-items: center; justify-content: center; }
+/* worksheet: a small sheet, no caption */
+.chapter.market[data-step="1"] .m-sheet img { width: 80px; }
+.chapter.market[data-step="1"] .m-sheet > span { display: none; }
+/* apps: the list becomes a row of icons */
+.chapter.market[data-step="1"] .m-apps.is-list { flex-direction: row; gap: 16px; }
+.chapter.market[data-step="1"] .is-list .m-app { grid-template-columns: auto; }
+.chapter.market[data-step="1"] .is-list .m-app img { width: 72px; height: 72px; }
+.chapter.market[data-step="1"] .is-list .m-app-text { display: none; }
+/* forum: the thread shrinks, its numbers fold away */
+.chapter.market[data-step="1"] .m-thread { zoom: 0.48; }
+.chapter.market[data-step="1"] .m-forum .m-total, .chapter.market[data-step="1"] .m-forum .m-subs { display: none; }
+
+/* the card: white, as the user slide's stat cards. Pros (teal +), a divider, Cons (clay −) */
+/* the pros and cons: headers on the slide, each point its own white card beneath (as the user slide's cards) */
+.m-pc { width: 100%; display: grid; text-align: left; }
+.m-pc-h { display: flex; align-items: center; gap: 8px; font: 600 13px/18px var(--sans); letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 12px; padding-left: 4px; }
+.m-pc-h::before { flex: none; width: 20px; height: 20px; border-radius: 10px; }
+/* Apple's system green and red (light / dark), as solid icons with a white glyph. The words stay neutral:
+   system green as text on white is too faint to read */
+.chapter.market { --pc-green: #34C759; --pc-red: #FF3B30; }
+:root[data-theme="dark"] .chapter.market { --pc-green: #30D158; --pc-red: #FF453A; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .chapter.market { --pc-green: #30D158; --pc-red: #FF453A; } }
+.m-pc-h { color: var(--heading); }
+/* the + and − are drawn, not typed: a glyph sits on its font's baseline and never centres exactly.
+   Bars of 10 x 2 on the 20 circle, centred by background-position */
+.m-pc-h.is-pro::before {
+  content: ''; background:
+    linear-gradient(#fff, #fff) center / 10px 2px no-repeat,
+    linear-gradient(#fff, #fff) center / 2px 10px no-repeat, var(--pc-green);
+}
+.m-pc-h.is-con::before { content: ''; background: linear-gradient(#fff, #fff) center / 10px 2px no-repeat, var(--pc-red); }
+.m-pc-h .zh { font-size: 15px; line-height: 20px; letter-spacing: 0; }
+body[data-lang="both"] .m-pc-h .zh { display: inline; margin-left: 6px; }
+.m-pc hr { display: none; }   /* the gap before Cons divides them now */
+.m-pc-h.is-con { margin-top: 24px; }
+.m-pc-list { list-style: none; display: grid; gap: 8px; }
+.m-pc-list li {
+  padding: 12px 16px; border-radius: 14px; background: var(--card); border: 1px solid transparent;
+  font-size: var(--card-text); line-height: var(--card-lh); font-weight: var(--card-weight); color: var(--body);
+}
+.m-pc-list .zh { font-size: var(--card-text); line-height: var(--card-lh); word-break: keep-all; overflow-wrap: anywhere; }
+body[data-lang="both"] .m-pc-list .en { margin-bottom: 2px; }
+body[data-lang="zh"] .m-pc-list li { font-size: var(--card-text-zh); line-height: var(--card-lh-zh); }
+body[data-lang="zh"] .m-pc-h .zh { font-size: 17px; line-height: 22px; }
+
+/* the cards rise in, left to right, once the visuals have shrunk */
+.m-pc:not(.is-later) .m-pc-h, .m-pc:not(.is-later) li { animation: m-in 640ms cubic-bezier(0.32, 0.72, 0, 1) both; }
+.m-cohort:nth-of-type(1) .m-pc { --c: 0ms; }
+.m-cohort:nth-of-type(2) .m-pc { --c: 80ms; }
+.m-cohort:nth-of-type(3) .m-pc { --c: 160ms; }
+.m-pc .m-pc-h.is-pro { animation-delay: calc(var(--c) + 160ms); }
+.m-pc .is-pro + .m-pc-list li { animation-delay: calc(var(--c) + 220ms); }
+.m-pc .m-pc-h.is-con { animation-delay: calc(var(--c) + 300ms); }
+.m-pc .is-con + .m-pc-list li:nth-child(1) { animation-delay: calc(var(--c) + 360ms); }
+.m-pc .is-con + .m-pc-list li:nth-child(2) { animation-delay: calc(var(--c) + 420ms); }
+.m-pc .is-con + .m-pc-list li:nth-child(3) { animation-delay: calc(var(--c) + 480ms); }
+@media (prefers-reduced-motion: reduce) { .m-pc:not(.is-later) .m-pc-h, .m-pc:not(.is-later) li { animation: none; } }
+
+/* step 1: the three columns share rows (subgrid), so each Pros and each Cons header sits on one line across
+   the slide however long the points above it run. Rows: label, visual, Pros, its points, Cons, its points */
+.chapter.market[data-step="1"] .m-cohorts {
+  display: grid; grid-template-columns: repeat(3, 384px); grid-template-rows: repeat(6, auto);
+  column-gap: 64px; row-gap: 0; justify-content: center; align-content: center;
+}
+.chapter.market[data-step="1"] .m-cohort { grid-row: 1 / span 6; grid-template-rows: subgrid; row-gap: 0; }
+.chapter.market[data-step="1"] .m-label { margin-bottom: 20px; }
+.chapter.market[data-step="1"] .m-apps { margin-bottom: 20px; }
+.chapter.market[data-step="1"] .m-pc { grid-row: span 4; grid-template-rows: subgrid; }
+.chapter.market[data-step="1"] .m-pc-list { align-content: start; }
+
+/* ---- step 2: the pros combine into Maureen ----
+   Everything but the three pros clears; the pros glide out of their columns into one column under the
+   Maureen icon. The cohorts and their cards become `display: contents`, so the three pros lists are items
+   of one grid. Each pro is named during a step, so it morphs from its column to its place in the stack */
+:root.step .chapter.market .m-cohort:nth-of-type(1) .is-pro + .m-pc-list { view-transition-name: m-pro-1; }
+:root.step .chapter.market .m-cohort:nth-of-type(2) .is-pro + .m-pc-list { view-transition-name: m-pro-2; }
+:root.step .chapter.market .m-cohort:nth-of-type(3) .is-pro + .m-pc-list { view-transition-name: m-pro-3; }
+
+.chapter.market[data-step="2"] .m-cohorts {
+  display: grid; grid-template-columns: 520px 560px; column-gap: 48px; row-gap: 12px;
+  grid-template-rows: 1fr repeat(4, auto) 1fr;   /* the spare height goes above and below, so the text stays packed */
+  justify-content: center; align-content: center;
+}
+/* the phone holds the left column across every row; the name, its line and the pros stack on the right */
+.chapter.market[data-step="2"] .m-maureen { display: contents; }
+/* the hand comes up from the bottom edge: anchored to the frame's bottom (through the slide's 96 padding),
+   its wrist fading out over the last 20% as on the title slide */
+.chapter.market[data-step="2"] .m-mo-phone { grid-column: 1; grid-row: 1 / -1; align-self: end; justify-self: end; margin-bottom: -96px; }
+.chapter.market[data-step="2"] .m-mo-head { grid-column: 2; grid-row: 2; margin-bottom: 12px; }   /* + the 12 row gap = 24 to the cards */
+.chapter.market[data-step="2"] .m-cohort:nth-of-type(1) .m-pc-list { grid-column: 2; grid-row: 3; }
+.chapter.market[data-step="2"] .m-cohort:nth-of-type(2) .m-pc-list { grid-column: 2; grid-row: 4; }
+.chapter.market[data-step="2"] .m-cohort:nth-of-type(3) .m-pc-list { grid-column: 2; grid-row: 5; }
+.chapter.market[data-step="2"] .m-cohort, .chapter.market[data-step="2"] .m-pc { display: contents; }
+.chapter.market[data-step="2"] .m-label, .chapter.market[data-step="2"] .m-apps,
+.chapter.market[data-step="2"] .m-pc-h, .chapter.market[data-step="2"] .is-con + .m-pc-list { display: none; }
+
+/* Maureen: the phone (its home screen), the name, and what it combines */
+.m-mo-phone {
+  display: block; height: 720px; width: auto;
+  -webkit-mask-image: linear-gradient(to bottom, #000 80%, rgba(0,0,0,0.78) 88%, rgba(0,0,0,0.24) 96%, transparent);
+          mask-image: linear-gradient(to bottom, #000 80%, rgba(0,0,0,0.78) 88%, rgba(0,0,0,0.24) 96%, transparent);
+}
+.m-mo-name { font: 600 28px/34px var(--sans); color: var(--accent-text); }   /* as the cohort labels */
+/* the header, as an App Store row: the app icon, then its name over one line. Name and line 4 apart so
+   they read as one heading */
+.m-mo-head { display: flex; align-items: center; gap: 16px; }
+.m-mo-icon { flex: none; width: 64px; height: 64px; border-radius: 22.37%; }
+.m-mo-text { display: grid; gap: 4px; }
+.m-mo-name { text-align: left; }
+.m-mo-sub { font: 400 20px/25px var(--sans); color: var(--body); }
+.m-mo-sub .zh { font-size: 20px; line-height: 25px; }
+body[data-lang="both"] .m-mo-sub .en { display: block; margin-bottom: 4px; }
+body[data-lang="zh"] .m-mo-sub .zh { font-size: 22px; line-height: 28px; }
+
+/* in the stack each pro carries a green check: Maureen keeps it */
+.chapter.market[data-step="2"] .is-pro + .m-pc-list li { display: grid; grid-template-columns: 20px 1fr; column-gap: 12px; align-items: start; }
+.chapter.market[data-step="2"] .is-pro + .m-pc-list li::before {
+  content: ''; width: 20px; height: 20px; border-radius: 10px; margin-top: 1px;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M5.5 10.5l3 3 6-7' fill='none' stroke='%23fff' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 20px 20px no-repeat, var(--pc-green);
+}
+.chapter.market[data-step="2"] .is-pro + .m-pc-list li > span { grid-column: 2; }
+
+/* arriving: the icon pops, then name and line rise */
+.m-maureen:not(.is-later) .m-mo-phone { animation: m-rise 1100ms cubic-bezier(0.32, 0.72, 0, 1) 80ms both; }
+@keyframes m-rise { from { opacity: 0; transform: translateY(320px); } 25% { opacity: 1; } to { transform: none; } }
+.m-maureen:not(.is-later) .m-mo-head { animation: m-in 640ms cubic-bezier(0.32, 0.72, 0, 1) 260ms both; }
+@media (prefers-reduced-motion: reduce) { .m-maureen:not(.is-later) .m-mo-phone, .m-maureen:not(.is-later) .m-mo-head { animation: none; } }
+
+/* while a pro glides, its text keeps its shape: the snapshots are cropped to the moving box rather than
+   stretched to it (the default), and the old one fades out quickly so only one copy of the text is read */
+:root.step .chapter.market .is-pro + .m-pc-list { view-transition-class: m-text; }
+::view-transition-old(*.m-text), ::view-transition-new(*.m-text) {
+  height: 100%; width: 100%; object-fit: none; object-position: left top; overflow: clip;
+}
+::view-transition-old(*.m-text) { animation: 140ms ease-out both step-out; }
+::view-transition-new(*.m-text) { animation: 300ms ease-out 60ms both step-in; }
