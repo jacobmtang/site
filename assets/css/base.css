@@ -125,7 +125,7 @@ html.tone-dark .site-header::before { background-color: rgb(0 0 0 / .14); }
 .signature {
   --sig-h: var(--space-10);   /* 40px tall */
   display: block; flex: none;
-  height: var(--sig-h); width: calc(var(--sig-h) * 273.88 / 116.18);   /* the SVG's viewBox */
+  height: var(--sig-h); width: calc(var(--sig-h) * 273.88 / 117.6);   /* the SVG's viewBox (the J's tail rounded off 2026-10-19, so 1.4 taller) */
   translate: 0 6px;   /* optical nudge down (an artwork offset, so off-grid by design): the long J and g tails make it look higher */
   background-color: var(--nav);   /* before the script runs: black on the page, white in dark mode */
   transition: background-color .35s ease;
@@ -227,7 +227,7 @@ main > section + section { margin-top: var(--section-gap); }
 }
 /* the signature as a sign-off: vector, spanning the full content width, recoloured by token (mask + --on-sky) */
 .footer-signature {
-  display: block; width: 100%; aspect-ratio: 273.88 / 116.18;   /* the SVG's viewBox */
+  display: block; width: 100%; aspect-ratio: 273.88 / 117.6;   /* the SVG's viewBox */
   margin-top: var(--space-12);
   background-color: var(--on-sky);   /* white on the footer sky */
   -webkit-mask: url("/assets/img/signature.svg") center / contain no-repeat;
