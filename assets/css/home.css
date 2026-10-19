@@ -221,7 +221,7 @@ button.yt-card { padding: 0; border: 0; background: none; font: inherit; text-al
   .shots-yt .shots ul { display: grid; grid-auto-flow: column; grid-template-rows: repeat(2, auto);
     grid-auto-columns: calc((100% - 2 * var(--space-4)) / 3); gap: var(--space-4); }
   .shots-yt .shots li { flex-basis: auto; }
-  .shots-yt .shots-btn { top: calc(50% + var(--space-3)); }   /* centred on the grid (half of the row's 24px top margin) */
+  .shots-yt .shots-btn { top: 50%; }   /* centred on the grid, in the gap between its two rows (the row's top margin sits outside the wrapper here) */
 }
 @media (prefers-reduced-motion: reduce) { .shots-yt .yt-thumb > * { transition: none; } }
 .scramble { white-space: nowrap; }
