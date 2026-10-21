@@ -210,7 +210,11 @@ button.yt-card { padding: 0; border: 0; background: none; font: inherit; text-al
 .yt-thumb { position: relative; z-index: 1; display: block; overflow: hidden; border-radius: var(--yt-r); background: var(--line); }
 .shots-yt .yt-thumb img { aspect-ratio: 16 / 9; object-fit: cover; border-radius: 0; transition: scale 400ms ease; }
 .shots-yt .yt-thumb video { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; transition: scale 400ms ease; }
-.yt-card:hover .yt-thumb > *, .yt-card:focus-visible .yt-thumb > * { scale: 1.03; }
+@media (hover: hover) { .yt-card:hover .yt-thumb > * { scale: 1.03; } }   /* real hover only: on iPhone a touch would trigger it mid-swipe */
+.yt-card:focus-visible .yt-thumb > * { scale: 1.03; }
+/* iPhone Safari: a swipe that starts on a card must scroll the row, not start a link or image drag or a long-press preview */
+.shots-yt .shots { touch-action: pan-x pan-y; }
+.shots-yt .yt-card, .shots-yt .yt-card img, .shots-yt .yt-card video { -webkit-user-drag: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
 .yt-title { flex: 1; display: block; margin-top: calc(var(--yt-r) * -1); padding: calc(var(--yt-r) + var(--space-3)) var(--space-4) var(--space-4);
   border-radius: 0 0 var(--yt-r) var(--yt-r); background: var(--stack); font-size: var(--text-sm); line-height: var(--leading-sm); font-weight: 500; }
 @media (min-width: 600px) { .shots-yt .shots li { flex-basis: calc((100% - var(--space-2)) / 2); } }
