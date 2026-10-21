@@ -223,6 +223,9 @@ button.yt-card { padding: 0; border: 0; background: none; font: inherit; text-al
 .shots-yt .yt-card, .shots-yt .yt-card img, .shots-yt .yt-card video { -webkit-user-drag: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; }
 .yt-title { flex: 1; display: block; margin-top: calc(var(--yt-r) * -1); padding: calc(var(--yt-r) + var(--space-3)) var(--space-4) var(--space-4);
   border-radius: 0 0 var(--yt-r) var(--yt-r); background: var(--stack); font-size: var(--text-sm); line-height: var(--leading-sm); font-weight: 500; }
+/* phones and tablets: Safari ignores a scrolling row's end padding, so the last card sat flush with the screen edge at
+   the far right; a spacer after the last card restores the gutter (minus the 8px gap the row already adds before it) */
+@media (max-width: 899px) { .shots-yt .shots ul::after { content: ""; flex: 0 0 calc(var(--gutter) - var(--space-2)); } }
 @media (min-width: 600px) { .shots-yt .shots li { flex-basis: calc((100% - var(--space-2)) / 2); } }
 /* desktop: a 3 x 2 grid per view that scrolls sideways a page at a time (columns fill top, then bottom), with hard
    edges instead of the App Store row's fades; phones and tablets keep the single swipeable row */
