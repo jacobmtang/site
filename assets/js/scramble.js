@@ -4,24 +4,14 @@
 // Each letter starts scrambling and settles at its own random frame; the next word comes after a hold. Every
 // character (glyph or letter) is its own span, coloured by position across a rainbow (--h, see home.css). It only
 // runs while on screen; with reduced motion the first word just stays, still in rainbow letters.
-// It also holds still while the page or the carousel is being touched or scrolled (and for a moment after): every
-// frame of the scramble re-lays out the heading, and iPhone Safari cuts a carousel swipe short on each relayout.
-// Registered as a mount (see site.js); the cleanup stops the timers, the observer and the listeners and restores the first word.
+// Registered as a mount (see site.js); the cleanup stops the timers and the observer and restores the first word.
 (window.siteMounts ||= []).push(() => {
   const els = [...document.querySelectorAll('.scramble[data-words]')];
   if (!els.length) return;
   const still = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const GLYPHS = '!<>-_\\/[]{}=+*^?#';
   const HOLD = 2600;   // ms a word stays put
-  const QUIET = 1500;  // ms after the last touch or scroll before it may scramble again
   const offs = [];
-  let busyUntil = 0;
-  const settlers = [];   // per word: jump straight to the settled word
-  const onActive = () => { busyUntil = performance.now() + QUIET; settlers.forEach((settle) => settle()); };
-  // capture on the window also catches scrolls inside the carousel (scroll events don't bubble)
-  addEventListener('touchstart', onActive, { passive: true, capture: true });
-  addEventListener('scroll', onActive, { passive: true, capture: true });
-  offs.push(() => { removeEventListener('touchstart', onActive, true); removeEventListener('scroll', onActive, true); });
 
   for (const el of els) {
     const words = el.dataset.words.split('|');
@@ -65,17 +55,11 @@
       };
       raf = requestAnimationFrame(tick);
     };
-    const schedule = (wait = HOLD) => {
+    const schedule = () => {
       clearTimeout(timer);
       if (!visible) return;
-      timer = setTimeout(() => {
-        const left = busyUntil - performance.now();
-        if (left > 0) return schedule(left);   // someone's scrolling: wait until it's quiet
-        i = (i + 1) % words.length; scrambleTo(words[i]);
-      }, wait);
+      timer = setTimeout(() => { i = (i + 1) % words.length; scrambleTo(words[i]); }, HOLD);
     };
-    // a touch or scroll mid-scramble: finish the word at once, so nothing re-lays out under the finger
-    settlers.push(() => { if (raf) { cancelAnimationFrame(raf); raf = 0; paint(word(words[i])); schedule(); } });
 
     const io = new IntersectionObserver(([e]) => {
       visible = e.isIntersecting;

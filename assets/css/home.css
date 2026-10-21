@@ -213,7 +213,9 @@ button.yt-card { padding: 0; border: 0; background: none; font: inherit; text-al
 @media (hover: hover) { .yt-card:hover .yt-thumb > * { scale: 1.03; } }   /* real hover only: on iPhone a touch would trigger it mid-swipe */
 .yt-card:focus-visible .yt-thumb > * { scale: 1.03; }
 /* iPhone Safari: a swipe that starts on a card must scroll the row, not start a link or image drag or a long-press preview */
-.shots-yt .shots { touch-action: pan-x pan-y; }
+.shots-yt .shots { touch-action: pan-x pan-y; position: relative; z-index: 0; }   /* the row is its own stacking context: each
+   thumbnail sits on a z-index layer over its title card, and iPhone Safari won't fast-scroll a row whose items' layers
+   aren't contained by it (swipes only crept a few pixels) */
 /* iPhone Safari snapped this row straight back to the first card mid-swipe: with mandatory snapping, WebKit re-snaps to
    the current card whenever the page re-lays out, and the heading's scrambling word re-lays out many times a second.
    On touch screens the row scrolls freely instead (momentum, no snapping); mouse and trackpad keep the snapping. */
