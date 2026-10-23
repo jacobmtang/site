@@ -43,9 +43,11 @@
     document.body.appendChild(box);
   };
 
+  // async = false: the slide scripts all download at once but still run in list order (one at a time, each
+  // waiting for the last to load, left the deck blank for seconds on a first visit over the network)
   const loadScript = (src) => new Promise((ok, no) => {
     const s = document.createElement('script');
-    s.src = src; s.onload = ok; s.onerror = () => no(new Error(src));
+    s.src = src; s.async = false; s.onload = ok; s.onerror = () => no(new Error(src));
     document.head.appendChild(s);
   });
 
@@ -58,7 +60,8 @@
     const get = async (url, tries = 3) => {
       for (let k = 1; ; k++) {
         try {
-          const r = await fetch(url, { cache: 'no-store' });
+          // no-store only on a local preview (fresh slides mid-edit); a hosted copy lets the browser cache them
+          const r = await fetch(url, { cache: /^(localhost|127\.|\[::1\])/.test(location.hostname) ? 'no-store' : 'default' });
           if (!r.ok) throw new Error(`${url} (${r.status})`);
           return r;
         } catch (e) {
@@ -84,7 +87,7 @@
       slides.push({ id: s.id, el, step: 0, steps: 1, cleanup: null });
     });
 
-    for (const s of list) if (s.js) await loadScript(`slides/${s.id}/slide.js`);
+    await Promise.all(list.filter(s => s.js).map(s => loadScript(`slides/${s.id}/slide.js`)));
 
     slides.forEach(s => {
       const def = defs[s.id] || {};

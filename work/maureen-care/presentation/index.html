@@ -18,13 +18,23 @@
 <link rel="stylesheet" href="css/base.css">
 <script>   /* site copy only. The deck master opens in EN + 中文; on the site it opens in English, unless the viewer has
    picked a language before (deck.js reads the saved 'lang'; with none saved, this answers 'en').
+   ?lang=en (or both, zh): open in that language whatever was saved before; the case study's links pass ?lang=en, so the
+   deck always opens in English from there, and switching languages afterwards works (and is remembered) as normal.
    ?embed: the case study's live preview of slide 1 (Design/portfolio/site/assets/js/deck-preview.js): no deck chrome,
    always English, and the viewer's saved language is neither read nor changed. */
   (() => {
-    const embed = new URLSearchParams(location.search).has('embed');
+    const q = new URLSearchParams(location.search);
+    const embed = q.has('embed');
+    const asked = ['en', 'both', 'zh'].includes(q.get('lang')) ? q.get('lang') : null;
+    let first = true;   // only the first read on load takes ?lang; after that the saved choice (the toggle) rules
     if (embed) document.documentElement.classList.add('embed');
     const get = Storage.prototype.getItem, set = Storage.prototype.setItem;
-    Storage.prototype.getItem = function (k) { return k === 'lang' ? (embed ? 'en' : get.call(this, k) || 'en') : get.call(this, k); };
+    Storage.prototype.getItem = function (k) {
+      if (k !== 'lang') return get.call(this, k);
+      if (embed) return 'en';
+      if (asked && first) { first = false; return asked; }
+      return get.call(this, k) || 'en';
+    };
     if (embed) Storage.prototype.setItem = function (k, v) { if (k !== 'lang') set.call(this, k, v); };
   })();
 </script>
