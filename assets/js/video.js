@@ -20,13 +20,13 @@
   const inView = new IntersectionObserver((entries) => entries.forEach((e) => {
     const v = e.target;
     if (v.closest('.ex-panel:not(.is-active)')) { v.pause(); return; }   // a hidden example: examples.js plays it when chosen
-    if (e.isIntersecting) { if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); }
+    if (e.isIntersecting) { if (!v.src) v.src = v.dataset.src; if (!v.closest('.is-scrolling')) v.play().catch(() => {}); }   // a row that is scrolling resumes its own videos when it settles (carousel.js)
     else v.pause();
   }), { threshold: 0.25 });
 
   const far = new IntersectionObserver((entries) => entries.forEach((e) => {
     const v = e.target;
-    if (e.isIntersecting || !v.src || v.closest('.ex-panel')) return;   // examples.js manages videos inside example panels
+    if (e.isIntersecting || !v.src || v.closest('.ex-panel, .shots')) return;   // examples.js manages example-panel videos; a carousel's cards count as off screen the moment they leave the row, and tearing a decoder down mid-glide made the slide stutter
     v.pause(); v.removeAttribute('src'); v.load();
     near.observe(v);
   }), { rootMargin: '250% 0px' });
