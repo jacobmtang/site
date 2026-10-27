@@ -12,7 +12,7 @@
 <link rel="icon" type="image/png" href="/favicon.png">
 <script>
   /* This copy only exists to be embedded in the case study page (?embed&stack). Opened on its own (no ?embed), it sends the visitor to the case study instead of showing a full-screen deck. */
-  (() => { const q = new URLSearchParams(location.search); if (!q.has('embed')) { location.replace('/work/tiktok-studio/'); return; } if (q.has('embed')) { document.documentElement.classList.add('embed'); if (q.has('stack')) document.documentElement.classList.add('stack'); if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark'; } })();
+  (() => { const q = new URLSearchParams(location.search); if (!q.has('embed')) { location.replace('/work/tiktok-studio/'); return; } if (q.has('embed')) { document.documentElement.classList.add('embed'); if (q.has('stack')) document.documentElement.classList.add('stack'); } })();
 </script>
 <link rel="stylesheet" href="tokens.css">
 <style>
@@ -266,6 +266,12 @@ html.stack #deck{height:auto;transform-origin:0 0}
 html.stack .slide{display:flex;inset:auto;left:0;width:1920px;height:1080px;border-radius:0;overflow:hidden}
 html.stack .slide:not(.on)>*{display:none}
 html.stack #count,html.embed.stack .embed-nav{display:none}
+/* Phones: the glass blurs (backdrop-filter) and the blended grain are re-rasterised at the slide's full 1920px size under the scale transform, which makes iOS Safari
+   run out of memory and reload the page while scrolling. On narrow or touch screens the stacked deck drops them (the translucent fills stay). */
+@media (max-width:900px),(pointer:coarse){
+  html.stack #deck *{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
+  html.stack #deck .g-grain{display:none}
+}
 /* On the page the grey sister-app slides (16, 17) would melt into the page background and leave their titles floating outside any card:
    they take the white slide like every other slide, and their cards become the grey ones. */
 html.stack #deck .sis-slide{background:var(--deck-bg)}
@@ -1101,7 +1107,9 @@ const slides=[...document.querySelectorAll('.slide')]; let i=0;
 const deck=document.getElementById('deck'), count=document.getElementById('count');
 const stack=document.documentElement.classList.contains('stack'), GAP=16;
 /* Media is deferred (data-src): a slide's videos and Tako iframes load when it is shown, so the page never pays for slides nobody reached. */
-function load(s){s.querySelectorAll('[data-src]').forEach(m=>{m.src=m.dataset.src;m.removeAttribute('data-src')})}
+function load(s){s.querySelectorAll('[data-src]').forEach(m=>{if(!m.getAttribute('src'))m.src=m.dataset.src})}
+/* Stack mode frees a slide's videos, images and Tako frames once it is a little way off screen (phones run out of memory otherwise). */
+function unload(s){s.querySelectorAll('[data-src]').forEach(m=>{if(m.tagName==='VIDEO'){m.pause();m.removeAttribute('src');m.load()}else m.removeAttribute('src')})}
 function fit(){
   if(stack){const s=innerWidth/1920, h=slides.length*1080+(slides.length-1)*GAP;
     deck.style.transform='scale('+s+')';document.body.style.height=h*s+'px';
@@ -1114,12 +1122,19 @@ if(stack){
   slides.forEach((s,k)=>{s.style.top=k*(1080+GAP)+'px'});
   /* Each slide starts (entrance, videos) when a fifth of it is on screen, and its videos pause when it leaves. IntersectionObserver measures against the page's viewport, not this tall frame. */
   const seen=new Set(), play=s=>s.querySelectorAll('video').forEach(v=>{v.removeAttribute('autoplay');const p=v.play();if(p)p.catch(()=>{})});
-  const io=new IntersectionObserver(es=>es.forEach(e=>{
+  /* Two observers: "near" (within a quarter screen of the viewport) keeps a slide built (children shown, media loaded) and restarts its entrance when it comes back;
+     "seen" (a fifth on screen) plays its videos. Leaving "near" tears the slide down to its empty white card. */
+  const near=new IntersectionObserver(es=>es.forEach(e=>{
+    const s=e.target;
+    if(e.isIntersecting){s.classList.add('on');load(s);if(seen.has(s)&&!document.hidden)play(s)}
+    else{seen.delete(s);unload(s);s.classList.remove('on')}
+  }),{rootMargin:'25% 0px',threshold:0});
+  const vis=new IntersectionObserver(es=>es.forEach(e=>{
     const s=e.target;
     if(e.isIntersecting){seen.add(s);s.classList.add('on');load(s);if(!document.hidden)play(s)}
     else{seen.delete(s);s.querySelectorAll('video').forEach(v=>v.pause())}
   }),{threshold:.2});
-  slides.forEach(s=>io.observe(s));
+  slides.forEach(s=>{near.observe(s);vis.observe(s)});
   /* A hidden tab (or a window moved behind another) pauses everything; coming back resumes only the slides on screen. */
   document.addEventListener('visibilitychange',()=>{
     if(document.hidden)slides.forEach(s=>s.querySelectorAll('video').forEach(v=>v.pause()));
