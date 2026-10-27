@@ -3,11 +3,21 @@
 // at least a quarter is on screen and pauses when it leaves, so off-screen videos never decode.
 // A video that has scrolled more than ~2.5 screens away is unloaded (src removed) so its decoder and buffers are freed:
 // a paused video still holds them, and the 16-video TikTok deck crashed iOS Safari when scrolled fast. It reloads when it nears again.
+// Carousel cards (.shots) on a mouse/trackpad device play only while hovered and show their poster otherwise: Chrome drops to
+// ~30fps with the home row's six infographics all playing (any one alone is fine), which showed as a stutter on the arrow glide.
+// Touch screens keep the autoplay, since they show only a card or two at a time.
 // Reduced motion: the poster (first frame) only; the video is never loaded.
 // Registered as a mount (see site.js); the cleanup pauses every video and disconnects both observers.
 (window.siteMounts ||= []).push(() => {
   const vids = [...document.querySelectorAll('video[data-src]')];
   if (!vids.length || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const hover = matchMedia('(hover: hover)').matches;
+  const hoverOnly = (v) => hover && v.closest('.shots');
+  const onEnter = (e) => { const v = e.currentTarget.querySelector('video[data-src]'); if (!v) return; if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); };
+  const onLeave = (e) => { const v = e.currentTarget.querySelector('video[data-src]'); if (v) v.pause(); };
+  const cards = hover ? [...new Set(vids.map((v) => v.closest('.shots li')).filter(Boolean))] : [];
+  cards.forEach((c) => { c.addEventListener('pointerenter', onEnter); c.addEventListener('pointerleave', onLeave); });
 
   const near = new IntersectionObserver((entries) => entries.forEach((e) => {
     if (!e.isIntersecting) return;
@@ -20,7 +30,7 @@
   const inView = new IntersectionObserver((entries) => entries.forEach((e) => {
     const v = e.target;
     if (v.closest('.ex-panel:not(.is-active)')) { v.pause(); return; }   // a hidden example: examples.js plays it when chosen
-    if (e.isIntersecting) { if (!v.src) v.src = v.dataset.src; if (!v.closest('.is-scrolling')) v.play().catch(() => {}); }   // a row that is scrolling resumes its own videos when it settles (carousel.js)
+    if (e.isIntersecting) { if (!v.src) v.src = v.dataset.src; if (!hoverOnly(v)) v.play().catch(() => {}); }
     else v.pause();
   }), { threshold: 0.25 });
 
@@ -32,5 +42,5 @@
   }), { rootMargin: '250% 0px' });
 
   vids.forEach((v) => { near.observe(v); inView.observe(v); far.observe(v); });
-  return () => { near.disconnect(); inView.disconnect(); far.disconnect(); vids.forEach((v) => v.pause()); };
+  return () => { near.disconnect(); inView.disconnect(); far.disconnect(); cards.forEach((c) => { c.removeEventListener('pointerenter', onEnter); c.removeEventListener('pointerleave', onLeave); }); vids.forEach((v) => v.pause()); };
 });

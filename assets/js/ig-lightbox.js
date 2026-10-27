@@ -24,7 +24,8 @@
   const open = (card) => {
     if (card.dataset.gallery) return openGallery(card);
     const thumb = card.querySelector('.yt-thumb');
-    const src = card.querySelector('video').dataset.src;
+    const v = card.querySelector('video');
+    const src = v.dataset.full || v.dataset.src;   // the card plays a lighter copy; full size gets the original
     if (media.getAttribute('src') !== src) media.src = src;
     media.poster = card.querySelector('video').poster;
     media.controls = still;
