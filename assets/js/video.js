@@ -17,13 +17,13 @@
   const cards = hover ? [...new Set(vids.map((v) => v.closest('.shots li')).filter(Boolean))] : [];
   const vidOf = (c) => c.querySelector('video[data-src]');
   const onEnter = (e) => { const v = vidOf(e.currentTarget); if (!v) return; if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); };
-  const onLeave = (e) => { const v = vidOf(e.currentTarget); if (!v) return; v.pause(); try { v.currentTime = 0; } catch (err) { /* not loaded yet */ } };   // back to the poster
+  const onLeave = (e) => { const v = vidOf(e.currentTarget); if (!v || !v.src) return; v.pause(); v.removeAttribute('src'); v.load(); };   // unload: the browser shows the poster again (frame 0 is the blank start of most infographics; the poster is the finished one)
   cards.forEach((c) => { c.addEventListener('pointerenter', onEnter); c.addEventListener('pointerleave', onLeave); });
 
   const near = new IntersectionObserver((entries) => entries.forEach((e) => {
     if (!e.isIntersecting) return;
     const v = e.target;
-    if (v.closest('.ex-panel:not(.is-active)')) return;   // hidden example: don't download until chosen
+    if (v.closest('.ex-panel:not(.is-active)') || hoverOnly(v)) return;   // hidden example: don't download until chosen; hover card: loads on hover
     if (!v.src) { v.src = v.dataset.src; v.preload = 'auto'; }
     near.unobserve(v);
   }), { rootMargin: '100% 0px' });
@@ -31,7 +31,7 @@
   const inView = new IntersectionObserver((entries) => entries.forEach((e) => {
     const v = e.target;
     if (v.closest('.ex-panel:not(.is-active)')) { v.pause(); return; }   // a hidden example: examples.js plays it when chosen
-    if (e.isIntersecting) { if (!v.src) v.src = v.dataset.src; if (!hoverOnly(v)) v.play().catch(() => {}); }
+    if (e.isIntersecting) { if (hoverOnly(v)) return; if (!v.src) v.src = v.dataset.src; v.play().catch(() => {}); }   // hover cards load on hover, so the poster shows
     else v.pause();
   }), { threshold: 0.25 });
 
