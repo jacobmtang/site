@@ -27,8 +27,9 @@
 .flight-bob { display: flex; align-items: flex-start; justify-content: flex-end;   /* banner hugs the plane; flight.js sizes the box to the longest message, spare room sits on the left */
   animation: bob 4s ease-in-out infinite alternate; }
 /* climbs from the lower left to the upper right, nose up, like a takeoff */
+/* start a little past -100%: the box is rotated nose-up, so at exactly -100% the raised nose corner still shows a few px past the card's left edge, a stationary tip during the 1s start delay (most visible on a cold load, when the page waits at that state) */
 @keyframes fly {
-  from { transform: translate(-100%, 0) rotate(calc(var(--climb) * -1)); }
+  from { transform: translate(calc(-100% - var(--space-4)), 0) rotate(calc(var(--climb) * -1)); }
   to   { transform: translate(100vw, calc(100vw * var(--climb-slope) * -1)) rotate(calc(var(--climb) * -1)); }
 }
 @keyframes bob { from { transform: translateY(calc(var(--space-1) * -1)); } to { transform: translateY(var(--space-1)); } }
