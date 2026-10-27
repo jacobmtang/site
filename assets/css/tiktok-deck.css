@@ -501,4 +501,8 @@
 @media (max-width:900px),(pointer:coarse){
   .tt-deck *{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}
   .tt-deck .g-grain{display:none}
+  .tt-deck .g-drift{animation:none}
 }
+/* A slide well off screen is switched off (tiktok-deck.js toggles .is-off): 18 live 1920 x 1080 canvases, their decoded images and
+   their animations were too much for iOS Safari when scrolling fast. The frame keeps its 16:9 box, so the page doesn't move. */
+#tt-deck .tt-frame.is-off .tt-slide{display:none}

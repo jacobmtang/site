@@ -11,6 +11,12 @@
   ro.observe(deck);
   fit();
 
+  // --- Memory: only slides near the viewport stay rendered. The rest get .is-off (display:none on the slide; the frame keeps its box),
+  // which frees their layers, decoded images and animations. Fast scrolling on iPhone otherwise piled up all 18 and Safari crashed. ---
+  const frames = [...deck.querySelectorAll('.tt-frame')];
+  const keep = new IntersectionObserver((entries) => entries.forEach((e) => e.target.classList.toggle('is-off', !e.isIntersecting)), { rootMargin: '60% 0px' });
+  frames.forEach((f) => keep.observe(f));
+
   // --- Language switch: EN | 中文, top right of the first slide. Every string is in the markup in both languages (.en / .zh); data-lang picks one. ---
   const first = deck.querySelector('.tt-frame');
   const sw = document.createElement('div');
@@ -100,5 +106,5 @@
   }));
   if (!matchMedia('(prefers-reduced-motion: reduce)').matches) marks.forEach((el) => io.observe(el));
 
-  return () => { ro.disconnect(); io.disconnect(); live.clear(); cancelAnimationFrame(raf); raf = 0; sw.removeEventListener('click', onSwitch); sw.remove(); };
+  return () => { ro.disconnect(); io.disconnect(); keep.disconnect(); frames.forEach((f) => f.classList.remove('is-off')); live.clear(); cancelAnimationFrame(raf); raf = 0; sw.removeEventListener('click', onSwitch); sw.remove(); };
 });
