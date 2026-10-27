@@ -1,6 +1,8 @@
 // Screen recordings: <video muted loop playsinline preload="none" data-src="…" poster="…">.
 // Nothing downloads until the video is within about a screen of view; then its src is attached. It plays while
 // at least a quarter is on screen and pauses when it leaves, so off-screen videos never decode.
+// A video that has scrolled more than ~2.5 screens away is unloaded (src removed) so its decoder and buffers are freed:
+// a paused video still holds them, and the 16-video TikTok deck crashed iOS Safari when scrolled fast. It reloads when it nears again.
 // Reduced motion: the poster (first frame) only; the video is never loaded.
 // Registered as a mount (see site.js); the cleanup pauses every video and disconnects both observers.
 (window.siteMounts ||= []).push(() => {
@@ -22,6 +24,13 @@
     else v.pause();
   }), { threshold: 0.25 });
 
-  vids.forEach((v) => { near.observe(v); inView.observe(v); });
-  return () => { near.disconnect(); inView.disconnect(); vids.forEach((v) => v.pause()); };
+  const far = new IntersectionObserver((entries) => entries.forEach((e) => {
+    const v = e.target;
+    if (e.isIntersecting || !v.src || v.closest('.ex-panel')) return;   // examples.js manages videos inside example panels
+    v.pause(); v.removeAttribute('src'); v.load();
+    near.observe(v);
+  }), { rootMargin: '250% 0px' });
+
+  vids.forEach((v) => { near.observe(v); inView.observe(v); far.observe(v); });
+  return () => { near.disconnect(); inView.disconnect(); far.disconnect(); vids.forEach((v) => v.pause()); };
 });
