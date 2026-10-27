@@ -612,3 +612,12 @@
 
 /* TikTok: the deck shown full width under the case study, with the hero's side insets, instead of a call-to-action beside a preview. */
 
+/* TikTok deck language switch (EN | 中文): tiktok-deck.js adds .tt-lang to the first slide's frame, top right (unscaled, so it keeps its size at any width),
+   and sets data-lang on #tt-deck. The deck holds every string in both languages; English shows unless data-lang="zh". */
+.tt-lang { position: absolute; top: var(--space-4); right: var(--space-4); z-index: 2; display: inline-flex; gap: var(--space-1); padding: var(--space-1); background: var(--chip); border-radius: 999px; }
+.tt-lang button { appearance: none; border: 0; background: transparent; color: var(--muted); font: 500 var(--text-sm) / var(--leading-sm) var(--font-body); padding: 0 var(--space-3); border-radius: 999px; cursor: pointer; }
+.tt-lang button[aria-pressed="true"] { background: var(--tt-brand, var(--nav)); color: var(--tt-on-brand, var(--surface)); }
+.tt-lang button:not([aria-pressed="true"]):hover, .tt-lang button:focus-visible { color: var(--text); }
+.tt-deck[data-lang="zh"] .en { display: none; }
+.tt-deck[data-lang="zh"] .zh { display: revert; }
+@media (max-width: 599px) { .tt-lang { top: var(--space-2); right: var(--space-2); } .tt-lang button { padding: 0 var(--space-2); } }

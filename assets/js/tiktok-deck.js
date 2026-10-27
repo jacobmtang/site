@@ -11,6 +11,26 @@
   ro.observe(deck);
   fit();
 
+  // --- Language switch: EN | 中文, top right of the first slide. Every string is in the markup in both languages (.en / .zh); data-lang picks one. ---
+  const first = deck.querySelector('.tt-frame');
+  const sw = document.createElement('div');
+  sw.className = 'tt-lang';
+  sw.setAttribute('role', 'group');
+  sw.setAttribute('aria-label', 'Deck language');
+  sw.innerHTML = '<button type="button" data-lang="en">EN</button><button type="button" data-lang="zh" lang="zh-Hans">中文</button>';
+  if (first) first.appendChild(sw);
+  const setLang = (lang, save) => {
+    deck.dataset.lang = lang;
+    deck.lang = lang === 'zh' ? 'zh-Hans' : 'en';
+    sw.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    if (save) { try { localStorage.setItem('tt-lang', lang); } catch (e) { /* storage blocked: the choice just isn't remembered */ } }
+  };
+  let saved = 'en';
+  try { saved = localStorage.getItem('tt-lang') === 'zh' ? 'zh' : 'en'; } catch (e) { /* ignore */ }
+  setLang(saved, false);
+  const onSwitch = (e) => { const b = e.target.closest('button[data-lang]'); if (b) setLang(b.dataset.lang, true); };
+  sw.addEventListener('click', onSwitch);
+
   // --- Tako mark (tako-mark.md): a black disc with three blurred brand blobs, the white face path, two eyes that glance and blink ---
   const FACE = 'M260.10 283.98 L303.57 295.19 A4 4 0 0 1 305.10 302.16 A153.2 153.2 0 1 1 328.31 278.72 A2.5 2.5 0 0 1 323.95 277.85 L310.77 231.71 A1.5 1.5 0 0 1 310.86 230.67 A112.8 112.8 0 1 0 259.05 284.09 A1.5 1.5 0 0 1 260.10 283.98 Z';
   const marks = [...deck.querySelectorAll('.tako-mark')];
@@ -80,5 +100,5 @@
   }));
   if (!matchMedia('(prefers-reduced-motion: reduce)').matches) marks.forEach((el) => io.observe(el));
 
-  return () => { ro.disconnect(); io.disconnect(); live.clear(); cancelAnimationFrame(raf); raf = 0; };
+  return () => { ro.disconnect(); io.disconnect(); live.clear(); cancelAnimationFrame(raf); raf = 0; sw.removeEventListener('click', onSwitch); sw.remove(); };
 });
