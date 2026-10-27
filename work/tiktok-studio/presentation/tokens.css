@@ -1,0 +1,70 @@
+/* Generated from Figma variables (Primitives + Semantic). Light in :root, dark under [data-theme="dark"].
+   Names match the Figma WEB code syntax. Deck uses a subset. */
+:root {
+  /* primitives */
+  --color-white:#FFFFFF; --color-black:#000000;
+  --color-gray-50:#F5F5F5; --color-gray-100:#E0E0E0; --color-gray-200:#BFBFBF; --color-gray-300:#A8A8A8;
+  --color-gray-400:#999999; --color-gray-500:#858585; --color-gray-600:#666666; --color-gray-700:#555555;
+  --color-gray-800:#3B3B3B; --color-gray-900:#1E1E1E; --color-gray-950:#141414; --color-gray-975:#0B0B0B;
+  --color-red-300:#FF576F; --color-red-400:#FF3B5C; --color-red-500:#FE2C55; --color-red-700:#E10542;
+  --color-yellow-500:#FACE16;
+  --color-blue-700:#0E4A7D; /* blue/700 (design-tokens.md): the second chart series */
+  --color-blue-200:#8ECAFF; /* blue/200 (design-tokens.md): the app's chart line and selected label in dark mode */
+  --color-blue-500:#0275DB; /* blue/500 (design-tokens.md): the app's selected chips and chart line */
+  --color-task-tint:#EEF9FE; --color-task-tint-fade:#F8FCFF; /* task/tint (design-tokens.md), the Planner card's top; and lighter */
+  --color-cyan-brand:#25F4EE; /* TikTok brand cyan. Brand asset, not measured from the app screenshots */
+
+  /* semantic: light */
+  --bg-page:var(--color-gray-50);   --bg-card:var(--color-white);   --bg-control:var(--color-gray-50);
+  --border-default:var(--color-gray-100);
+  --text-primary:var(--color-black); --text-secondary:var(--color-gray-500); --text-secondary-strong:var(--color-gray-700);
+  --text-tertiary:var(--color-gray-300);
+  --brand-primary:var(--color-red-500);
+  --icon-saved:var(--color-yellow-500);
+  --brand-cyan:var(--color-cyan-brand);
+
+  /* deck only: slides sit on white in light mode */
+  --deck-bg:var(--color-white);
+  --deck-card:var(--color-gray-50);
+  --deck-persona-card:var(--color-black);
+}
+[data-theme="dark"] {
+  --bg-page:var(--color-black);     --bg-card:var(--color-gray-900); --bg-control:var(--color-gray-800);
+  --border-default:var(--color-gray-700);
+  --text-primary:var(--color-gray-50); --text-secondary:var(--color-gray-400); --text-secondary-strong:var(--color-gray-100);
+  --text-tertiary:var(--color-gray-500);
+  --brand-primary:var(--color-red-400);
+  --deck-bg:var(--color-black);
+  --deck-card:var(--color-gray-900);
+  --deck-persona-card:var(--color-gray-900);
+}
+/* Dynamic Type, Large (Default). size / line-height / tracking */
+:root {
+  --font: -apple-system, "SF Pro Text", "SF Pro", system-ui, "Helvetica Neue", sans-serif;
+  --font-zh: "PingFang SC", -apple-system, "Noto Sans SC", sans-serif;
+}
+.large-title{font:400 34px/41px var(--font);letter-spacing:.012em}
+.title-1{font:400 28px/34px var(--font);letter-spacing:.014em}
+.title-2{font:400 22px/28px var(--font);letter-spacing:-.012em}
+.title-3{font:400 20px/25px var(--font);letter-spacing:-.023em}
+.headline{font:600 17px/22px var(--font);letter-spacing:-.026em}
+.body{font:400 17px/22px var(--font);letter-spacing:-.026em}
+.callout{font:400 16px/21px var(--font);letter-spacing:-.02em}
+.subhead{font:400 15px/20px var(--font);letter-spacing:-.016em}
+.footnote{font:400 13px/18px var(--font);letter-spacing:-.006em}
+.caption-1{font:400 12px/16px var(--font)}
+.caption-2{font:400 11px/13px var(--font);letter-spacing:.006em}
+
+/* Deck scale: Dynamic Type x2 for 1920x1080 slides. Same names, ratios and tracking.
+   Figma equivalent: text styles "Deck/Large Title" ... "Deck/Caption 2". */
+#deck .large-title{font-size:68px;line-height:82px}
+#deck .title-1{font-size:56px;line-height:68px}
+#deck .title-2{font-size:44px;line-height:56px}
+#deck .title-3{font-size:40px;line-height:50px}
+#deck .headline{font-size:34px;line-height:44px}
+#deck .body{font-size:34px;line-height:44px}
+#deck .callout{font-size:32px;line-height:42px}
+#deck .subhead{font-size:30px;line-height:40px}
+#deck .footnote{font-size:26px;line-height:36px}
+#deck .caption-1{font-size:24px;line-height:32px}
+#deck .caption-2{font-size:22px;line-height:26px}

@@ -1,0 +1,100 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Jacob Tang – TikTok Studio Redesign</title>
+  <meta name="description" content="Case study: redesigning TikTok Studio around Tako, an AI creator assistant that turns analytics into next steps.">
+  <!-- favicon: the pilot emoji on the hero sky, one 180px PNG (master: portfolio/_source/favicon.psd) -->
+  <link rel="icon" type="image/png" href="/favicon.png">
+  <link rel="apple-touch-icon" href="/favicon.png">
+  <link rel="stylesheet" href="/assets/css/base.css">
+  <link rel="stylesheet" href="/assets/css/home.css">
+  <link rel="stylesheet" href="/assets/css/case-study.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="signature" href="/" aria-label="Jacob Tang, home"></a>
+    <nav><a class="icon-link" href="mailto:jacobmtang@yahoo.com" aria-label="Email Jacob"><!-- mail icon: Ionicons (MIT), master portfolio/_source/mail.svg --><svg class="icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M424 80H88a56.06 56.06 0 0 0-56 56v240a56.06 56.06 0 0 0 56 56h336a56.06 56.06 0 0 0 56-56V136a56.06 56.06 0 0 0-56-56m-14.18 92.63-144 112a16 16 0 0 1-19.64 0l-144-112a16 16 0 1 1 19.64-25.26L256 251.73l134.18-104.36a16 16 0 0 1 19.64 25.26"/></svg></a></nav>
+  </header>
+
+  <!-- Swup swaps only this container between pages; the header above stays put. -->
+  <div id="swup" class="transition-fade">
+
+  <!-- Hero: the Maureen hero, in TikTok's red. The phone shares view-transition-name tiktok-phone with the home card, so it glides between the two. -->
+  <div class="cs-hero" data-tone="dark" data-tone-fade="bottom" data-tone-fade-var="--sky-fade" style="--sky-top: #fe2c55; --sky-mid: #ff576f; --sky-low: #ffa0b0; --sky-pale: #ffe4e9;">
+    <div class="hero-sky" aria-hidden="true"></div>
+    <a class="back-link" href="/#tiktok-studio"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M15 18l-6-6 6-6"/></svg>Back</a>
+    <img src="/assets/img/tiktok-studio-phone.webp" alt="A hand holding an iPhone showing Tako, the AI creator assistant in the TikTok Studio redesign" class="hero-feather" width="880" height="1097" style="--media-shift: -21.9%; view-transition-name: tiktok-phone;">
+  </div>
+
+  <main class="case-study theme-tiktok">
+    <header class="cs-header">
+      <div class="cs-lead">
+        <h1>TikTok Studio Redesign</h1>
+        <ul class="tags" aria-label="Disciplines">
+          <li>Product</li><li>UX/UI</li><li>AI</li>
+        </ul>
+        <p class="cs-brief">I redesigned TikTok’s creator workspace app <img class="inline-app-icon" src="/assets/img/tiktok-studio-icon.webp" alt="" width="400" height="400"> around its Tako AI agent, with a performant native-first refresh that weighs engineering cost against time to ship. I delivered high-fidelity mockups in <span class="nowrap">Figma <svg class="inline-logo" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M15.852 8.981h-4.588V0h4.588c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.491-4.49 4.491zM12.735 7.51h3.117c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-3.117V7.51zm0 1.471H8.148c-2.476 0-4.49-2.014-4.49-4.49S5.672 0 8.148 0h4.588v8.981zm-4.587-7.51c-1.665 0-3.019 1.355-3.019 3.019s1.354 3.02 3.019 3.02h3.117V1.471H8.148zm4.587 15.019H8.148c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h4.588v8.98zM8.148 8.981c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h3.117V8.981H8.148zM8.172 24c-2.489 0-4.515-2.014-4.515-4.49s2.014-4.49 4.49-4.49h4.588v4.441c0 2.503-2.047 4.539-4.563 4.539zm-.024-7.51a3.023 3.023 0 0 0-3.019 3.019c0 1.665 1.365 3.019 3.044 3.019 1.705 0 3.093-1.376 3.093-3.068v-2.97H8.148zm7.704 0h-.098c-2.476 0-4.49-2.014-4.49-4.49s2.014-4.49 4.49-4.49h.098c2.476 0 4.49 2.014 4.49 4.49s-2.014 4.49-4.49 4.49zm-.097-7.509c-1.665 0-3.019 1.355-3.019 3.019s1.355 3.019 3.019 3.019h.098c1.665 0 3.019-1.355 3.019-3.019s-1.355-3.019-3.019-3.019h-.098z"/></svg></span> and a real <span class="nowrap">Swift <svg class="inline-logo" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path fill="currentColor" d="M7.508 0c-.287 0-.573 0-.86.002-.241.002-.483.003-.724.01-.132.003-.263.009-.395.015A9.154 9.154 0 0 0 4.348.15 5.492 5.492 0 0 0 2.85.645 5.04 5.04 0 0 0 .645 2.848c-.245.48-.4.972-.495 1.5-.093.52-.122 1.05-.136 1.576a35.2 35.2 0 0 0-.012.724C0 6.935 0 7.221 0 7.508v8.984c0 .287 0 .575.002.862.002.24.005.481.012.722.014.526.043 1.057.136 1.576.095.528.25 1.02.495 1.5a5.03 5.03 0 0 0 2.205 2.203c.48.244.97.4 1.498.495.52.093 1.049.122 1.575.136.241.007.483.009.724.01.287.002.573.002.86.002h8.984c.287 0 .573 0 .86-.002.241-.001.483-.003.724-.01a10.523 10.523 0 0 0 1.578-.136 5.1 5.1 0 0 0 1.498-.495 5.04 5.04 0 0 0 2.203-2.203c.245-.48.4-.972.495-1.5.093-.52.122-1.05.136-1.576.007-.241.01-.482.01-.722.002-.287.002-.575.002-.862V7.508c0-.287 0-.573-.002-.86a33.662 33.662 0 0 0-.01-.724 10.5 10.5 0 0 0-.136-1.576 5.09 5.09 0 0 0-.495-1.5A5.039 5.039 0 0 0 21.152.645 5.113 5.113 0 0 0 19.653.15a9.123 9.123 0 0 0-1.578-.136 34.98 34.98 0 0 0-.724-.01C17.065 0 16.779 0 16.492 0H7.508zm6.035 3.41c4.114 2.47 6.545 7.162 5.549 11.131-.024.093-.05.181-.076.272l.002.001c2.062 2.538 1.5 5.258.236 7.33-1.546-1.913-4.153-2.34-6.317-1.576-1.62.57-3.07.55-4.77-.2.176.043.353.09.536.118-4.14-1.38-6.27-4.88-6.5-7.06.14.36.35.76.6 1.14 2.1 3.04 4.89 3.8 6.8 3.5-1.72-.9-5.5-4.89-4.01-9.44 1.36-.96 3.51-1.18 5.22-.28-.73-.77-1.44-1.84-1.56-2.55 3.04 2.56 5.84 3.98 7.01 4.51a34.4 34.4 0 0 1-.17-.317 22.33 22.33 0 0 0-.19-.35z"/></svg></span> app for easier handoff and real system components, built on a design library of 78 primitives, 156 semantic tokens and 22 text styles derived from the real app.</p>
+      </div>
+      <dl class="cs-meta">
+        <div><dt>Project</dt><dd>Product design challenge</dd></div>
+        <div><dt>Timeline</dt><dd>October 2026, one week</dd></div>
+        <div><dt>Figma</dt><dd class="meta-link">High-fidelity mockups<a class="icon-link store-link" href="https://www.figma.com/design/uTOwUJzlmoxM5PVC0FFjNA/Tiktok-PGC-Design-Challenge?node-id=82-2" target="_blank" rel="noopener" aria-label="TikTok Studio high-fidelity mockups in Figma (opens in a new tab)"><svg class="icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M268 112l144 144-144 144M392 256H100"/></svg></a></dd></div>
+      </dl>
+    </header>
+
+    <!-- The deck itself: every slide, one under another, at the page's content width. One iframe (?embed&stack) lays the slides out and reports its
+         height; it only gets its src once the visitor nears it, and each slide starts its entrance and videos as it scrolls into view. -->
+    <section class="deck-stack" aria-label="TikTok Studio redesign deck, all slides">
+      <iframe data-src="/work/tiktok-studio/presentation/?embed&amp;stack" title="TikTok Studio redesign deck" scrolling="no" allow="autoplay"></iframe>
+    </section>
+
+    <!-- Closing call to action, after the deck. .more: the scroll cue fades out here (scroll-cue.js). -->
+    <section class="more deck-cta">
+      <div class="deck-cta-text">
+        <h2>See the Figma file</h2>
+        <p>The high-fidelity mockups and comprehensive design library behind the app demo and deck.</p>
+        <a class="contact-pill deck-pill" href="https://www.figma.com/design/uTOwUJzlmoxM5PVC0FFjNA/Tiktok-PGC-Design-Challenge?node-id=82-2" target="_blank" rel="noopener">View in Figma<span class="contact-pill-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="48" d="M268 112l144 144-144 144M392 256H100"/></svg></span></a>
+      </div>
+    </section>
+
+    <!-- "More from this project" (deep-dive pages: engineering, brand & launch) goes here once they're written -->
+  </main>
+
+  <footer class="site-footer" data-tone="dark" data-tone-fade="top" data-tone-fade-var="--foot-fade">
+    <!-- signature sign-off, full content width. Vector master: portfolio/_source/signature.svg -->
+    <span class="footer-signature" role="img" aria-label="Jacob Tang"></span>
+    <span class="footer-pilot" aria-hidden="true">🧑🏻‍✈️</span>
+  </footer>
+
+  <div class="footer-contact">
+    <p class="copyright">© 2026 Jacob Tang</p>
+    <div class="footer-actions">
+      <a class="icon-link icon-link-quiet" href="https://www.instagram.com/jacobmtang/" aria-label="Jacob on Instagram"><svg class="icon" viewBox="0 0 512 512" fill="currentColor" aria-hidden="true"><path d="M349.33 69.33a93.62 93.62 0 0 1 93.34 93.34v186.66a93.62 93.62 0 0 1-93.34 93.34H162.67a93.62 93.62 0 0 1-93.34-93.34V162.67a93.62 93.62 0 0 1 93.34-93.34zm0-37.33H162.67C90.8 32 32 90.8 32 162.67v186.66C32 421.2 90.8 480 162.67 480h186.66C421.2 480 480 421.2 480 349.33V162.67C480 90.8 421.2 32 349.33 32"/><path d="M377.33 162.67a28 28 0 1 1 28-28 27.94 27.94 0 0 1-28 28M256 181.33A74.67 74.67 0 1 1 181.33 256 74.75 74.75 0 0 1 256 181.33m0-37.33a112 112 0 1 0 112 112 112 112 0 0 0-112-112"/></svg></a>
+      <a class="contact-pill" href="mailto:jacobmtang@yahoo.com">Contact<span class="contact-pill-icon" aria-hidden="true"><svg class="icon" viewBox="0 0 512 512" aria-hidden="true" focusable="false"><path fill="currentColor" d="M424 80H88a56.06 56.06 0 0 0-56 56v240a56.06 56.06 0 0 0 56 56h336a56.06 56.06 0 0 0 56-56V136a56.06 56.06 0 0 0-56-56m-14.18 92.63-144 112a16 16 0 0 1-19.64 0l-144-112a16 16 0 1 1 19.64-25.26L256 251.73l134.18-104.36a16 16 0 0 1 19.64 25.26"/></svg></span></a>
+    </div>
+  </div>
+  </div>
+  <!-- Swup (page transitions), pinned versions. Every page loads every script, so a swap never misses one. -->
+  <script src="https://cdn.jsdelivr.net/npm/swup@4.10.0/dist/Swup.umd.js" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/@swup/preload-plugin@3.2.12/dist/index.umd.js" defer></script>
+  <script src="/assets/js/nav-tone.js" defer></script>
+  <script src="/assets/js/flight.js" defer></script>
+  <script src="/assets/js/rotator.js" defer></script>
+  <script src="/assets/js/carousel.js" defer></script>
+  <script src="/assets/js/cloud.js" defer></script>
+  <script src="/assets/js/count-up.js" defer></script>
+  <script src="/assets/js/scroll-cue.js" defer></script>
+  <script src="/assets/js/sky.js" defer></script>
+  <script src="/assets/js/venn.js" defer></script>
+  <script src="/assets/js/examples.js" defer></script>
+  <script src="/assets/js/video.js" defer></script>
+  <script src="/assets/js/lib-stage.js" defer></script>
+  <script src="/assets/js/screen-wall.js" defer></script>
+  <script src="/assets/js/deck-preview.js" defer></script>
+  <script src="/assets/js/scramble.js" defer></script>
+  <script src="/assets/js/ig-lightbox.js" defer></script>
+  <script src="/assets/js/site.js" defer></script>
+</body>
+</html>

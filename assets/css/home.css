@@ -254,3 +254,29 @@ button.yt-card { padding: 0; border: 0; background: none; font: inherit; text-al
 @keyframes ig-in { from { opacity: 0; scale: .94; } }
 @media (prefers-reduced-motion: reduce) { .ig-lightbox:not(.vt)[open] { animation: none; } }
 
+
+/* Bleeding hand (TikTok card): the image runs to the card's left and top edges, so the arm leaves through the card's own edge instead of ending
+   in a visible cut. Its height is Maureen's image height plus the top padding it now covers, so both cards are the same height.
+   The phone sits at 71.9% of the image's width (the image is 880 x 1097), so the image is pulled left by the difference to centre the PHONE in
+   the card; never right of the card's edge (min 0), which would show the arm's cut. */
+.card-media.media-bleed {
+  --mh: calc(var(--phone-w) * 1233 / 880 + var(--pad-card));
+  justify-content: flex-start;
+  margin: calc(var(--pad-card) * -1) calc(var(--pad-card) * -1) var(--space-6);
+  height: var(--mh);
+}
+.card-media.media-bleed img {
+  width: auto; height: 100%; translate: none;
+  margin-left: min(0px, calc(50% - var(--mh) * 0.5771));   /* 50% = half the card; 0.5771 = 0.719 phone centre x 880/1097 image width per unit height */
+}
+
+/* Flipped stack (TikTok): on desktop the black details card sits on the LEFT and the white card on the right, mirroring Maureen's. Phones and
+   tablets below 900px are untouched (white card first, black card below). */
+@media (min-width: 900px) {
+  .card-stack.flip .card-details {
+    order: -1;
+    border-radius: var(--radius-card) 0 0 var(--radius-card);
+    margin-left: 0; margin-right: calc(var(--radius-card) * -1);
+    padding: var(--pad-card); padding-right: calc(var(--pad-card) + var(--radius-card));
+  }
+}

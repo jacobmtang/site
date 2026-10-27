@@ -1,0 +1,1136 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TikTok Studio Redesign – Jacob Tang</title>
+<!-- Site copy of the deck (master: applications/tiktok/take-home/_source/deck). Linked from the case study, kept out of search.
+     Differences from the master: this head, no Mix button (a reference view for editing), a Back link, ?embed for the
+     case study's live preview, and a slide 1 that summarises the brief in my own words. Re-copy index.html over the
+     master after edits, then redo these (see docs/reference/portfolio-styles.md). -->
+<meta name="robots" content="noindex">
+<link rel="icon" type="image/png" href="/favicon.png">
+<script>
+  /* This copy only exists to be embedded in the case study page (?embed&stack). Opened on its own (no ?embed), it sends the visitor to the case study instead of showing a full-screen deck. */
+  (() => { const q = new URLSearchParams(location.search); if (!q.has('embed')) { location.replace('/work/tiktok-studio/'); return; } if (q.has('embed')) { document.documentElement.classList.add('embed'); if (q.has('stack')) document.documentElement.classList.add('stack'); if (matchMedia('(prefers-color-scheme: dark)').matches) document.documentElement.dataset.theme = 'dark'; } })();
+</script>
+<link rel="stylesheet" href="tokens.css">
+<style>
+*{box-sizing:border-box;margin:0}
+html,body{height:100%;background:#8a8a8a;overflow:hidden}
+body{font-family:var(--font)}
+[data-theme="dark"] body, body.dark-stage{background:#222}
+#stage{position:fixed;inset:0;display:flex;align-items:center;justify-content:center}
+#deck{width:1920px;height:1080px;flex:none;transform-origin:center center;position:relative}
+.slide{position:absolute;inset:0;background:var(--deck-bg);color:var(--text-primary);padding:96px;
+  display:none;flex-direction:column}
+.slide.on{display:flex}
+.slide.brief.on{display:flex}
+
+/* language: en | zh | mix (mix is for reference only) */
+.zh{font-family:var(--font-zh)}
+body[data-lang="en"] .zh{display:none}
+body[data-lang="zh"] .en{display:none}
+body[data-lang="mix"] .t{display:flex;flex-direction:column;gap:4px}
+body[data-lang="mix"] .zh{color:inherit;font-size:.8em}
+body[data-lang="mix"] h1 .zh{font-size:.6em}
+/* Mix is a side-by-side reference only: all body text drawn smaller so both languages fit every slide. */
+body[data-lang="mix"] #deck .t:not(h1)>span{font-size:.7em;line-height:1.25}
+body[data-lang="mix"] .block li{margin-bottom:10px}
+body[data-lang="mix"] .hero{margin-top:8px;font-size:34px;line-height:44px}
+body[data-lang="mix"] .block h4{margin-bottom:8px}
+body[data-lang="mix"] .cols{margin-top:24px}
+body[data-lang="mix"] .brief-art{--art:480px}
+body[data-lang="mix"] .brief-l .num{margin-bottom:8px}
+body[data-lang="mix"] .brief-l .zh{font-size:.72em}
+body[data-lang="mix"] #deck .brief-l .callout{font-size:21px;line-height:27px}
+body[data-lang="mix"] .brief-l .num b.dot{margin-top:8px}
+body[data-lang="mix"] .brief-l .lead{margin:16px 0 12px}
+body[data-lang="mix"] .brief-l .bpill.t,body[data-lang="mix"] .brief-l .byline.t{flex-direction:row;align-items:baseline;gap:12px}
+.topic-row{display:block}
+.topic-pill{padding:6px 24px;border-radius:4px;background:var(--color-black);color:var(--color-white);font-weight:700}
+body[data-lang="mix"] .topic-pill.t{flex-direction:row;align-items:baseline;gap:12px}
+body[data-lang="mix"] .topic-pill .zh{opacity:1}
+[data-theme="dark"] .topic-pill{background:var(--color-white);color:var(--color-black)}
+[data-theme="dark"] body[data-lang="mix"] .topic-pill .zh,body[data-lang="mix"][data-theme="dark"] .topic-pill .zh{color:var(--color-black)}
+.brief-l .meta{margin-top:16px;gap:8px 24px}
+.t{display:block}
+
+/* slide parts */
+/* Titles in the text colour, not the brand pink: the pink read too heavy and set slides apart (Jacob, 2026-10-25). */
+.title{color:var(--text-primary)}
+.sub{color:var(--text-secondary);margin-top:0}
+.rule{height:1px;background:var(--border-default);margin:36px 0 0}
+.cols{display:flex;gap:96px;margin-top:40px}
+.cols>*{flex:1}
+.num{display:flex;gap:28px;align-items:flex-start;margin-bottom:20px}
+.num b{color:var(--brand-primary);font:400 26px/36px var(--font);letter-spacing:-.006em;min-width:44px;flex:none}
+.chips{margin-top:auto;display:flex;gap:24px}
+.chip{flex:1;background:var(--deck-card);border-radius:24px;padding:24px 32px}
+.lead{margin-bottom:0}
+.block h4{color:var(--text-secondary);margin-bottom:20px}
+.block ul{padding:0}.block li{list-style:none;margin-bottom:16px}
+.hero{margin-top:24px;max-width:1500px}
+.hero em{font-style:normal;color:var(--brand-primary)}
+
+.slide.brief{flex-direction:row;gap:96px;padding:0}
+.brief-l{width:1056px;flex:none;padding:96px 0 96px 96px;display:flex;flex-direction:column}
+.brief-l .meta{display:flex;flex-wrap:wrap;align-items:center;gap:12px 32px;margin-top:32px}
+.brief-l .pills{display:flex;gap:16px}
+.brief-l .bpill{padding:6px 24px;border-radius:4px;background:var(--brand-primary);color:var(--color-white);font-weight:700}
+body[data-lang="mix"] .brief-l .bpill .zh{opacity:1}
+.brief-l .byline{color:var(--text-secondary);margin:0}
+.brief-l .lead{margin:40px 0 40px}
+#deck .brief-l .callout{font-size:32px;line-height:42px}
+.brief-l .num b.dot{margin-top:15px}
+
+.brief-r{flex:1;position:relative}
+.brief-l .num{margin-bottom:28px}
+.brief-art{--art:560px;position:absolute;right:136px;top:50%;margin-top:calc(var(--art) / -2);width:var(--art);height:var(--art)}
+.brief-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+.brief-art i{position:absolute;width:100%;height:100%;display:block}
+.box-a{background:var(--brand-cyan);left:-40px;top:-40px}
+.box-b{background:var(--brand-primary);left:40px;top:40px}
+.num b.dot{min-width:0;width:12px;height:12px;border-radius:50%;background:var(--brand-primary);margin-top:15px;flex:none}
+.persona{background:var(--deck-persona-card);padding:32px 32px 36px}
+.persona h3,.persona .num{color:var(--color-white)}
+.persona .lbl{color:var(--color-gray-400)}
+.persona .tag{color:var(--color-white)}
+.persona .desc{color:var(--color-gray-200)}
+.persona .photo{background-color:var(--color-gray-800)}
+[data-theme="dark"] .persona .photo{background-color:var(--color-gray-700)}
+.arch-head{display:flex;flex-direction:column;align-items:stretch;gap:0}
+.arch-head h1{flex:none}
+.faces{display:flex;align-items:center}
+.faces i{display:block;width:132px;height:132px;border-radius:50%;background-size:cover;border:6px solid var(--deck-bg);box-sizing:content-box;margin-left:-36px}
+.faces i:first-child{margin-left:-6px}
+.persona-intro{margin:16px 0 0;color:var(--text-primary);font-weight:400}
+.persona-row{display:flex;gap:48px;margin-top:56px}
+#deck .persona .bio{font-size:32px;line-height:42px}
+.persona{flex:1;display:flex;flex-direction:column;min-width:0}
+.persona h3{font-weight:700}
+.persona .stat{margin:4px 0 0;display:flex;flex-direction:column}
+.persona .num{font-weight:700;display:block;margin:0;line-height:40px}
+.persona .lbl{display:block;margin:0;line-height:30px}
+.persona .head{display:flex;align-items:center;justify-content:space-between;gap:24px}
+.persona .photo{background-size:cover;background-position:center 40%;border-radius:50%;width:132px;height:132px;flex:none;order:2}
+.persona .id{min-width:0}
+.persona .bio{margin-top:48px;color:var(--color-white);font-weight:400}
+.pcol{flex:1;display:flex;flex-direction:column;gap:0;min-width:0}
+.pcol .pill{align-self:flex-start;padding:6px 28px;border-radius:0;background:var(--brand-primary);color:var(--color-white);font-weight:700}
+.persona .level{margin-top:auto;padding-top:32px;display:flex;align-items:center;gap:20px}
+.persona .bar{display:flex;gap:6px;width:176px;flex:none}
+.persona .bar i{flex:1;height:10px;background:var(--color-gray-800)}
+[data-theme="dark"] .persona .bar i{background:var(--color-gray-700)}
+.persona .bar i.on{background:var(--color-white)}
+.persona .lvl{color:var(--color-gray-400);font-size:26px;line-height:36px}
+
+.persona .tag{display:block}
+.persona .desc{margin-top:24px}
+body[data-lang="mix"] .persona-row{margin-top:20px}
+body[data-lang="mix"] .persona{padding:24px 28px 28px}
+body[data-lang="mix"] #deck .persona .bio{font-size:26px;line-height:34px}
+body[data-lang="mix"] .persona .photo{width:96px;height:96px}
+body[data-lang="mix"] .persona .head{gap:16px}
+body[data-lang="mix"] .persona .bio{margin-top:32px}
+body[data-lang="mix"] #deck .pcol .pill{font-size:24px;line-height:32px;padding:2px 20px}
+body[data-lang="mix"] .persona .level{padding-top:16px}
+body[data-lang="mix"] .persona .lvl{font-size:22px;line-height:30px}
+body[data-lang="mix"] #deck .persona .callout{font-size:26px;line-height:34px}
+body[data-lang="mix"] .persona .desc{margin-top:20px}
+.ex-row{display:flex;gap:40px;align-items:flex-start}
+.ex{flex:1;min-width:0;display:grid;grid-template-columns:72px 1fr;column-gap:16px;row-gap:12px;align-items:center}
+.ex-tx{display:contents}
+.ex-tx .callout{grid-column:1 / -1}
+.ex-ph{width:72px;height:72px;border-radius:50%;background-size:cover}
+.ex-n{margin:0 0 6px;color:var(--text-secondary)}
+.ex-n b{color:var(--text-primary);font-weight:700}
+#deck .ex-tx .callout{margin:0;font-size:24px;line-height:33px}
+#deck .ex-n{font-size:24px;line-height:33px}
+body[data-lang="mix"] #deck .ex-tx .callout,body[data-lang="mix"] #deck .ex-n{font-size:20px;line-height:26px}
+body[data-lang="mix"] .ex-ph{width:56px;height:56px}
+body[data-lang="mix"] .arch-head{gap:12px}
+body[data-lang="mix"] .arch-head h1{display:flex;flex-direction:row;align-items:baseline;gap:24px}
+body[data-lang="mix"] .arch-head h1 .zh{font-size:.6em}
+body[data-lang="mix"] .ex-n{margin:0}
+body[data-lang="mix"] .ex-col{gap:12px}
+body[data-lang="mix"] #deck .ex-col .ex-tx .callout,body[data-lang="mix"] #deck .ex-col .ex-n{font-size:18px;line-height:24px}
+body[data-lang="mix"] .ex-col .ex-ph{width:52px;height:52px}
+body[data-lang="mix"] .ex-col .ex{grid-template-columns:52px 1fr}
+body[data-lang="mix"] .arch-main{margin-top:12px}
+body[data-lang="mix"] #deck .arch-main .arch li.callout{font-size:22px;line-height:28px;padding:5px 14px;margin-bottom:6px}
+body[data-lang="mix"] #deck .arch-main .arch-h h3{font-size:30px;line-height:38px}
+body[data-lang="mix"] #deck .arch-main .ex-tx .callout,body[data-lang="mix"] #deck .arch-main .ex-n{font-size:17px;line-height:22px}
+body[data-lang="mix"] .arch-main .arch>.ex{margin:0;padding:20px 0}
+body[data-lang="mix"] .arch-main .arch>ul{margin-bottom:20px}
+body[data-lang="mix"] .arch-main .arch>ul{margin-top:14px}
+body[data-lang="mix"] .arch-main .ex{grid-template-columns:48px 1fr;row-gap:6px}
+body[data-lang="mix"] .arch-main .ex-ph{width:48px;height:48px}
+body[data-lang="mix"] .arch-slide .persona-intro{flex-direction:row;gap:16px;align-items:baseline}
+body[data-lang="mix"] .arch li{padding:4px 20px;margin-bottom:6px}
+body[data-lang="mix"] .arch-h{margin-bottom:0}
+body[data-lang="mix"] .arch-row{margin-top:16px}
+.arch li.used{display:flex;align-items:center;justify-content:space-between}
+#deck .arch li.used{flex-direction:row;align-items:center}
+.arch li .tx{display:flex;flex-direction:column;align-items:flex-start}
+.arch li .mini{flex:none;width:40px;height:40px;border-radius:50%;background-size:cover;margin:-4px 0}
+.arch-row{display:flex;gap:48px;margin-top:56px}
+.arch-main{display:flex;gap:56px;margin-top:48px;align-items:flex-start}
+.arch-main .arch-row{flex:1;min-width:0;margin-top:0;gap:24px}
+.arch-main .arch{flex:1 1 0;min-width:0}
+.arch-main{display:block}
+.arch-slide{padding-bottom:0}
+.arch-main{flex:1;display:flex;align-items:stretch;margin-top:48px}
+.arch-main .arch-row{flex:1;height:auto}
+.arch-main .arch-row>.arch{grid-row:1 / span 3}
+.arch-main .arch-row>.arch:nth-child(2){grid-column:1}
+.arch-main .arch-row>.arch:nth-child(3){grid-column:2}
+.arch-main .arch-row>.arch:nth-child(4){grid-column:3}
+.arch-main .arch-row>.arch:nth-child(5){grid-column:4}
+/* the examples' band in the soft black of slide 04's panel (gray/900); the persona cards on 02 stay black */
+.arch-main .band{grid-column:1 / -1;grid-row:3;margin:0 -96px;background:var(--color-gray-900)}
+.arch-main .arch{position:relative;z-index:1}
+.arch-main .arch>ul{margin-bottom:40px}
+.arch-main .arch>.ex{margin:0;padding:36px 0;align-self:center}
+#deck .arch-main .arch>.ex{align-self:start;align-content:start;padding:44px 0 36px}
+#deck .arch-main .arch>.ex .ex-n b,#deck .arch-main .arch>.ex .callout,#deck .arch-main .arch>.ex .callout b{color:var(--color-white)}
+
+.arch-main .arch-row{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:auto auto 1fr;column-gap:72px;row-gap:0}
+.arch-main .arch{display:grid;grid-row:span 3;grid-template-rows:subgrid;min-width:0}
+.arch-main .arch>.ex{grid-row:3;margin:28px 0 0;padding:0;background:none;align-items:start;align-self:stretch;align-content:start}
+.arch-main .arch>.arch-h{align-self:start}
+.arch-main .arch>ul{grid-row:2;margin-top:28px;align-self:start}
+.arch-main .arch>.ex .ex-n b,.arch-main .arch>.ex .callout{color:var(--text-primary)}
+.arch-main .arch>.ex .ex-n{color:var(--color-gray-400)}
+.arch-main .arch>.ex .callout b{color:var(--text-primary)}
+.arch-main .arch>.ex .ex-ph{width:64px;height:64px}
+.ex-n b{display:block}
+body[data-lang="mix"] .ex-n .zh{display:none}
+#deck .ex-n .role{display:block;font-size:20px;line-height:26px;font-weight:400;color:var(--color-gray-400)}
+.arch-main .arch>.ex .ex-n{align-self:center}
+body[data-lang="mix"] #deck .ex-n .role{font-size:14px;line-height:18px}
+.arch-main .arch>.ex{grid-template-columns:64px 1fr}
+#deck .arch-main .ex-tx .callout{font-size:24px;line-height:32px}
+#deck .arch-main .ex-n{font-size:30px;line-height:40px}
+
+#deck .arch-main .arch li.callout{font-size:32px;line-height:42px;padding:14px 20px;border-radius:16px}
+#deck .arch-main .arch-h h3{font-size:40px;line-height:50px}
+.arch-main .arch-ico{width:40px;height:40px}
+.arch-main .arch-h{gap:12px}
+#deck .arch li.used{display:grid;grid-template-columns:44px 1fr;column-gap:16px;row-gap:2px;align-items:start}
+.arch li .mini{grid-row:1 / span 2;width:44px;height:44px;margin:0}
+#deck .arch li .tx{grid-column:2;display:flex;flex-direction:column;align-items:flex-start}
+#deck .arch li .cap{grid-column:2;display:flex;flex-direction:column;font-size:21px;line-height:29px;color:var(--text-secondary);font-weight:400}
+.arch li .cap b{color:var(--text-primary);font-weight:700}
+
+#deck .arch-main .arch li.callout{font-size:26px;line-height:34px;padding:12px 14px;border-radius:14px}
+#deck .arch-main .arch-h h3{font-size:34px;line-height:42px}
+.arch-main .arch-ico{width:34px;height:34px}
+.arch-main .arch-h{gap:10px}
+#deck .ex-col .ex-tx .callout,#deck .ex-col .ex-n{font-size:22px;line-height:30px}
+
+.ex-col{flex:none;width:440px;display:flex;flex-direction:column;gap:26px;padding-left:40px;border-left:2px solid var(--deck-card)}
+.ex-col .ex{grid-template-columns:64px 1fr;column-gap:16px;row-gap:4px;align-items:start}
+.ex-col .ex-ph{grid-row:1 / span 2;width:64px;height:64px}
+.ex-col .ex-n{grid-column:2;align-self:center;margin:0}
+.ex-col .ex-tx .callout{grid-column:2}
+
+.arch{flex:1;padding-top:0;display:flex;flex-direction:column}
+.arch .desc{color:var(--text-secondary-strong);margin-top:16px;min-height:200px}
+.arch .label{color:var(--text-secondary);margin:0 0 16px}
+.arch .par{display:block;font-size:.6em;color:var(--text-secondary);font-weight:400;margin-top:6px}
+.arch-h{display:flex;align-items:center;gap:12px}
+.arch-h h3{white-space:nowrap}
+.arch-ico{width:40px;height:40px;flex:none;color:var(--text-primary)}
+/* the four jobs' headings and icons in the brand pink: the titles went black, so the pink lives here (2026-10-25) */
+#deck .arch-h h3,#deck .arch-h .arch-ico{color:var(--brand-primary)}
+#deck .arch-h h3{font-weight:500}
+.arch ul{margin-top:32px;padding:0}
+.arch li{list-style:none;background:var(--deck-card);border-radius:16px;padding:14px 24px;margin-bottom:12px}
+body[data-lang="mix"] .arch .desc{min-height:0}
+body[data-lang="mix"] .arch-row{margin-top:24px}
+body[data-lang="mix"] #deck .arch .callout,body[data-lang="mix"] #deck .arch .subhead{font-size:26px;line-height:34px}
+body[data-lang="mix"] .arch .label{margin-bottom:6px}
+body[data-lang="mix"] .arch .desc{margin-top:8px}
+/* chrome (not part of the slide) */
+#bar{position:fixed;top:12px;left:12px;right:12px;display:flex;justify-content:space-between;pointer-events:none;z-index:9}
+.seg{pointer-events:auto;display:inline-flex;background:rgba(255,255,255,.92);border-radius:10px;padding:3px;gap:2px;
+  font:500 13px/1 var(--font);box-shadow:0 1px 4px rgba(0,0,0,.25)}
+.seg button{border:0;background:none;padding:8px 12px;border-radius:8px;cursor:pointer;color:#333;font:inherit}
+.seg button.act{background:#111;color:#fff}
+/* ?embed&stack: the case study page shows every slide, one under another, at the page's content width. The deck's own script lays them out
+   (--deck gap, scale to the iframe width), starts each slide's entrance and videos only when it scrolls into view, and reports its height to the page. */
+html.stack,html.stack body{height:auto;overflow:hidden;background:transparent}
+html.stack #stage{position:static;display:block}
+html.stack #deck{height:auto;transform-origin:0 0}
+html.stack .slide{display:flex;inset:auto;left:0;width:1920px;height:1080px;border-radius:0;overflow:hidden}
+html.stack .slide:not(.on)>*{display:none}
+html.stack #count,html.embed.stack .embed-nav{display:none}
+/* On the page the grey sister-app slides (16, 17) would melt into the page background and leave their titles floating outside any card:
+   they take the white slide like every other slide, and their cards become the grey ones. */
+html.stack #deck .sis-slide{background:var(--deck-bg)}
+html.stack #deck .sis{background:var(--deck-card)}
+html.embed #bar,html.embed .site-back{display:none}
+.embed-nav{display:none}
+html.embed .embed-nav{display:flex;position:fixed;bottom:12px;right:12px;gap:8px;z-index:9}
+.embed-nav button{width:36px;height:36px;border:0;border-radius:999px;background:rgba(0,0,0,.55);color:#fff;font:500 22px/1 var(--font);cursor:pointer;padding:0 0 3px}
+.embed-nav button:hover,.embed-nav button:focus-visible{background:rgba(0,0,0,.75)}
+.site-back{position:fixed;bottom:12px;left:12px;font:500 13px var(--font);color:#fff;text-decoration:none;
+  background:rgba(0,0,0,.55);padding:6px 12px;border-radius:999px;z-index:9}
+.site-back:hover,.site-back:focus-visible{background:rgba(0,0,0,.75)}
+#count{position:fixed;bottom:12px;left:50%;transform:translateX(-50%);font:500 13px var(--font);color:#fff;
+  background:rgba(0,0,0,.55);padding:6px 12px;border-radius:999px;z-index:9}
+
+.opp-plain{margin:48px 0 0;padding-left:36px;font-size:34px;line-height:44px;color:var(--text-primary)}
+.opp-plain li{margin-bottom:12px}
+.gap-row{display:flex;gap:96px;flex:1;min-height:0;margin-top:48px}
+.gap-pt{flex:1;display:flex;flex-direction:column;gap:48px;max-width:880px}
+.gap-it{display:flex;flex-direction:column;gap:16px;position:relative;padding-left:40px}
+/* A square brand bullet, centred on the Title 3 heading's 50 line. */
+/* Approach: five principles on the personas' black cards, three over two. */
+/* The cards fill the slide to its bottom margin in every language (Chinese ran 250 short): two rows, the top a little taller. */
+.appr{display:grid;grid-template-columns:repeat(6,1fr);grid-template-rows:1.15fr 1fr;gap:32px;margin-top:48px;flex:1;min-height:0}
+/* a pink band down each card's left edge, the brand kept as an accent (the dark-mode pink, on the soft black) */
+.appr .card{grid-column:span 2;background:var(--color-gray-900);display:flex;flex-direction:column;border-left:12px solid var(--color-red-400)}
+.appr .card:nth-child(n+4){grid-column:span 3}
+.appr h3,.appr p{margin:0}
+/* The heading bold white at the card's top, no pink band (the bands read too strong, 2026-10-25); the cards in the
+   soft black of 03's band and 04's panel. */
+.appr h3{color:var(--color-white);font-weight:700;padding:32px 32px 0}
+.appr p{padding:16px 32px 32px}
+/* The top row's bands one height: two Title 3 lines (2 x 50). */
+.appr .card:nth-child(-n+3) h3{min-height:100px}
+.appr p{color:var(--color-white)}
+/* Meet Tako: the mark drawn live (tako-loop/ in an iframe; a transparent WebM shows black in Safari), centred in the space under the title. */
+/* Meet Tako: the lockup and what Tako can do on the left; the demo in a hand on the right, rising from the bottom. */
+/* Every .slide is already absolute and full frame: only clip the forearm. */
+.meet-slide{overflow:hidden}
+/* The cluster right of the phone (which ends at 681): 1060 x 800, centred down the slide. Tako and its name in the
+   middle (centre 530, 400); the chips round them. */
+.meet-left{position:absolute;left:720px;top:140px;width:1060px;height:800px;z-index:1}
+.meet-orbit{position:relative;width:100%;height:100%}
+.meet-centre{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;text-align:center}
+.meet-tako{width:160px;height:160px;margin-bottom:24px}
+.meet-name{margin:0;color:var(--text-primary);font-weight:700;white-space:nowrap}
+.meet-line{margin:8px 0 0;color:var(--text-secondary)}
+/* A chip: the glass of Tako's blue wash with a lighter stroke, the emoji leading; ideas spilling out of Tako and
+   its name, placed by their centres, mirrored about its middle (530): three over, one either side of Tako, three under. Three sizes for
+   depth: Callout, Footnote, Caption 2. */
+.chip{position:absolute;transform:translate(-50%,-50%);display:flex;align-items:center;white-space:nowrap;color:var(--text-primary);
+  background:rgb(211 222 234 / .6);-webkit-backdrop-filter:blur(24px) saturate(1.4);backdrop-filter:blur(24px) saturate(1.4);
+  border:2px solid rgb(233 239 245);border-radius:999px}
+.chip.lg{font-size:32px;line-height:42px;gap:10px;padding:12px 24px}
+.chip.md{font-size:26px;line-height:36px;gap:8px;padding:10px 20px}
+.chip.sm{font-size:22px;line-height:26px;gap:6px;padding:10px 16px;opacity:.85}
+.chip b{font-weight:400}
+body[data-lang="mix"] .chip.t{flex-direction:row}
+.c1{left:260px;top:165px}
+.c2{left:530px;top:70px}
+.c3{left:840px;top:165px}
+.c4{left:180px;top:320px}
+.c5{left:880px;top:320px}
+.c6{left:260px;top:650px}
+.c7{left:530px;top:730px}
+.c8{left:840px;top:650px}
+/* The TikTok wordmark (assets/tiktok-logo-text.png, its white made black) as a word in the Large Title. */
+.wordmark{height:.76em;width:auto;vertical-align:-.04em}
+/* The hand 1000 tall (850 wide), on the left: the phone, its top 73%, 733 tall and centred on the slide (174 to
+   907); its left edge (52% across) 340 in from the slide's, the wrist running off the left and bottom. The screen
+   mask is fetched with CORS, so it only works served (start.command), not opened as a file. */
+.meet-phone{position:absolute;margin:0;left:-101px;top:163px;height:1000px;aspect-ratio:1100/1294;
+  -webkit-mask-image:linear-gradient(to bottom,#000 80%,transparent 96%);mask-image:linear-gradient(to bottom,#000 80%,transparent 96%)}
+/* Tako's glow, as Create's (Surface.glowHeight .45, drift 6 s, wander .12, grain .25 overlay): the mesh's nine
+   points as soft radial washes (top row teal, blue, pink; middle blue, teal, pink; bottom blue, pink, pink). */
+.meet-glow{position:absolute;left:0;right:0;bottom:0;height:45%;z-index:0;overflow:hidden;background:#D3DEEA;
+  background-image:
+    radial-gradient(60% 90% at 0% 50%,#D3DEEA,transparent 70%),
+    radial-gradient(60% 90% at 100% 50%,#EDD6DC,transparent 70%),
+    radial-gradient(60% 90% at 50% 100%,#EDD6DC,transparent 70%),
+    radial-gradient(50% 80% at 100% 100%,#EDD6DC,transparent 70%),
+    radial-gradient(50% 80% at 0% 100%,#D3DEEA,transparent 70%);
+  -webkit-mask-image:linear-gradient(to top,#000,transparent);mask-image:linear-gradient(to top,#000,transparent)}
+.meet-glow i{position:absolute;inset:0}
+/* the middle point, teal, wandering 12% of the space on a 6 s loop */
+.g-drift{background:radial-gradient(45% 70% at 50% 50%,#CFE6E4,transparent 72%);animation:g-wander 6s linear infinite}
+@keyframes g-wander{0%{transform:translate(0,12%)}25%{transform:translate(12%,0)}50%{transform:translate(0,-12%)}75%{transform:translate(-12%,0)}100%{transform:translate(0,12%)}}
+.g-grain{opacity:.25;mix-blend-mode:overlay;background-size:128px 128px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='128' height='128'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='128' height='128' filter='url(%23n)'/%3E%3C/svg%3E")}
+@media (prefers-reduced-motion:reduce){.g-drift{animation:none}}
+.meet-phone{z-index:1}
+.mp-hand{position:absolute;inset:0;width:100%;height:100%}
+.mp-screen{position:absolute;inset:0;-webkit-mask:url(assets/hand-screen-mask.png) 0 0/100% 100% no-repeat;mask:url(assets/hand-screen-mask.png) 0 0/100% 100% no-repeat}
+/* the screen's box in the image, from the mask: 571, 14, 441 x 948 of 1100 x 1294 */
+.mp-glass{position:absolute;left:51.909%;top:1.082%;width:40.091%;height:73.261%;background:#fff}
+.mp-glass video{width:100%;height:100%;object-fit:cover;object-position:top;display:block}
+/* Random notes: a working slide, not presented. Footnote text, four groups across, the earlier notes under them. */
+#deck .notes-slide li{font-size:22px;line-height:30px}
+.notes-slide .nt-col li{margin-bottom:8px}
+.nt-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:32px;margin-top:40px}
+.nt-col h3{margin:0 0 12px;color:var(--brand-primary)}
+.nt-col ul,.nt-earlier{margin:0;padding-left:24px}
+.nt-col li,.nt-earlier li{margin-bottom:10px}
+.nt-two{grid-template-columns:repeat(2,1fr)}
+.nt-earlier{columns:1}
+/* A familiar face: the text on the left (title, line, the three cues); on the right the avatars, Tako larger in the
+   middle, over a short exchange in its chat. Crops at a third of their 3x size, as the phone draws them. */
+.face-slide{flex-direction:row;gap:0}
+/* The text on a full-bleed panel of the Planner card's tint (task/tint #EEF9FE, fading lighter), out to the slide's
+   top, left and bottom edges. */
+.ff-text{flex:none;width:1000px;margin:-96px 0 -96px -96px;padding:96px;display:flex;flex-direction:column;
+  background:linear-gradient(180deg,var(--color-task-tint),var(--color-task-tint-fade))}
+.ff-cues{max-width:none;margin-top:48px;gap:36px}
+/* Three entries, no square bullets or indent, filling the panel's height. */
+/* The headline in the text colour, not the brand pink (no red on this slide's text, Jacob 2026-10-24). */
+#deck .ff-head{color:var(--text-primary)}
+#deck .ff-cues{margin-top:56px;gap:44px}
+.ff-cues .gap-it{padding-left:0}
+.ff-cues .gap-it::before{display:none}
+/* Slide 08: the phone on the left, the timeline in the middle of the slide, its text to the right. */
+.stage-row{gap:70px;align-items:center;margin-top:24px}
+/* the phone centred in its area, the slide's margin to the timeline (96 to 716) */
+.stage-phone{margin:0;flex:none;width:620px;display:flex;justify-content:center;position:relative;top:32px}
+.stage-screen{display:block;width:330px;height:717px;border-radius:48px;object-fit:cover;background:#fff;box-shadow:0 0 0 2px var(--color-gray-100)}
+#deck .stage-row .tl{margin-left:0;margin-top:0}
+/* Slide 09's two points led by the hub's own tab icons (Planner's checkmark circle, Tasks' box from
+   Assets.xcassets/Icons/tako-create-task), not square bullets. */
+#deck .hub-pts .gap-it{padding-left:0}
+#deck .hub-pts .gap-it::before{display:none}
+/* Planner and Tasks as blue liquid-glass pills, as the app's selected chips (blue/50 ground, blue/500 label):
+   a pale blue body, a bright top-left rim, a soft lift. */
+#deck .hub-h{display:inline-flex;align-self:flex-start;align-items:center;gap:10px;padding:8px 22px 8px 16px;border-radius:999px;
+  color:var(--color-blue-500);font-weight:600;font-size:30px;line-height:40px;
+  background:linear-gradient(180deg,rgb(229 241 251 / .95),rgb(214 232 250 / .85));
+  -webkit-backdrop-filter:blur(14px) saturate(1.6);backdrop-filter:blur(14px) saturate(1.6);
+  box-shadow:inset 1.5px 1.5px 0 rgb(255 255 255 / .9),inset -1px -1px 0 rgb(255 255 255 / .4),0 0 0 .5px rgb(2 117 219 / .18),0 6px 16px rgb(2 117 219 / .10)}
+.hub-ico{width:30px;height:30px;flex:none;color:var(--color-blue-500)}
+/* A designer's note: a grey card (deck-card) under the points, a small label over a Callout line. */
+.dnote{margin-top:8px;background:var(--deck-card);border-radius:28px;padding:22px 30px;display:flex;flex-direction:column;gap:4px}
+#deck .dnote .callout{font-size:28px;line-height:38px}
+.dnote p{margin:0}
+#deck .dnote-k{color:var(--text-secondary);font-weight:600;text-transform:uppercase;letter-spacing:.06em;font-size:22px}
+/* the habit loop is the outcome of the two tabs, not a tab: a plain bold heading, no pill */
+#deck .hub-plain{font-weight:700;margin-top:8px;color:var(--color-blue-700)}
+/* slide 09's title centred over the centred phone */
+.hub-head{text-align:center}
+/* Slide 09: three columns, the phone centred on the slide, Planner left of it, Tasks and the habit loop right. */
+.hub-row{display:grid;grid-template-columns:1fr 330px 1fr;column-gap:96px;align-items:center;flex:1;min-height:0;margin-top:24px}
+#deck .hub-row .hub-pts{gap:80px}
+.hub-phone{margin:0;display:flex;justify-content:center}
+#deck .hub-row .gap-pt{max-width:none}
+/* the glow in the dark: tako/wash dark (teal #1D3A39, blue #1E2C3B, pink #3D2228), deepened toward the brand
+   colours so it reads on gray/900, at full strength and taller */
+/* every .slide is already absolute and full frame: only clip the glow */
+#deck .dark-slide{overflow:hidden}
+#deck .dark-slide>*:not(.meet-glow){position:relative;z-index:1}
+.dark-glow{height:62%;background:#1E2C3B;
+  background-image:
+    radial-gradient(60% 90% at 0% 60%,#174E78,transparent 70%),
+    radial-gradient(60% 90% at 100% 55%,#6B2236,transparent 70%),
+    radial-gradient(60% 90% at 50% 100%,#5A2131,transparent 70%),
+    radial-gradient(50% 80% at 100% 100%,#7A2840,transparent 70%),
+    radial-gradient(50% 80% at 0% 100%,#15456C,transparent 70%)}
+.dark-glow .g-drift{background:radial-gradient(45% 70% at 50% 50%,#1F5E5B,transparent 72%)}
+/* Slide 11: the three entry points as phones in a row, each captioned with its point. */
+.ep-row{display:grid;grid-template-columns:repeat(3,1fr);column-gap:72px;margin-top:56px;flex:1;min-height:0;align-items:start}
+.ep{margin:0;display:flex;flex-direction:column;align-items:center;gap:28px;text-align:center}
+.ep-screen{width:264px;height:574px;object-fit:cover;object-position:top;border-radius:44px;box-shadow:0 0 0 2px var(--color-gray-800)}
+#deck .ep h3{margin:0 0 8px;font-size:34px;line-height:44px;font-weight:700;color:var(--color-white)}
+#deck .ep p{margin:0;font-size:26px;line-height:36px;color:var(--color-gray-200)}
+/* Slide 12 set small for now: Footnote-sized body, Callout headings. */
+#deck .pol-slide{background:var(--color-gray-900)}
+#deck .pol-slide .title{color:var(--color-white)}
+#deck .pol-grid{position:absolute;left:96px;right:96px;top:200px;bottom:72px;display:flex;gap:4px}
+#deck .pol-col{flex:1;display:flex;flex-direction:column;gap:4px;min-height:0}
+#deck .pol-card{margin:0;min-height:0;background:var(--color-white);padding:24px 32px;display:flex;align-items:center;justify-content:center;gap:8px;overflow:hidden}
+#deck .pol-card img,#deck .pol-card video{width:calc(var(--w)*1px);max-width:100%;max-height:100%;min-width:0;min-height:0;object-fit:contain}
+#deck .pol-card .pol-shot{border-radius:24px;corner-shape:squircle}
+#deck .pol-card .pol-fade{-webkit-mask-image:linear-gradient(#000 75%,transparent);mask-image:linear-gradient(#000 75%,transparent)}
+#deck .pol-stack{flex-direction:column}
+#deck .pol-stack img{max-height:calc(50% - 4px)}
+/* A screen in the phone frame's top (phone-top.png, as on 07), fading out before the card's edge. */
+#deck .pol-phone{position:relative;width:400px;height:100%;align-self:flex-end;
+  -webkit-mask-image:linear-gradient(#000 60%,transparent);mask-image:linear-gradient(#000 60%,transparent)}
+#deck .pol-card .pp-frame{position:absolute;left:0;top:0;width:400px;max-width:none;max-height:none}
+#deck .pol-card .pp-screen{position:absolute;left:17px;top:11px;width:369px;max-width:none;max-height:none;border-radius:51px}
+/* 14: each clip and its caption in a soft-black card, as 05's cards, on the light page. */
+#deck .edge-slide .ep-row{column-gap:8px;margin-top:48px}
+#deck .edge-slide .ep{background:var(--color-gray-900);padding:40px 40px 32px;gap:28px;border-bottom:12px solid var(--color-red-400)}
+#deck .edge-slide .ep figcaption{min-height:152px}
+#deck .edge-slide .ep-screen{width:240px;height:522px;border-radius:40px;box-shadow:0 0 0 2px var(--color-gray-800)}
+#deck .edge-slide .ep h3{color:var(--color-white);margin-bottom:4px;line-height:40px}
+#deck .edge-slide .ep p{color:var(--color-gray-100)}
+#deck .edge-slide .ep figcaption{align-self:stretch}
+#deck .edge-slide .ep p{text-align:left}
+/* 15: the points in the middle; a slice of four phones in full frames bleeds off the corners: Home's tab bar and
+   the chat's composer hang from the top, Create's and Analytics' headers rise from the foot. */
+#deck .nf-slide{overflow:hidden}
+#deck .nf-row{display:flex;justify-content:center;align-items:center;flex:1;min-height:0;position:relative}
+#deck .nf-phone{position:absolute;width:400px;height:870px;padding:10px;border-radius:72px;background:var(--color-gray-900);box-shadow:0 0 0 2px var(--color-gray-700)}
+#deck .nf-phone img{display:block;width:100%;height:100%;object-fit:cover;object-position:top;border-radius:62px}
+#deck .nf-tl{left:-244px;top:-479px;transform:rotate(-45deg)}
+#deck .nf-tl img{object-position:bottom}
+#deck .nf-tr{left:1764px;top:-479px;transform:rotate(-135deg)}
+#deck .nf-bl{left:-244px;top:689px;transform:rotate(45deg)}
+#deck .nf-br{left:1764px;top:689px;transform:rotate(-45deg)}
+#deck .nf-slide{background:var(--color-gray-50)}
+#deck .plain-pts{display:flex;flex-direction:column;gap:8px;width:880px;margin-top:-24px}
+#deck .plain-pts .pp{background:var(--color-white);padding:20px 28px;border-left:12px solid var(--color-red-400)}
+#deck .plain-pts .pp h3{margin:0 0 4px;font-size:28px;line-height:36px;font-weight:600;color:var(--text-primary)}
+#deck .plain-pts .pp p{margin:0;font-size:22px;line-height:30px;color:var(--text-secondary-strong)}
+/* 16: six points in equal white cards on the light grey page. */
+#deck .tk-slide{background:var(--color-gray-50)}
+#deck .tk-pts{display:grid;grid-template-columns:1fr 1fr;grid-auto-rows:1fr;gap:8px;margin-top:48px;flex:1;min-height:0}
+#deck .tk-pt{background:var(--color-white);padding:28px 32px}
+#deck .tk-pt h3{margin:0 0 8px;font-size:30px;line-height:38px;font-weight:600;color:var(--text-primary)}
+#deck .tk-pt p{margin:0;font-size:24px;line-height:32px;color:var(--text-secondary-strong)}
+/* 16, the agents card: Doubao, Meta's Muse, OpenAI's Dots, Grok's companion and Tako as overlapping circles, as the persona faces, bleeding off the
+   card's bottom right; Tako last and on top. */
+#deck .tk-pt{position:relative;overflow:hidden}
+#deck .tk-pt h3,#deck .tk-pt p{position:relative;z-index:1}
+#deck .tk-faces{opacity:.5;position:absolute;right:-28px;bottom:-64px;display:flex}
+#deck .tk-faces img{width:150px;height:150px;border-radius:50%;object-fit:cover;background:var(--color-white);box-shadow:0 0 0 6px var(--color-white)}
+#deck .tk-faces img+img{margin-left:-40px}
+/* 16, the context card: the Planner, routine and Tasks glyphs floating in tinted circles at its bottom right,
+   staggered and tilted, bleeding off the edge; the glyphs as on 09. */
+#deck .tk-float{opacity:.5;position:absolute;right:-20px;bottom:-60px;width:420px;height:200px}
+#deck .tk-float i{position:absolute;display:grid;place-items:center;border-radius:50%;background:var(--color-task-tint);color:var(--color-blue-500);box-shadow:0 8px 24px rgb(2 117 219 / .12)}
+#deck .tk-float .f1{width:120px;height:120px;left:20px;top:46px;transform:rotate(-10deg)}
+#deck .tk-float .f2{width:150px;height:150px;left:270px;top:30px;transform:rotate(6deg)}
+#deck .tk-float .f3{width:136px;height:136px;left:140px;top:40px;transform:rotate(-4deg)}
+#deck .tk-float .f1 .tk-ico{width:56px;height:56px}
+#deck .tk-float .f2 .tk-ico{width:70px;height:70px}
+#deck .tk-float .f3 .tk-ico{width:62px;height:62px}
+/* 16, the workflow card: Studio's five bottom-tab glyphs, small, on a shallow arc rising to the card's bottom-right
+   corner, under and round the end of the text, spaced so none touch. */
+#deck .tk-arc img{position:absolute;width:46px;height:46px;opacity:.3}
+#deck .tk-arc .a1{right:470px;bottom:-20px}
+#deck .tk-arc .a2{right:364px;bottom:-10px}
+#deck .tk-arc .a3{right:258px;bottom:4px}
+#deck .tk-arc .a4{right:154px;bottom:22px}
+#deck .tk-arc .a5{right:52px;bottom:46px}
+/* 16: a small brand-red square flush in each card's top-left corner. */
+#deck .tk-pt::after{content:"";position:absolute;top:0;left:0;width:20px;height:20px;background:var(--color-red-400)}
+/* 17: three white cards with a red foot band on the light grey page, each a sister app's screen beside ours, labelled, over its caption. */
+#deck .sis-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:48px;flex:1;min-height:0}
+#deck .sis-slide{background:var(--color-gray-50)}
+#deck .sis{margin:0;display:flex;flex-direction:column;gap:24px;background:var(--color-white);padding:40px 28px 32px;border-bottom:12px solid var(--color-red-400)}
+#deck .sis-pair{display:flex;justify-content:center;gap:16px}
+#deck .sis-shot{display:flex;flex-direction:column;align-items:center;gap:10px}
+#deck .sis-shot img,#deck .sis-shot video{width:220px;height:478px;object-fit:cover;object-position:top;border-radius:36px;box-shadow:0 0 0 2px var(--color-gray-100)}
+#deck .sis-shot .callout{font-size:22px;line-height:28px;color:var(--text-secondary)}
+#deck .sis h3{margin:0 0 4px;font-size:32px;line-height:40px;font-weight:700;color:var(--text-primary);text-align:center}
+#deck .sis p{margin:0;font-size:24px;line-height:32px;color:var(--text-secondary-strong);text-align:left}
+#deck .sis figcaption{padding:0 12px}
+/* 18: 17's cards, two of them. */
+#deck .mg-slide .sis-row{grid-template-columns:3fr 2fr}
+#deck .mg-slide .sis figcaption{padding:0 40px}
+#deck .small-slide .persona-intro{font-size:26px;line-height:36px}
+#deck .small-slide .dc-pts{gap:24px}
+#deck .small-slide .dc-pts .gap-it h3{font-size:26px;line-height:34px}
+#deck .small-slide .dc-pts .gap-it p{font-size:20px;line-height:28px}
+#deck .small-slide .gap-it{gap:4px}
+/* Slide 10 in the dark, as the Discover feed it shows: the soft black (gray/900), white text and headings, the reference label grey. */
+#deck .dark-slide{background:var(--color-gray-900)}
+#deck .dark-slide .title,#deck .dark-slide p{color:var(--color-white)}
+#deck .dark-slide .hub-plain{color:var(--color-white)}
+/* slide 10's points smaller than the deck's Title 3 and Body: Headline and Subhead at 2x */
+#deck .dc-pts h3{font-size:34px;line-height:44px}
+#deck .dc-pts p{font-size:30px;line-height:40px}
+#deck .dc-pts .gap-it{gap:10px}
+#deck .dc-pts{gap:48px}
+#deck .dark-slide .dc-k{color:var(--color-gray-400)}
+#deck .dark-slide .dc-shots img,#deck .dark-slide .stage-screen{box-shadow:0 0 0 2px var(--color-gray-800)}
+.dc-side{display:flex;flex-direction:column;justify-content:center;gap:48px;min-width:0;align-self:center}
+#deck .dc-side .gap-it{padding-left:0;display:flex;flex-direction:column;gap:10px}
+#deck .dc-side .gap-it::before{display:none}
+#deck .dc-side h3{font-size:34px;line-height:44px;margin:0}
+#deck .dc-side p.body{font-size:30px;line-height:40px;margin:0}
+/* Slide 10: our points on the left, our flow centred, and on the right, small, Studio's Insights today over Douyin's AI overview as the precedent. */
+.dc-row{display:grid;grid-template-columns:1fr 330px 1fr;column-gap:96px;align-items:center;flex:1;min-height:0;margin-top:24px}
+.dc-refs{display:flex;flex-direction:column;gap:32px}
+.dc-ref{display:flex;flex-direction:column;gap:12px}
+#deck .dc-k{margin:0;color:var(--text-secondary);font-size:22px;line-height:28px}
+.dc-shots{display:flex;gap:12px}
+.dc-shots img{width:130px;height:283px;object-fit:cover;object-position:top;border-radius:22px;box-shadow:0 0 0 2px var(--color-gray-100)}
+#deck .dc-pts{gap:64px;max-width:none}
+#deck .dc-pts .gap-it{padding-left:0}
+#deck .dc-pts .gap-it::before{display:none}
+/* Thank you: Tako and the words centred, Tako's glow along the foot. */
+.ty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;gap:20px}
+.ty-tako{width:180px;height:180px;margin-bottom:12px}
+#deck .ty-h{margin:0;font-weight:700}
+#deck .ty-p{margin:0;max-width:1100px}
+#deck .ty-n{margin:12px 0 0;color:var(--text-secondary)}
+/* Slide 08: Tako's glow along the foot, at half strength, under the text. */
+.stage-slide{overflow:hidden}
+.stage-slide .stage-glow{opacity:.5}
+.stage-slide>*:not(.meet-glow){position:relative;z-index:1}
+/* the creators' faces on the stage's heading row, overlapping, the first on top, each ringed in the slide's white so the overlap
+   reads as a clipped gap */
+#deck .tl-h{display:flex;align-items:center;gap:20px}
+.tl-faces{display:inline-flex}
+.tl-faces img{width:56px;height:56px;border-radius:50%;object-fit:cover;object-position:center 35%;box-shadow:0 0 0 4px var(--deck-bg)}
+.tl-faces img+img{margin-left:-16px}
+/* the first face (Jordan, Priya: the ones the video shows) on top */
+.tl-faces img:first-child{position:relative;z-index:1}
+/* Slide 08: the two stages as a timeline down the left, a line and a dot per stage in the app's muted blue
+   (blue/700); the stage's name bold, its creators' faces and names in a row under it. */
+#deck .tl{position:relative;gap:64px;max-width:1000px}
+/* the line runs on past the last stage and fades out, as the journey continues */
+#deck .tl::before{content:"";position:absolute;left:11px;top:28px;bottom:-140px;width:4px;border-radius:2px;background:linear-gradient(to bottom,var(--color-blue-700) 0,var(--color-blue-700) calc(100% - 260px),transparent);opacity:.35}
+#deck .tl .gap-it{padding-left:64px}
+#deck .tl .gap-it::before{content:"";position:absolute;left:0;top:13px;width:26px;height:26px;border-radius:50%;background:var(--color-blue-700);box-shadow:0 0 0 6px var(--deck-bg)}
+#deck .tl h3{color:var(--color-blue-700);font-weight:700}
+#deck .tl-who{display:flex;gap:32px;align-items:center;margin:4px 0;color:var(--text-secondary);font-size:26px;line-height:36px}
+#deck .tl-who>span{display:flex;gap:32px;align-items:center}
+body[data-lang="en"] #deck .tl-who>.zh,body[data-lang="zh"] #deck .tl-who>.en{display:none}
+#deck .tl-who .ff-mini{width:56px;height:56px;margin:0 12px 0 0;vertical-align:middle}
+.tl-who .nobr{display:inline-flex;align-items:center}
+/* Current gaps: the text on a full-bleed soft black panel (gray/900 #1E1E1E, softer than pure black) to the slide's
+   top, left and bottom edges; as slide 07, no square bullets, the headings bold. The title in the dark-mode pink
+   (red/400), the rest white; the two recordings centred on the white to the right. */
+.gaps-text{position:absolute;left:0;top:0;bottom:0;width:1060px;padding:96px;box-sizing:border-box;display:flex;flex-direction:column;background:var(--color-gray-900)}
+.gaps-text .gap-pt{margin-top:40px;max-width:none;gap:36px}
+/* the square bullets back, in the dark-mode pink on the black (the title is white now, so the pink lives here) */
+.gaps-text .gap-it{padding-left:40px}
+.gaps-text .gap-it::before{display:block;background:var(--color-red-400)}
+#deck .gaps-text .title{color:var(--color-white)}
+#deck .gaps-text h3{color:var(--color-white);font-weight:700}
+#deck .gaps-text p{color:var(--color-white)}
+.gaps-slide .gap-vids{position:absolute;left:1060px;right:0;top:0;bottom:0;margin:0;display:flex;align-items:center;justify-content:center;gap:56px}
+/* The entry headings in the app's muted blue (blue/700, its second chart series): blue/500 read too saturated. */
+#deck .ff-cues h3{font-weight:700;color:var(--color-blue-700)}
+/* The right half, 920 x 1080 out to the slide's edges. The phone frame 560 wide (the mockup's 782 at 0.716), its top
+   at 640, so only the greeting and a prompt show, and its foot cut by the slide's edge; the screen under it at the mockup's measured box (34, 23, 721 wide,
+   from the portfolio's hand-screen-mask) with the screen's corners (55pt of 402). */
+.ff-visual{position:absolute;left:1000px;top:0;width:920px;height:1080px;overflow:hidden}
+.ff-phone{position:absolute;left:180px;top:640px;width:560px;height:645px}
+.ff-screen{position:absolute;left:24px;top:16px;width:516px;height:auto;border-radius:71px}
+.ff-frame{position:absolute;left:0;top:0;width:560px;height:auto}
+/* Tako out of the header: the mark where the app's sits (centred, 82pt down), larger, over the frame's top. */
+.ff-mark{position:absolute;left:387px;top:620px;width:150px;height:150px;z-index:1}
+#deck .ff-pill{position:absolute;left:462px;top:761px;transform:translateX(-50%);z-index:1;padding:16px 26px;border-radius:999px;color:var(--text-primary);font-weight:600;font-size:46px;line-height:46px;
+  background:linear-gradient(180deg,rgb(255 255 255 / .62),rgb(255 255 255 / .38));
+  -webkit-backdrop-filter:blur(14px) saturate(1.8) brightness(1.08);backdrop-filter:blur(14px) saturate(1.8) brightness(1.08);
+  box-shadow:inset 1.5px 1.5px 0 rgb(255 255 255 / .95),inset -1px -1px 0 rgb(255 255 255 / .45),
+    inset 0 -10px 16px -8px rgb(255 255 255 / .6),0 0 0 .5px rgb(0 0 0 / .08),0 6px 18px rgb(0 0 0 / .10),0 1px 3px rgb(0 0 0 / .08)}
+/* The bubbles (keyed transparent, about 1.15x the phone's size), as Jacob placed them in Figma (slide 07,
+   2026-10-24): its x less the right half's 1000. */
+.fb{position:absolute;z-index:2;display:block;height:auto}
+.fb7{width:265px;left:377px;top:86px}
+.fb6{width:270px;left:267px;top:209px}
+.fb5{width:265px;left:565px;top:300px}
+.fb1{width:320px;left:427px;top:408px}
+.fb2{width:206px;left:472px;top:491px}
+.fb8{width:301px;left:565px;top:216px}
+.fb9{width:335px;left:52px;top:439px}
+.fb4{width:310px;left:117px;top:506px}
+.fb10{width:311px;left:79px;top:326px}
+.fb11{width:245px;left:81px;top:109px}
+/* Muse's and Doubao's avatars inline in the text: plain circles, no card. */
+.nobr{white-space:nowrap}
+.ff-mini{display:inline-flex;vertical-align:-10px;width:48px;height:48px;margin:0 10px 0 2px;border-radius:50%;overflow:hidden}
+.ff-mini img{width:100%;height:100%;object-fit:cover;display:block}
+.gap-it::before{content:"";position:absolute;left:0;top:17px;width:16px;height:16px;background:var(--brand-primary)}
+.gap-pt h3,.gap-pt p{margin:0}
+.gap-vids{display:flex;gap:96px;flex:none;margin-left:auto}
+.gap-v{display:flex;flex-direction:column;align-items:center;gap:16px;margin:0;width:328px}
+/* 712 tall fills the row under the title with the caption; width from the recording, 604x1314. */
+.gap-vid{width:328px;height:712px;border-radius:40px;background:var(--deck-card)}
+.gap-v figcaption{color:var(--text-secondary)}
+</style>
+</head>
+<body data-lang="en">
+<div id="bar">
+  <div class="seg" id="lang">
+    <button data-v="en" class="act">EN</button><button data-v="zh">中文</button>
+  </div>
+  <div class="seg" id="theme">
+    <button data-v="light" class="act">Light</button><button data-v="dark">Dark</button>
+  </div>
+</div>
+
+<div id="stage"><div id="deck">
+
+<!-- 01 Brief -->
+<section class="slide on brief" data-n="01">
+  <div class="brief-l">
+    <div class="topic-row"><h1 class="large-title title t"><span class="en">TikTok Studio Redesign</span><span class="zh">TikTok Studio 重新设计</span></h1></div>
+    <p class="body byline t"><span class="en">Case Study by Jacob Tang</span><span class="zh">Jacob Tang 的案例研究</span></p>
+    <div class="meta">
+      <div class="pills"><span class="bpill body t"><span class="en">Standalone Mobile App</span><span class="zh">独立移动端 App</span></span></div>
+      </div>
+    <p class="callout lead t"><span class="en">A design challenge on TikTok Studio, the standalone mobile app for creators: analyze its framework, publishing flow, content management and analytics, find the design problems worth solving, and propose a complete redesign.</span>
+      <span class="zh">针对面向创作者的独立移动端 App TikTok Studio，分析其框架、发布流程、内容管理与作品分析，找出值得解决的设计问题，并给出完整的重新设计方案。</span></p>
+      </div>
+  <div class="brief-r">
+    <div class="brief-art"><i class="box-a"></i><i class="box-b"></i><img src="assets/creator-vlog-dusk.webp" alt="Creator filming herself on a rooftop at dusk"></div>
+  </div>
+</section>
+
+<!-- 02 User personas -->
+<section class="slide persona-slide" data-n="02">
+  <h1 class="title-1 title t"><span class="en">User personas</span><span class="zh">用户画像</span></h1>
+  <p class="callout persona-intro t"><span class="en">TikTok Studio is useful to content creators across all niches and experiences.</span><span class="zh">TikTok Studio 对各个领域、不同经验水平的内容创作者都很有用。</span></p>
+  <div class="persona-row">
+    <div class="pcol">
+      <span class="pill callout t"><span class="en">Vibe Bringer</span><span class="zh">氛围创作者</span></span>
+    <div class="persona">
+      <div class="head"><div class="photo" style="background-image:url(assets/persona-jordan.webp);background-position:center 32%"></div><div class="id">
+      <h3 class="title-3 t">Jordan</h3>
+      <p class="stat t"><span class="num callout">120</span><span class="lbl subhead"><span class="en">Followers</span><span class="zh">粉丝</span></span></p>
+      </div></div>
+      <p class="callout bio t"><span class="en">Produces electronic music. Wants to get big. Started posting his beats with video editing.</span><span class="zh">制作电子音乐，想要火起来。开始配合视频剪辑发布自己的节拍作品。</span></p>
+      <div class="level"><div class="bar"><i class="on"></i><i></i><i></i><i></i></div><span class="lvl t"><span class="en">New</span><span class="zh">新手</span></span></div>
+    </div>
+    </div>
+    <div class="pcol">
+      <span class="pill callout t"><span class="en">Storyteller</span><span class="zh">故事讲述者</span></span>
+    <div class="persona">
+      <div class="head"><div class="photo" style="background-image:url(assets/persona-mia.webp)"></div><div class="id">
+      <h3 class="title-3 t">Mia</h3>
+      <p class="stat t"><span class="num callout">850</span><span class="lbl subhead"><span class="en">Followers</span><span class="zh">粉丝</span></span></p>
+      </div></div>
+      <p class="callout bio t"><span class="en">Just started university. Shares day-in-the-life vlogs about university, personal life and interests.</span><span class="zh">刚上大学。分享关于大学生活、个人生活和兴趣的日常 vlog。</span></p>
+      <div class="level"><div class="bar"><i class="on"></i><i class="on"></i><i></i><i></i></div><span class="lvl t"><span class="en">Casual</span><span class="zh">偶尔发布</span></span></div>
+    </div>
+    </div>
+    <div class="pcol">
+      <span class="pill callout t"><span class="en">Educator</span><span class="zh">知识分享者</span></span>
+    <div class="persona">
+      <div class="head"><div class="photo" style="background-image:url(assets/persona-priya.webp)"></div><div class="id">
+      <h3 class="title-3 t">Priya</h3>
+      <p class="stat t"><span class="num callout">7.8K</span><span class="lbl subhead"><span class="en">Followers</span><span class="zh">粉丝</span></span></p>
+      </div></div>
+      <p class="callout bio t"><span class="en">Grade school math teacher sharing step-by-step tutorials. Is growing her educational audience.</span><span class="zh">小学数学老师，分享分步教程。正在扩大她的教育类受众。</span></p>
+      <div class="level"><div class="bar"><i class="on"></i><i class="on"></i><i class="on"></i><i></i></div><span class="lvl t"><span class="en">Growing</span><span class="zh">成长中</span></span></div>
+    </div>
+    </div>
+    <div class="pcol">
+      <span class="pill callout t"><span class="en">Messenger</span><span class="zh">观点表达者</span></span>
+    <div class="persona">
+      <div class="head"><div class="photo" style="background-image:url(assets/persona-kevin.webp);background-position:center 30%"></div><div class="id">
+      <h3 class="title-3 t">Kevin</h3>
+      <p class="stat t"><span class="num callout">48.2K</span><span class="lbl subhead"><span class="en">Followers</span><span class="zh">粉丝</span></span></p>
+      </div></div>
+      <p class="callout bio t"><span class="en">Gym trainer sharing fitness content. Wants to sustain high viewership and acquire brand partnerships.</span><span class="zh">健身教练，分享健身内容。希望保持高观看量并获得品牌合作。</span></p>
+      <div class="level"><div class="bar"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i></div><span class="lvl t"><span class="en">Established</span><span class="zh">成熟</span></span></div>
+    </div>
+    </div>
+  </div>
+</section>
+
+<!-- 03 How creators use Studio -->
+<section class="slide arch-slide" data-n="03">
+  <div class="arch-head"><h1 class="title-1 title t"><span class="en">All-in-one workspace</span><span class="zh">一站式工作空间</span></h1>
+  <p class="callout persona-intro t"><span class="en">Creators use TikTok Studio to:</span><span class="zh">创作者使用 TikTok Studio 来：</span></p>
+  </div>
+  <div class="arch-main">
+  <div class="arch-row">
+    <div class="band"></div>
+    <div class="arch">
+      <div class="arch-h"><svg class="arch-ico" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><defs><mask id="ss-m" maskUnits="userSpaceOnUse" x="0" y="0" width="24" height="24"><rect width="24" height="24" fill="#fff"/><circle cx="15.4" cy="5.4" r="5.5" fill="#000"/><circle cx="20.9" cy="7.7" r="3.5" fill="#000"/></mask></defs><circle cx="10.2" cy="11.9" r="8.7" fill="none" stroke="currentColor" stroke-width="2.2" mask="url(#ss-m)"/><path fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" d="M16.6 18.2 L21.7 22.7"/><path d="M15.4 1.3000000000000007C16.26 3.56 17.25 4.54 19.5 5.4C17.25 6.26 16.26 7.25 15.4 9.5C14.54 7.25 13.55 6.26 11.3 5.4C13.55 4.54 14.54 3.56 15.4 1.3000000000000007Z"/><path d="M20.9 5.800000000000001C21.30 6.85 21.75 7.30 22.799999999999997 7.7C21.75 8.10 21.30 8.55 20.9 9.6C20.50 8.55 20.04 8.10 19.0 7.7C20.04 7.30 20.50 6.85 20.9 5.800000000000001Z"/></svg><h3 class="title-3 t"><span class="en">Get inspiration</span><span class="zh">获取灵感</span></h3></div>
+      <div class="ex"><i class="ex-ph" style="background-image:url(assets/persona-mia.webp);background-position:center 40%"></i><div class="ex-tx"><p class="subhead ex-n t"><span class="en"><b>Mia</b></span><span class="zh"><b>Mia</b></span></p><p class="callout t"><span class="en">Uses discover page to find cafes nearby to study in and share about.</span><span class="zh">用发现页寻找附近适合学习、也值得分享的咖啡馆。</span></p></div></div>
+      <ul><li class="callout t"><span class="en">Discover page</span><span class="zh">发现页</span></li><li class="callout t"><span class="en">Creator search</span><span class="zh">创作者搜索</span></li></ul>
+    </div>
+    <div class="arch">
+      <div class="arch-h"><svg class="arch-ico" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><defs><mask id="ic-create"><rect width="24" height="24" fill="#fff"/><rect x="0" y="5.8" width="24" height="1.7" fill="#000"/><g fill="#000"><path d="M3.4 1 H5.0 L6.9 5.9 H5.3Z"/><path d="M9.0 1 H10.6 L12.5 5.9 H10.9Z"/><path d="M14.6 1 H16.2 L18.099999999999998 5.9 H16.5Z"/></g><path fill="#000" d="M12 10.1C13.05 12.85 14.25 14.05 17.0 15.1C14.25 16.15 13.05 17.35 12 20.1C10.95 17.35 9.75 16.15 7.0 15.1C9.75 14.05 10.95 12.85 12 10.1Z"/></mask></defs><rect x="0" y="1.35" width="24" height="21.3" rx="3.3" mask="url(#ic-create)"/></svg><h3 class="title-3 t"><span class="en">Create</span><span class="zh">创作</span></h3></div>
+      <div class="ex"><i class="ex-ph" style="background-image:url(assets/persona-jordan.webp);background-position:center 32%"></i><div class="ex-tx"><p class="subhead ex-n t"><span class="en"><b>Jordan</b></span><span class="zh"><b>Jordan</b></span></p><p class="callout t"><span class="en">Cuts and splices clips against his music, and uses templates for fast motion graphics, filters and styling.</span><span class="zh">把剪辑片段与音乐卡点剪接，并用模板快速制作动态图形、滤镜和造型。</span></p></div></div>
+      <ul><li class="callout t"><span class="en">Camera</span><span class="zh">相机</span></li><li class="callout t"><span class="en">Upload</span><span class="zh">上传</span></li><li class="callout t"><span class="en">Auto captions</span><span class="zh">自动字幕</span></li><li class="callout t"><span class="en">AutoCut</span><span class="zh">智能剪辑</span></li><li class="callout t"><span class="en">Photo editor</span><span class="zh">图片编辑</span></li></ul>
+    </div>
+    <div class="arch">
+      <div class="arch-h"><svg class="arch-ico" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><g stroke="currentColor" stroke-linejoin="round" stroke-linecap="round"><path stroke-width="2.4" d="M12 2 L21.6 7.3 L12 12.6 L2.4 7.3Z"/><path fill="none" stroke-width="3" d="M2.4 12.2 L12 17.5 L21.6 12.2"/><path fill="none" stroke-width="3" d="M2.4 16.9 L12 22.2 L21.6 16.9"/></g></svg><h3 class="title-3 t"><span class="en">Manage</span><span class="zh">管理</span></h3></div>
+      <div class="ex"><i class="ex-ph" style="background-image:url(assets/persona-kevin.webp);background-position:center 30%"></i><div class="ex-tx"><p class="subhead ex-n t"><span class="en"><b>Kevin</b></span><span class="zh"><b>Kevin</b></span></p><p class="callout t"><span class="en">Filters comments by creators with more than 100K followers to find potential partnerships.</span><span class="zh">筛选粉丝超过10万的创作者所发的评论，寻找潜在合作机会。</span></p></div></div>
+      <ul><li class="callout t"><span class="en">Posts</span><span class="zh">帖子</span></li><li class="callout t"><span class="en">Comments</span><span class="zh">评论</span></li></ul>
+    </div>
+    <div class="arch">
+      <div class="arch-h"><svg class="arch-ico" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><defs><mask id="ic-analytics"><rect width="24" height="24" fill="#fff"/><g fill="none" stroke="#000" stroke-width="2.2" stroke-linejoin="miter"><path d="M3.4 15.9 L9.2 10.1 L12.6 13.5 L17.6 8.5"/></g><path fill="#000" stroke="#000" stroke-width="0.8" stroke-linejoin="round" d="M14.8 6.6 H20.2 V12 Z"/></mask></defs><rect x="0" y="2.7" width="24" height="18.6" rx="3.3" mask="url(#ic-analytics)"/></svg><h3 class="title-3 t"><span class="en">Analyze</span><span class="zh">分析</span></h3></div>
+      <div class="ex"><i class="ex-ph" style="background-image:url(assets/persona-priya.webp);background-position:center 40%"></i><div class="ex-tx"><p class="subhead ex-n t"><span class="en"><b>Priya</b></span><span class="zh"><b>Priya</b></span></p><p class="callout t"><span class="en">Analyzes her viewers’ active times, age and gender to adjust the math problems she solves.</span><span class="zh">分析观众的活跃时间、年龄和性别，据此调整她解答的数学题。</span></p></div></div>
+      <ul><li class="callout t"><span class="en">Metrics Overview</span><span class="zh">数据概览</span></li><li class="callout t"><span class="en">Content Performance</span><span class="zh">内容表现</span></li><li class="callout t"><span class="en">Viewers</span><span class="zh">观众</span></li><li class="callout t"><span class="en">Followers</span><span class="zh">粉丝</span></li><li class="callout t"><span class="en">Creator Assistant</span><span class="zh">Creator Assistant</span></li></ul>
+    </div>
+  </div>
+  </div>
+</section>
+<!-- 04 Current gaps: the text on a full-bleed black panel, set apart from the recordings on white. -->
+<section class="slide opp-slide gaps-slide" data-n="04">
+  <div class="gaps-text">
+  <div class="arch-head"><h1 class="title-1 title t"><span class="en">Current gaps</span><span class="zh">现有不足</span></h1></div>
+    <div class="gap-pt">
+      <div class="gap-it">
+      <h3 class="title-3 t"><span class="en">Creator Assistant feels broken</span><span class="zh">Creator Assistant 用起来像出了故障</span></h3>
+      <p class="body t"><span class="en">Little context on the creator, so answers stay generic. “Sending” while a response generates reads as a network delay, some responses fail outright, and its only entry point is the Analytics overview.</span><span class="zh">它对创作者了解有限，回答往往很笼统。回复生成期间显示“发送中”，让人误以为是网络延迟。部分回复会直接失败，而且唯一入口在数据分析概览页。</span></p>
+      </div>
+      <div class="gap-it">
+      <h3 class="title-3 t"><span class="en">TikTok Tako already does more</span><span class="zh">TikTok Tako 已经做得更多</span></h3>
+      <p class="body t"><span class="en">Tako in the main app already has the context of the video you’re on and suggests prompts for it, with native liquid glass and richer animations.</span><span class="zh">主应用中的 Tako 已能获取你正在看的视频的上下文并推荐相关提问，还采用原生液态玻璃和更丰富的动画。</span></p>
+      </div>
+      <div class="gap-it">
+      <h3 class="title-3 t"><span class="en">Minor overlooked details</span><span class="zh">一些被忽视的小细节</span></h3>
+      <p class="body t"><span class="en">Discover saves to collections that can’t be viewed, and its collections card leads nowhere. Favorites and Likes are buried in Settings. Display can’t follow the system’s light or dark mode.</span><span class="zh">发现页可保存到收藏夹，但收藏夹无法查看，收藏夹卡片也点不进去。收藏和点赞藏在设置里。界面无法跟随系统浅色或深色模式。</span></p>
+      </div>
+    </div>
+  </div>
+  <div class="gap-vids">
+      <figure class="gap-v"><video class="gap-vid" data-src="assets/creator-assistant.mp4" autoplay muted loop playsinline></video><figcaption class="subhead t"><span class="en">Creator Assistant</span><span class="zh">Creator Assistant</span></figcaption></figure>
+      <figure class="gap-v"><video class="gap-vid" data-src="assets/tiktok-tako.mp4" autoplay muted loop playsinline></video><figcaption class="subhead t"><span class="en">TikTok Tako</span><span class="zh">TikTok Tako</span></figcaption></figure>
+  </div>
+</section>
+<!-- 05 What my redesign prioritizes -->
+<section class="slide opp-slide" data-n="05">
+  <div class="arch-head"><h1 class="title-1 title t"><span class="en">What my redesign prioritizes</span><span class="zh">本次改版的优先事项</span></h1></div>
+  <div class="appr">
+    <div class="card"><h3 class="title-3 t"><span class="en">Most impact,<br>least disruption</span><span class="zh">影响最大，干扰最小</span></h3><p class="body t"><span class="en">Prioritize features that add the most to creators’ workflow while minimizing disruption to existing flows users are already familiar with.</span><span class="zh">优先选择最能提升创作者工作流程的功能，同时尽量减少对用户已熟悉流程的干扰。</span></p></div>
+    <div class="card"><h3 class="title-3 t"><span class="en">Feasible to build,<br>quick to ship</span><span class="zh">易于实现，快速上线</span></h3><p class="body t"><span class="en">Weigh engineering cost and time to ship, and reuse what TikTok already has.</span><span class="zh">权衡工程成本与上线时间，并复用 TikTok 已有的能力。</span></p></div>
+    <div class="card"><h3 class="title-3 t"><span class="en">Proven features,<br>familiar form</span><span class="zh">成熟功能，熟悉形式</span></h3><p class="body t"><span class="en">Borrow from the main TikTok app, Douyin, Doubao and CapCut, and package them in a form familiar to a Western audience.</span><span class="zh">借鉴 TikTok 主应用、抖音、豆包和剪映的功能，以海外用户熟悉的形式呈现。</span></p></div>
+    <div class="card"><h3 class="title-3 t"><span class="en">AI that knows the creator</span><span class="zh">懂创作者的 AI</span></h3><p class="body t"><span class="en">Integrate the AI tools leading consumer platforms are already pushing, with the personalization users now expect.</span><span class="zh">整合主流消费平台已在推进的 AI 工具，并提供用户如今期待的个性化体验。</span></p></div>
+    <div class="card"><h3 class="title-3 t"><span class="en">A subtle refresh</span><span class="zh">细微的视觉焕新</span></h3><p class="body t"><span class="en">A light visual update that improves the user experience and makes Studio feel more modern.</span><span class="zh">轻量的视觉更新，提升用户体验，让 Studio 更具现代感。</span></p></div>
+  </div>
+</section>
+<!-- 06 Meet Tako -->
+<section class="slide opp-slide meet-slide" data-n="06">
+  <!-- Tako and its name in the middle, what it can do floating round them as glass chips.
+       The features are placeholders from the Meet Tako card until the copy is set. -->
+  <div class="meet-left">
+    <div class="meet-orbit">
+      <div class="meet-centre">
+        <iframe class="meet-tako" data-src="tako-loop/index.html?play" title="" aria-hidden="true" tabindex="-1" scrolling="no" style="border:0;background:transparent"></iframe>
+        <div class="meet-copy">
+          <h1 class="large-title t meet-name"><span class="en">Meet <img class="wordmark" src="assets/tiktok-wordmark-black.png" alt="TikTok"> Tako</span><span class="zh">了解 <img class="wordmark" src="assets/tiktok-wordmark-black.png" alt="TikTok"> Tako</span></h1>
+          <p class="title-3 t meet-line"><span class="en">Your AI creator assistant</span><span class="zh">你的 AI 创作助手</span></p>
+        </div>
+      </div>
+      <div class="chip md c1 t"><b>⏰</b><span class="en">Best time to post</span><span class="zh">最佳发布时间</span></div>
+      <div class="chip lg c2 t"><b>💡</b><span class="en">Brainstorm ideas</span><span class="zh">头脑风暴</span></div>
+      <div class="chip md c3 t"><b>📈</b><span class="en">Dig into your analytics</span><span class="zh">深挖数据分析</span></div>
+      <div class="chip sm c4 t"><b>👀</b><span class="en">Who’s watching</span><span class="zh">谁在看你的视频</span></div>
+      <div class="chip sm c5 t"><b>🎬</b><span class="en">Draft a video</span><span class="zh">生成视频草稿</span></div>
+      <div class="chip md c6 t"><b>🖼️</b><span class="en">Make a cover</span><span class="zh">制作封面</span></div>
+      <div class="chip lg c7 t"><b>🗓️</b><span class="en">Plan the week</span><span class="zh">规划一周</span></div>
+      <div class="chip md c8 t"><b>📍</b><span class="en">Find places to film</span><span class="zh">发现拍摄地点</span></div>
+    </div>
+  </div>
+  <!-- Tako's glow (Components/TakoGlow.swift): the Meet Tako mesh of teal, blue and pink washes with grain, its
+       middle drifting, rising from nothing over the bottom 45% of the slide. -->
+  <div class="meet-glow" aria-hidden="true"><i class="g-drift"></i><i class="g-grain"></i></div>
+  <!-- The demo in a hand, as Maureen's title slide: the recording under the hand, clipped to the screen by
+       hand-screen-mask.png (the mockup's own screen hole). Hand: Maureen/_library/device-mockups, via the portfolio. -->
+  <figure class="meet-phone">
+    <div class="mp-screen"><div class="mp-glass"><video data-src="assets/tako-demo.mp4" autoplay muted loop playsinline></video></div></div>
+    <img class="mp-hand" src="assets/hand-mockup-alpha.png" width="1800" height="2117" alt="">
+  </figure>
+</section>
+<!-- 07 A familiar face: Meta Muse and Doubao already treat AI as a companion; Tako does too, in TikTok's own
+     character. Text on the left; on the right the three avatars, Tako in the middle, over a short exchange cropped
+     from screenshots/prototype/03-chat-food-ideas-searching-light.png, floating round Tako. -->
+<section class="slide opp-slide face-slide" data-n="07">
+  <div class="ff-text">
+    <div class="arch-head"><h1 class="title-1 title t ff-head"><span class="en">Tako is your creative sidekick</span><span class="zh">Tako 是你的创作搭档</span></h1>
+    <p class="callout persona-intro t"><span class="en">Get inspired, understand your viewers, and plan and track your content ideas, all in one place.</span><span class="zh">获取灵感、了解你的观众，并规划和跟进内容创意，一站搞定。</span></p></div>
+    <div class="gap-pt ff-cues">
+      <div class="gap-it">
+      <h3 class="title-3 t"><span class="en">An anthropomorphic AI agent</span><span class="zh">拟人化的 AI 助手</span></h3>
+      <p class="body t"><span class="en">Following mass-adopted AI-first platforms like Meta’s <span class="nobr"><span class="ff-mini"><span class="ff-in"><img src="assets/avatar-muse.jpg" width="320" height="320" alt=""></span></span>Muse</span> and ByteDance’s <span class="nobr"><span class="ff-mini"><span class="ff-in"><img src="assets/avatar-doubao.jpg" width="320" height="320" alt=""></span></span>Doubao</span>, Tako gets a playful animated avatar.</span><span class="zh">借鉴已被大规模采用的 AI 优先平台，如 Meta 的 <span class="ff-mini"><span class="ff-in"><img src="assets/avatar-muse.jpg" width="320" height="320" alt=""></span></span>Muse 和字节跳动的<span class="ff-mini"><span class="ff-in"><img src="assets/avatar-doubao.jpg" width="320" height="320" alt=""></span></span>豆包，Tako 拥有了俏皮的动态形象。</span></p>
+      </div>
+      <div class="gap-it">
+      <h3 class="title-3 t"><span class="en">A messaging interface</span><span class="zh">即时通讯式界面</span></h3>
+      <p class="body t"><span class="en">The messaging format feels like talking with a friend rather than a generic chatbot, reinforcing a personal relationship with Tako.</span><span class="zh">即时通讯的形式让人感觉像在和朋友聊天，而非千篇一律的聊天机器人，强化与 Tako 的个人关系。</span></p>
+      </div>
+      <div class="gap-it">
+      <h3 class="title-3 t"><span class="en">A casual tone</span><span class="zh">轻松的语气</span></h3>
+      <p class="body t"><span class="en">Gen Z language and emoji, as TikTok Tako and CapCut AI Lab already use, foster a close, everyday connection.</span><span class="zh">沿用 TikTok Tako 和剪映 AI Lab 已在使用的 Z 世代语言和表情，建立起亲近的日常联系。</span></p>
+      </div>
+    </div>
+  </div>
+  <!-- The chat in the Maureen phone frame (hand-mockup-alpha.png, the hand cut away), its top rising from the slide's
+       foot; Tako comes out of its header, the bubbles float up and out above it. -->
+  <div class="ff-visual">
+    <div class="ff-phone">
+      <img class="ff-screen" src="assets/chat-home.jpg" width="600" height="1304" alt="Tako’s chat home: Where should we start, Jacob?">
+      <img class="ff-frame" src="assets/phone-top.png" width="782" height="900" alt="">
+    </div>
+    <iframe class="ff-mark" data-src="tako-loop/index.html?play" title="" aria-hidden="true" tabindex="-1" scrolling="no" style="border:0;background:transparent"></iframe>
+    <div class="ff-pill headline t"><span class="en">Tako</span><span class="zh">Tako</span></div>
+    <img class="fb fb7" src="assets/crop-where-find.png" width="1000" height="372" alt="Insight: Where they find you, Sound, 77.5%">
+    <img class="fb fb6" src="assets/crop-add-to-planner.png" width="1060" height="520" alt="Tako’s suggestion: Three hidden gems in Irvine, ranked, with Add to Planner">
+    <img class="fb fb5" src="assets/crop-scheduled-task.png" width="1010" height="310" alt="Scheduled task: Film: matcha spot day in the life, Fri, Oct 23, 9:00 am">
+    <img class="fb fb1" src="assets/crop-active-times.png" width="1000" height="213" alt="Tako: Mostly people aged 18 to 24, and they’re most active 7 to 9 pm.">
+    <img class="fb fb2" src="assets/crop-draft-read.png" width="520" height="278" alt="A thumbs-up on Make me a draft, and a Read receipt">
+    <img class="fb fb8" src="assets/crop-love-it.png" width="990" height="200" alt="Tako: Love it! Something quick to film, or want me to make you a draft?">
+    <img class="fb fb9" src="assets/crop-searching.png" width="990" height="146" alt="Tako’s mark: Searching the web">
+    <img class="fb fb4" src="assets/crop-added-planner.png" width="1010" height="310" alt="Added to Planner: Film: matcha spot day in the life, Fri, Oct 23, 10:00 am">
+    <img class="fb fb10" src="assets/crop-eyes-food-ideas.png" width="810" height="215" alt="A look on Give me some food video ideas">
+    <img class="fb fb11" src="assets/crop-heart-thanks.png" width="640" height="215" alt="A heart on This is great, thanks!">
+  </div>
+</section>
+<!-- 08 Tako is useful at every stage of a creator’s journey: plain text first, until the layout is decided -->
+<section class="slide opp-slide stage-slide" data-n="08">
+  <!-- Tako's glow, as slide 06's, lighter: the slide is about Tako meeting creators where they are. -->
+  <div class="meet-glow stage-glow" aria-hidden="true"><i class="g-drift"></i><i class="g-grain"></i></div>
+  <div class="arch-head"><h1 class="title-1 title t"><span class="en">Tako is useful at every stage of a creator’s journey</span><span class="zh">Tako 陪伴创作者成长的每个阶段</span></h1>
+  <p class="callout persona-intro t"><span class="en">From ideating the first post’s script to coordinating brand deal proposals, Tako meets each creator where they are.</span><span class="zh">从构思第一条视频的脚本，到协调品牌合作提案，Tako 都能贴合每位创作者所处的阶段。</span></p></div>
+  <div class="gap-row stage-row">
+    <!-- One phone, cycling Jordan's and Priya's replies to "How are my recent posts doing?" (tako-stages.mp4: a card, then the chat, each). -->
+    <figure class="stage-phone"><video class="stage-screen" data-src="assets/tako-stages.mp4" autoplay muted loop playsinline></video></figure>
+    <div class="gap-pt tl">
+      <div class="gap-it">
+      <h3 class="title-3 t tl-h"><span class="en">New creators</span><span class="zh">新手创作者</span><span class="tl-faces"><img src="assets/persona-jordan.webp" alt="Jordan"><img src="assets/persona-mia.webp" alt="Mia"></span></h3>
+      <p class="body t"><span class="en">With few views and followers, a dashboard of low numbers can be discouraging and not much help. A chat with Tako gives them ideas and encouragement instead, plus AI image tools to style their posts.</span><span class="zh">播放和粉丝不多时，满是低数字的数据面板容易让人泄气，也帮不上什么忙。和 Tako 聊天，能给他们灵感和鼓励；还有 AI 图像工具，帮他们为内容设计风格。</span></p>
+      </div>
+      <div class="gap-it">
+      <h3 class="title-3 t tl-h"><span class="en">Established creators</span><span class="zh">成熟创作者</span><span class="tl-faces"><img src="assets/persona-priya.webp" alt="Priya"><img src="assets/persona-kevin.webp" alt="Kevin"></span></h3>
+      <p class="body t"><span class="en">Richer data gives Tako more context, so its answers go deeper: when their viewers are active, which posts work, what other creators in their niche are doing, where partnerships might come from.</span><span class="zh">更丰富的数据给了 Tako 更多上下文，回答也更深入：观众何时活跃、哪些内容有效、同类型其他创作者在做什么、合作机会可能来自哪里。</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 09 Built into the daily routine: the Tako hub, Planner and Tasks; plain text first, until the layout is decided -->
+<section class="slide opp-slide stage-slide" data-n="09">
+  <!-- Tako's glow along the foot, at slide 08's half strength. -->
+  <div class="meet-glow stage-glow" aria-hidden="true"><i class="g-drift"></i><i class="g-grain"></i></div>
+  <div class="arch-head hub-head"><h1 class="title-1 title t"><span class="en">Built into the daily routine</span><span class="zh">融入每天的创作日常</span></h1></div>
+  <!-- The phone in the middle; left, a plain point over Planner; right, Tasks over the habit loop. -->
+  <div class="hub-row">
+    <div class="gap-pt hub-pts">
+      <div class="gap-it">
+      <h3 class="title-3 t hub-plain"><span class="en">From talk to action</span><span class="zh">从对话到行动</span></h3>
+      <p class="body t"><span class="en">Tako surfaces actionable next steps as it chats, so a conversation ends with something to do, not just an answer.</span><span class="zh">Tako 在聊天中给出可执行的下一步，让每次对话都以行动收尾，而不只是一个答案。</span></p>
+      </div>
+      <div class="gap-it">
+      <h3 class="title-3 t hub-h"><svg class="hub-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.6"/><path d="M7.8 12.3l2.9 2.9 5.6-6.1"/></svg><span class="en">Planner</span><span class="zh">计划</span></h3>
+      <p class="body t"><span class="en">One tap turns an idea from the chat into a dated entry with a reminder, removing the friction of filling in forms.</span><span class="zh">“添加到计划”一键就能把聊天中的想法变成带提醒的日程，省去填写表单的麻烦。</span></p>
+      </div>
+    </div>
+    <!-- The flow: a scheduled task asked for in chat, its blue card, then Tako's page on Tasks and a routine open (tako-hub.mp4). -->
+    <figure class="hub-phone"><video class="stage-screen" data-src="assets/tako-hub.mp4" autoplay muted loop playsinline></video></figure>
+    <div class="gap-pt hub-pts">
+      <div class="gap-it">
+      <h3 class="title-3 t hub-h"><svg class="hub-ico" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd">
+  <path d="M9.505 0.331 C9.685 0.304 9.796 0.503 9.898 0.615 L11.193 2.505 C11.353 2.719 11.564 2.901 11.815 2.999 L11.955 3.047 L12.135 3.089 L12.305 3.107 L12.685 3.138 L14.345 3.262 L14.545 3.281 L14.615 3.292 C14.736 3.318 14.942 3.345 14.955 3.505 C14.919 3.712 14.689 3.818 14.545 3.938 L12.755 5.162 L12.605 5.291 C12.455 5.438 12.334 5.616 12.263 5.815 L12.222 5.945 L12.191 6.085 L12.172 6.245 L12.018 8.295 L11.999 8.495 L11.988 8.565 L11.959 8.695 C11.933 8.789 11.877 8.926 11.755 8.908 C11.539 8.845 11.431 8.608 11.302 8.445 L10.128 6.725 L10.048 6.625 L9.995 6.568 L9.895 6.472 L9.795 6.392 L9.685 6.321 L9.615 6.282 L9.525 6.241 L9.395 6.194 L9.225 6.152 L9.085 6.132 L6.915 5.968 C6.735 5.940 6.496 5.952 6.380 5.785 C6.339 5.675 6.439 5.575 6.510 5.505 L6.595 5.431 L6.815 5.272 L8.575 4.067 L8.705 3.957 L8.767 3.895 L8.868 3.775 L8.949 3.655 C9.085 3.433 9.145 3.173 9.158 2.915 L9.323 0.755 C9.351 0.610 9.357 0.411 9.505 0.331 Z M15.855 9.119 C15.719 9.061 15.734 8.875 15.727 8.755 L15.732 8.595 L15.838 7.315 L15.847 7.155 L15.839 7.025 L15.827 6.945 L15.799 6.835 L15.768 6.755 L15.707 6.635 L15.668 6.575 L15.589 6.475 L15.445 6.333 L14.515 5.457 C14.418 5.346 14.274 5.233 14.258 5.075 L14.265 5.025 L14.282 4.995 L14.305 4.972 L14.355 4.944 L14.435 4.922 L14.535 4.910 L14.625 4.908 L14.775 4.913 L16.175 5.028 L16.335 5.022 L16.435 5.010 L16.605 4.959 L16.635 4.947 L16.745 4.889 L16.835 4.828 L16.900 4.775 L17.078 4.595 L17.954 3.665 C18.064 3.571 18.183 3.423 18.345 3.441 C18.452 3.481 18.460 3.620 18.470 3.715 L18.468 3.935 L18.352 5.365 L18.351 5.415 L18.357 5.515 L18.372 5.625 L18.402 5.735 L18.432 5.815 L18.483 5.915 L18.542 6.005 L18.605 6.081 L18.675 6.154 L19.605 7.031 C19.723 7.172 19.950 7.312 19.938 7.525 C19.884 7.658 19.700 7.645 19.585 7.655 L19.305 7.638 L18.135 7.542 L17.975 7.532 L17.845 7.541 L17.765 7.551 L17.645 7.582 C17.440 7.648 17.271 7.795 17.132 7.955 L16.389 8.745 L16.175 8.961 C16.086 9.035 15.982 9.136 15.855 9.119 Z M4.975 6.383 C5.013 6.965 5.409 7.498 5.943 7.725 L5.937 7.745 L5.818 7.965 L5.635 8.159 L4.675 8.791 L4.655 8.805 L4.665 8.815 L10.215 11.848 L12.105 12.878 L20.875 8.012 C21.112 7.876 21.405 7.849 21.665 7.931 C21.974 8.022 22.225 8.279 22.320 8.585 L22.348 8.695 L22.360 8.775 L22.367 8.895 L22.367 17.555 C22.368 17.761 22.304 17.966 22.188 18.135 L22.109 18.235 L22.045 18.298 L21.945 18.379 C18.797 20.120 15.636 21.841 12.475 23.559 C12.199 23.669 11.874 23.645 11.615 23.498 L2.545 18.611 C2.182 18.466 1.815 18.202 1.732 17.795 L1.712 17.675 L1.707 17.555 L1.707 8.895 C1.700 8.592 1.844 8.287 2.085 8.101 C2.530 7.792 2.991 7.504 3.445 7.208 L4.525 6.503 L4.725 6.421 L4.955 6.382 L4.975 6.383 Z M11.109 20.945 L11.108 14.615 L3.715 10.576 L3.707 10.585 L3.708 16.965 L11.105 20.949 L11.109 20.945 Z M13.117 20.935 L20.361 16.975 L20.367 16.965 L20.365 10.591 L20.355 10.589 L13.115 14.605 L13.109 14.615 L13.109 20.925 L13.113 20.935 L13.117 20.935 Z"/>
+</svg><span class="en">Tasks</span><span class="zh">任务</span></h3>
+      <p class="body t"><span class="en">Routines Tako runs on a schedule: fresh ideas, trends or check-ins, like content ideas every Monday at 9 am.</span><span class="zh">Tako 按计划执行的例行任务：获取新灵感、追踪趋势或定期提醒，比如每周一上午 9 点推送内容创意。</span></p>
+      </div>
+      <div class="gap-it">
+      <h3 class="title-3 t hub-plain"><span class="en">Habit loop</span><span class="zh">习惯闭环</span></h3>
+      <p class="body t"><span class="en">Push notifications from the reminders and scheduled tasks creators set with Tako bring them back to Studio.</span><span class="zh">创作者与 Tako 共同设置的提醒和定时任务，会通过推送通知将他们重新吸引回 Studio。</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 10 Tako in Discover: Douyin's AI overview as the precedent (stills), our Discover flow playing (tako-discover.mp4:
+     a post, Insights, Tako AI analysing, the overview, a question, Add to Planner, a reminder). Plain text first. -->
+<section class="slide opp-slide dark-slide" data-n="10">
+  <!-- Tako's glow at full strength, in its dark-mode washes (design-tokens.md tako/wash, dark). -->
+  <div class="meet-glow dark-glow" aria-hidden="true"><i class="g-drift"></i><i class="g-grain"></i></div>
+  <div class="arch-head hub-head"><h1 class="title-1 title t"><span class="en">Smarter discovery with Tako AI Overview</span><span class="zh">Tako AI 解析，让发现更有洞察</span></h1></div>
+  <!-- As slide 09: a point either side of the centred phone. The references (Studio's Insights today, Douyin's AI
+       overview) go to the design choices at the end. -->
+  <div class="dc-row">
+    <div class="dc-side">
+      <div class="gap-it">
+      <h3 class="title-3 t hub-plain"><span class="en">Tako in Insights</span><span class="zh">数据洞察里的 Tako</span></h3>
+      <p class="body t"><span class="en">Insights opens with a Tako suggestion, and the Tako AI tab breaks down why the video works.</span><span class="zh">数据洞察以 Tako 建议开头，Tako AI 标签页会拆解这条视频为什么有效。</span></p>
+      </div>
+    </div>
+    <figure class="hub-phone"><video class="stage-screen" data-src="assets/tako-discover.mp4" autoplay muted loop playsinline></video></figure>
+    <div class="dc-side">
+      <div class="gap-it">
+      <h3 class="title-3 t hub-plain"><span class="en">A deeper dive in chat</span><span class="zh">在聊天中深入探讨</span></h3>
+      <p class="body t"><span class="en">The AI overview invites creators to continue a deeper dive with Tako in a dedicated chat, with the video as context.</span><span class="zh">AI 解析会邀请创作者在专属聊天中与 Tako 继续深入探讨，并带上视频作为上下文。</span></p>
+      </div>
+    </div>
+  </div>
+</section>
+<!-- 11 Tako wherever creators are: the entry points, the last main slide. A dark slide, its screens in light mode. Plain text first; screens to add. -->
+<section class="slide opp-slide dark-slide" data-n="11">
+  <div class="meet-glow dark-glow" aria-hidden="true"><i class="g-drift"></i><i class="g-grain"></i></div>
+  <div class="arch-head hub-head"><h1 class="title-1 title t"><span class="en">Entry points that invite, not interrupt</span><span class="zh">入口是邀请，而非打扰</span></h1></div>
+  <div class="ep-row">
+    <figure class="ep">
+      <img class="ep-screen" src="assets/ep-01-analytics-meet-tako-dark.jpg" alt="">
+      <figcaption><h3 class="title-3 t"><span class="en">Analytics</span><span class="zh">数据分析</span></h3><p class="body t"><span class="en">For first-time users, a dismissible Meet Tako card replaces Creator Assistant’s and invites them in.</span><span class="zh">面向首次使用的创作者，可关闭的“认识 Tako”卡片取代原来的 Creator Assistant 卡片，邀请他们开始使用。</span></p></figcaption>
+    </figure>
+    <figure class="ep">
+      <video class="ep-screen" data-src="assets/tako-home.mp4" autoplay muted loop playsinline></video>
+      <figcaption><h3 class="title-3 t"><span class="en">Home</span><span class="zh">首页</span></h3><p class="body t"><span class="en">Up next on Home recaps upcoming reminders, routines and tasks at a glance.</span><span class="zh">首页的“接下来”一目了然地展示即将到来的提醒、例行任务和待办。</span></p></figcaption>
+    </figure>
+    <figure class="ep">
+      <img class="ep-screen" src="assets/ep-11-create-light.jpg" alt="">
+      <figcaption><h3 class="title-3 t"><span class="en">Every tab</span><span class="zh">每个标签页</span></h3><p class="body t"><span class="en">A floating button with Tako’s animated avatar keeps the chat one tap away, wherever the creator is.</span><span class="zh">带有 Tako 动态形象的悬浮按钮，让聊天随时一键可达。</span></p></figcaption>
+    </figure>
+  </div>
+</section>
+<!-- 12 Refinements: the design choices and polish, combined; plain text first. -->
+<section class="slide opp-slide small-slide pol-slide" data-n="12">
+  <div class="arch-head"><h1 class="title-1 title t"><span class="en">Tako plus UX/UI polish creates a more powerful TikTok Studio</span><span class="zh">通过 Tako 与 UX/UI 打磨，打造更强大的 TikTok Studio</span></h1></div>
+  <div class="pol-grid">
+    <div class="pol-col">
+      <figure class="pol-card" style="flex:312"><img style="--w:386" src="assets/pol-meet.png" alt="Meet Tako card"></figure>
+      <figure class="pol-card" style="flex:205"><img style="--w:370" src="assets/pol-drafts.png" alt="Draft tiles, each tinted from its video"></figure>
+      <figure class="pol-card" style="flex:215"><video class="pol-shot" style="--w:380" data-src="assets/pol-analyzing.mp4" autoplay muted loop playsinline></video></figure>
+    </div>
+    <div class="pol-col">
+      <figure class="pol-card" style="flex:262"><img style="--w:354" src="assets/pol-metrics.png" alt="Analytics key metrics tiles"></figure>
+      <figure class="pol-card" style="flex:308"><div class="pol-phone" style="max-height:300px"><img class="pp-screen" src="assets/pol-analytics-content.png" alt="Analytics’ Content tab, scrolled under the header"><img class="pp-frame" src="assets/phone-top.png" alt=""></div></figure>
+      <figure class="pol-card" style="flex:148"><img style="--w:370" src="assets/pol-composer.png" alt="Composer"></figure>
+    </div>
+    <div class="pol-col">
+      <figure class="pol-card" style="flex:510"><img class="pol-shot pol-fade" style="--w:402" src="assets/pol-chat.png" alt="Tako’s cover reply in the chat, under the soft scroll edge"></figure>
+      <figure class="pol-card pol-stack" style="flex:260"><img style="--w:330" src="assets/pol-added.png" alt="Added to Planner"><img style="--w:330" src="assets/pol-scheduled.png" alt="Scheduled task"></figure>
+    </div>
+  </div>
+</section>
+<!-- 13 SwiftUI's own headers, glass and scroll edges, tuned per screen; looping prototype recordings, each scrolled and played back. -->
+<section class="slide opp-slide edge-slide" data-n="13">
+  <div class="arch-head hub-head"><h1 class="title-1 title t"><span class="en">Scroll edges tuned to each screen</span><span class="zh">按页面调校的滚动边缘</span></h1></div>
+  <div class="ep-row">
+    <figure class="ep">
+      <video class="ep-screen" data-src="assets/edge-hard.mp4" autoplay muted loop playsinline></video>
+      <figcaption><h3 class="title-3 t"><span class="en">A hard edge</span><span class="zh">硬边缘</span></h3><p class="body t"><span class="en">It can stay hidden until the screen scrolls, or show from the start where the header pins tabs.</span><span class="zh">它可以在页面滚动前保持隐藏，也可以在标题栏固定标签时从一开始就显示。</span></p></figcaption>
+    </figure>
+    <figure class="ep">
+      <video class="ep-screen" data-src="assets/edge-chat.mp4" autoplay muted loop playsinline></video>
+      <figcaption><h3 class="title-3 t"><span class="en">A soft edge</span><span class="zh">柔和边缘</span></h3><p class="body t"><span class="en">In the chat, messages fade under the glass header and composer.</span><span class="zh">聊天中，消息在玻璃标题栏和输入框下渐隐。</span></p></figcaption>
+    </figure>
+    <figure class="ep">
+      <video class="ep-screen" data-src="assets/edge-tako.mp4" autoplay muted loop playsinline></video>
+      <figcaption><h3 class="title-3 t"><span class="en">Shrinks as it scrolls</span><span class="zh">随滚动收起</span></h3><p class="body t"><span class="en">Tako’s hub header scales down as the screen scrolls, for a seamless transition.</span><span class="zh">Tako 主页的标题随页面滚动缩小，过渡无缝衔接。</span></p></figcaption>
+    </figure>
+  </div>
+</section>
+<!-- 14 Why native first: the engineering case for 14's headers and the bottom tabs, and the precedent in TikTok. Plain text until the layout is set. -->
+<section class="slide opp-slide nf-slide" data-n="14">
+  <div class="nf-phone nf-bl"><img src="assets/native-ours-home.jpg" alt="Home’s header"></div>
+  <div class="nf-phone nf-br"><img src="assets/native-ours-chat.jpg" alt="The chat’s glass header"></div>
+  <div class="nf-phone nf-tl"><img src="assets/native-ours-analytics.jpg" alt="The bottom tabs"></div>
+  <div class="nf-phone nf-tr"><img src="assets/native-ours-create.jpg" alt="Create’s header"></div>
+  <div class="arch-head hub-head"><h1 class="title-1 title t"><span class="en">Why a native-first approach</span><span class="zh">为什么采用原生优先的方式</span></h1></div>
+  <div class="nf-row">
+    <div class="plain-pts">
+    <div class="pp"><h3 class="headline t"><span class="en">Performant</span><span class="zh">性能出色</span></h3><p class="body t"><span class="en">iOS renders the glass and blur itself on the GPU, so the app adds no drawing work; scrolling triggers no layout changes, and Tako’s hub header only scales.</span><span class="zh">玻璃和模糊由 iOS 自行在 GPU 上渲染，应用无需额外绘制；滚动不会引起布局变化，Tako 主页的标题只做缩放。</span></p></div>
+    <div class="pp"><h3 class="headline t"><span class="en">Easy to fall back</span><span class="zh">易于降级</span></h3><p class="body t"><span class="en">With no background of their own, headers become a solid bar with a hairline before iOS 26 or under Reduce Transparency, and a Material top app bar on Android.</span><span class="zh">标题栏没有自己的背景，在 iOS 26 之前或开启“降低透明度”时会变成带细线的实色栏，在 Android 上则对应 Material 顶部应用栏。</span></p></div>
+    <div class="pp"><h3 class="headline t"><span class="en">Less engineering burden</span><span class="zh">减轻工程负担</span></h3><p class="body t"><span class="en">System bars get native support with each iOS update, from accessibility to Dynamic Type and new materials, with minimal custom code to keep in step.</span><span class="zh">系统栏随每次 iOS 更新自动获得原生支持，从辅助功能到动态字体和新材质，只需维护极少的自定义代码。</span></p></div>
+    <div class="pp"><h3 class="headline t"><span class="en">Already in TikTok</span><span class="zh">TikTok 已在使用</span></h3><p class="body t"><span class="en">TikTok is A/B testing liquid glass bottom tabs, and TikTok Tako’s chat already uses liquid glass.</span><span class="zh">TikTok 正在 A/B 测试液态玻璃底部标签栏，TikTok Tako 的聊天界面也已采用液态玻璃。</span></p></div>
+    <div class="pp"><h3 class="headline t"><span class="en">Familiar bottom tabs</span><span class="zh">熟悉的底部标签</span></h3><p class="body t"><span class="en">The tabs stay exactly as they ship (Home, Analytics, Create, Inbox, Manage), to minimize disruption for existing users.</span><span class="zh">底部标签与现有版本完全一致（首页、数据分析、创作、收件箱、管理），尽量减少对现有用户的干扰。</span></p></div>
+  </div>
+  </div>
+</section>
+<!-- 15 Why Tako is the focus: Jacob's reasons, first pass as plain text (2026-10-25). -->
+<section class="slide opp-slide tk-slide" data-n="15">
+  <div class="arch-head hub-head"><h1 class="title-1 title t"><span class="en">Why Tako is the focus</span><span class="zh">为什么以 Tako 为核心</span></h1></div>
+  <div class="tk-pts">
+    <div class="tk-pt tk-agents"><span class="tk-faces" aria-hidden="true"><img src="assets/avatar-doubao.jpg" alt=""><img src="assets/avatar-muse.jpg" alt=""><img src="assets/avatar-openai-dots.png" alt=""><img src="assets/avatar-grok.png" alt=""><img src="assets/avatar-tako.png" alt=""></span><h3 class="headline t"><span class="en">Users are turning to personal AI agents</span><span class="zh">用户正在转向个人 AI 智能体</span></h3><p class="body t"><span class="en">Consumers increasingly rely on personal AI agents to discover, evaluate and buy. Building Studio around Tako keeps creators asking TikTok, not an outside AI tool.</span><span class="zh">消费者越来越依赖个人 AI 智能体来发现、评估和购买。以 Tako 为核心打造 Studio，让创作者直接向 TikTok 提问，而不是转向外部 AI 工具。</span></p></div>
+    <div class="tk-pt"><h3 class="headline t"><span class="en">Fewer new screens to build and learn</span><span class="zh">更少需要开发和学习的新界面</span></h3><p class="body t"><span class="en">Every new screen or major redesign adds engineering overhead and more room for bugs, and asks users to learn an unfamiliar interface. Tako can reuse what TikTok already has: TikTok Tako and CapCut already generate images in chat.</span><span class="zh">每个新界面或大幅改版都会增加工程开销和出错的可能，也要求用户重新学习陌生的界面。Tako 可以复用 TikTok 现有的能力：TikTok Tako 和剪映已经支持在聊天中生成图片。</span></p></div>
+    <div class="tk-pt"><h3 class="headline t"><span class="en">Personalized to each creator</span><span class="zh">为每位创作者个性化</span></h3><p class="body t"><span class="en">RAG over the creator’s content and history, which TikTok already stores, needs minimal data pipeline additions, and a lightweight living memory file resurfaces personal details when they’re relevant, reinforcing the connection.</span><span class="zh">基于 TikTok 已存储的创作者内容与历史记录做 RAG 检索，只需少量新增数据管道；再配合轻量、持续更新的记忆文件，在合适的时候重提个人细节，加深彼此的联系。</span></p></div>
+    <div class="tk-pt tk-ctx"><span class="tk-float" aria-hidden="true"><i class="f1"><svg class="tk-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.6"/><path d="M7.8 12.3l2.9 2.9 5.6-6.1"/></svg></i><i class="f2"><svg class="tk-ico" aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9.6"/><path d="M12 6.8V12l3.4 2.2"/></svg></i><i class="f3"><svg class="tk-ico" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" fill-rule="evenodd">
+  <path d="M9.505 0.331 C9.685 0.304 9.796 0.503 9.898 0.615 L11.193 2.505 C11.353 2.719 11.564 2.901 11.815 2.999 L11.955 3.047 L12.135 3.089 L12.305 3.107 L12.685 3.138 L14.345 3.262 L14.545 3.281 L14.615 3.292 C14.736 3.318 14.942 3.345 14.955 3.505 C14.919 3.712 14.689 3.818 14.545 3.938 L12.755 5.162 L12.605 5.291 C12.455 5.438 12.334 5.616 12.263 5.815 L12.222 5.945 L12.191 6.085 L12.172 6.245 L12.018 8.295 L11.999 8.495 L11.988 8.565 L11.959 8.695 C11.933 8.789 11.877 8.926 11.755 8.908 C11.539 8.845 11.431 8.608 11.302 8.445 L10.128 6.725 L10.048 6.625 L9.995 6.568 L9.895 6.472 L9.795 6.392 L9.685 6.321 L9.615 6.282 L9.525 6.241 L9.395 6.194 L9.225 6.152 L9.085 6.132 L6.915 5.968 C6.735 5.940 6.496 5.952 6.380 5.785 C6.339 5.675 6.439 5.575 6.510 5.505 L6.595 5.431 L6.815 5.272 L8.575 4.067 L8.705 3.957 L8.767 3.895 L8.868 3.775 L8.949 3.655 C9.085 3.433 9.145 3.173 9.158 2.915 L9.323 0.755 C9.351 0.610 9.357 0.411 9.505 0.331 Z M15.855 9.119 C15.719 9.061 15.734 8.875 15.727 8.755 L15.732 8.595 L15.838 7.315 L15.847 7.155 L15.839 7.025 L15.827 6.945 L15.799 6.835 L15.768 6.755 L15.707 6.635 L15.668 6.575 L15.589 6.475 L15.445 6.333 L14.515 5.457 C14.418 5.346 14.274 5.233 14.258 5.075 L14.265 5.025 L14.282 4.995 L14.305 4.972 L14.355 4.944 L14.435 4.922 L14.535 4.910 L14.625 4.908 L14.775 4.913 L16.175 5.028 L16.335 5.022 L16.435 5.010 L16.605 4.959 L16.635 4.947 L16.745 4.889 L16.835 4.828 L16.900 4.775 L17.078 4.595 L17.954 3.665 C18.064 3.571 18.183 3.423 18.345 3.441 C18.452 3.481 18.460 3.620 18.470 3.715 L18.468 3.935 L18.352 5.365 L18.351 5.415 L18.357 5.515 L18.372 5.625 L18.402 5.735 L18.432 5.815 L18.483 5.915 L18.542 6.005 L18.605 6.081 L18.675 6.154 L19.605 7.031 C19.723 7.172 19.950 7.312 19.938 7.525 C19.884 7.658 19.700 7.645 19.585 7.655 L19.305 7.638 L18.135 7.542 L17.975 7.532 L17.845 7.541 L17.765 7.551 L17.645 7.582 C17.440 7.648 17.271 7.795 17.132 7.955 L16.389 8.745 L16.175 8.961 C16.086 9.035 15.982 9.136 15.855 9.119 Z M4.975 6.383 C5.013 6.965 5.409 7.498 5.943 7.725 L5.937 7.745 L5.818 7.965 L5.635 8.159 L4.675 8.791 L4.655 8.805 L4.665 8.815 L10.215 11.848 L12.105 12.878 L20.875 8.012 C21.112 7.876 21.405 7.849 21.665 7.931 C21.974 8.022 22.225 8.279 22.320 8.585 L22.348 8.695 L22.360 8.775 L22.367 8.895 L22.367 17.555 C22.368 17.761 22.304 17.966 22.188 18.135 L22.109 18.235 L22.045 18.298 L21.945 18.379 C18.797 20.120 15.636 21.841 12.475 23.559 C12.199 23.669 11.874 23.645 11.615 23.498 L2.545 18.611 C2.182 18.466 1.815 18.202 1.732 17.795 L1.712 17.675 L1.707 17.555 L1.707 8.895 C1.700 8.592 1.844 8.287 2.085 8.101 C2.530 7.792 2.991 7.504 3.445 7.208 L4.525 6.503 L4.725 6.421 L4.955 6.382 L4.975 6.383 Z M11.109 20.945 L11.108 14.615 L3.715 10.576 L3.707 10.585 L3.708 16.965 L11.105 20.949 L11.109 20.945 Z M13.117 20.935 L20.361 16.975 L20.367 16.965 L20.365 10.591 L20.355 10.589 L13.115 14.605 L13.109 14.615 L13.109 20.925 L13.113 20.935 L13.117 20.935 Z"/>
+</svg></i></span><h3 class="headline t"><span class="en">Context from the first message</span><span class="zh">从第一句话起就有上下文</span></h3><p class="body t"><span class="en">Each session opens with an insights snapshot and algorithm suggestions already in context, so Tako’s first reply feels personal. Together with the Planner and routines, this builds a habit loop.</span><span class="zh">每次对话开始时已注入数据快照和算法建议，Tako 的第一句回复就很个性化。再结合计划和例行任务，形成习惯闭环。</span></p></div>
+    <div class="tk-pt tk-flow"><span class="tk-arc" aria-hidden="true"><img class="a1" src="assets/icons/nav-home.svg" alt=""><img class="a2" src="assets/icons/nav-analytics.svg" alt=""><img class="a3" src="assets/icons/nav-create.svg" alt=""><img class="a4" src="assets/icons/nav-inbox.svg" alt=""><img class="a5" src="assets/icons/nav-manage.svg" alt=""></span><h3 class="headline t"><span class="en">A familiar format for the whole workflow</span><span class="zh">熟悉的形式，承载整个工作流程</span></h3><p class="body t"><span class="en">Chat is familiar from every AI app, and it connects Studio’s tools. From one chat, a creator can check their numbers, get ideas, plan the week and make a cover, so Tako reinforces TikTok Studio as the all-in-one workspace.</span><span class="zh">聊天是各类 AI 应用中早已熟悉的形式，也把 Studio 的各项工具串联起来。在一次对话中，创作者就能查看数据、获取灵感、安排一周计划并制作封面，让 Tako 进一步巩固 TikTok Studio 一站式工作台的定位。</span></p></div>
+    <div class="tk-pt"><h3 class="headline t"><span class="en">New ways to monetize</span><span class="zh">新的变现途径</span></h3><p class="body t"><span class="en">Tako’s answers can naturally suggest Promote when a post takes off, TikTok Shop products to feature or to buy for a creator’s setup, and local businesses listed on TikTok as places to film.</span><span class="zh">Tako 的回答可以自然地在作品走红时建议使用 Promote 推广，推荐可带货或用于创作者装备的 TikTok Shop 商品，以及在 TikTok 上入驻、适合拍摄的本地商家。</span></p></div>
+  </div>
+</section>
+<!-- 16 Sister apps: what Studio takes from Douyin, TikTok Tako and Doubao, each reference beside our version.
+     The drawer card shows TikTok Tako's overlay drawer beside ours; no Doubao capture needed (Jacob, 2026-10-25). -->
+<section class="slide opp-slide sis-slide" data-n="16">
+  <div class="arch-head hub-head"><h1 class="title-1 title t"><span class="en">Built on what already works in sister apps</span><span class="zh">借鉴兄弟产品中已被验证的设计</span></h1></div>
+  <div class="sis-row">
+    <figure class="sis">
+      <div class="sis-pair">
+        <div class="sis-shot"><img src="assets/sis-douyin.jpg" alt=""><span class="callout t"><span class="en">Douyin</span><span class="zh">抖音</span></span></div>
+        <div class="sis-shot"><video data-src="assets/sis-ours-overview.mp4" autoplay muted loop playsinline></video><span class="callout t"><span class="en">Redesign</span><span class="zh">改版</span></span></div>
+      </div>
+      <figcaption><h3 class="title-3 t"><span class="en">AI overview</span><span class="zh">AI 解析</span></h3><p class="body t"><span class="en">Douyin’s AI 解析 summarizes a video beside its comments. Tako AI Overview brings that summary to Discover, with a way straight into the chat.</span><span class="zh">抖音的 AI 解析在评论旁总结视频内容。Tako AI 解析把这一总结带到发现页，并可直接进入聊天。</span></p></figcaption>
+    </figure>
+    <figure class="sis">
+      <div class="sis-pair">
+        <div class="sis-shot"><img src="assets/sis-tt-chat.jpg" alt=""><span class="callout t"><span class="en">TikTok Tako</span><span class="zh">TikTok Tako</span></span></div>
+        <div class="sis-shot"><video data-src="assets/sis-ours-chat.mp4" autoplay muted loop playsinline></video><span class="callout t"><span class="en">Redesign</span><span class="zh">改版</span></span></div>
+      </div>
+      <figcaption><h3 class="title-3 t"><span class="en">A more responsive feel</span><span class="zh">更灵敏的回应感</span></h3><p class="body t"><span class="en">An instant emoji reaction and timestamped Delivered and Read receipts show Tako is on it. Its animated avatar sits centered above its name, like a contact’s profile.</span><span class="zh">即时的表情回应和带时间的“已送达”“已读”回执，表明 Tako 已在处理。动态头像居中显示在名字上方，就像联系人的资料页。</span></p></figcaption>
+    </figure>
+    <figure class="sis">
+      <div class="sis-pair">
+        <div class="sis-shot"><img src="assets/sis-tt-drawer.jpg" alt=""><span class="callout t"><span class="en">TikTok Tako</span><span class="zh">TikTok Tako</span></span></div>
+        <div class="sis-shot"><video data-src="assets/sis-ours-drawer.mp4" autoplay muted loop playsinline></video><span class="callout t"><span class="en">Redesign</span><span class="zh">改版</span></span></div>
+      </div>
+      <figcaption><h3 class="title-3 t"><span class="en">A drawer that pushes</span><span class="zh">推开页面的抽屉</span></h3><p class="body t"><span class="en">TikTok Tako’s drawer covers the page. Like Doubao’s, ours pushes it aside, a more modern and polished way to present chat history and options.</span><span class="zh">TikTok Tako 的抽屉会覆盖页面。与豆包一样，我们的抽屉把页面推到一旁，以更现代、更精致的方式呈现对话历史和功能选项。</span></p></figcaption>
+    </figure>
+  </div>
+</section>
+<!-- 17 Favorites and Collections into Manage: today's Saved toast and empty My inspiration (Jacob's captures,
+     2026-10-25) and Settings, beside the redesign's Manage. -->
+<section class="slide opp-slide sis-slide mg-slide" data-n="17">
+  <div class="arch-head hub-head"><h1 class="title-1 title t"><span class="en">Fixing small oversights</span><span class="zh">修复细节疏漏</span></h1></div>
+  <div class="sis-row">
+    <figure class="sis">
+      <div class="sis-pair">
+        <div class="sis-shot"><img src="assets/mg-old-saved.jpg" alt=""><span class="callout t"><span class="en">Today: Saved</span><span class="zh">现有：已收藏</span></span></div>
+        <div class="sis-shot"><img src="assets/mg-old-inspiration.jpg" alt=""><span class="callout t"><span class="en">Today: My inspiration</span><span class="zh">现有：我的灵感</span></span></div>
+        <div class="sis-shot"><video data-src="assets/mg-ours-save.mp4" autoplay muted loop playsinline></video><span class="callout t"><span class="en">Redesign</span><span class="zh">改版</span></span></div>
+      </div>
+      <figcaption><h3 class="title-3 t"><span class="en">Saved posts that work</span><span class="zh">真正可用的收藏</span></h3><p class="body t"><span class="en">The Saved toast’s View button did not navigate anywhere, and My inspiration had no way to add to it. Now a save goes straight into a collection, and View opens it.</span><span class="zh">“已收藏”提示上的“查看”按钮无法跳转到任何页面，“我的灵感”也无法添加内容。现在收藏可以直接放进收藏夹，点“查看”即可打开。</span></p></figcaption>
+    </figure>
+    <figure class="sis">
+      <div class="sis-pair">
+        <div class="sis-shot"><img src="assets/mg-old-settings.jpg" alt=""><span class="callout t"><span class="en">Today: Settings</span><span class="zh">现有：设置</span></span></div>
+        <div class="sis-shot"><video data-src="assets/mg-ours-pills.mp4" autoplay muted loop playsinline></video><span class="callout t"><span class="en">Redesign</span><span class="zh">改版</span></span></div>
+      </div>
+      <figcaption><h3 class="title-3 t"><span class="en">Easier to reach</span><span class="zh">更容易找到</span></h3><p class="body t"><span class="en">Favorites and Likes were buried in Settings. They’re now tabs in Manage, beside Posts and Comments.</span><span class="zh">收藏和喜欢原本藏在设置里。现在它们成为管理中的标签页，与“作品”和“评论”并列。</span></p></figcaption>
+    </figure>
+  </div>
+</section>
+<!-- 18 Thank you: and an invitation to the rest of the Figma file, where the high-fidelity screens are. -->
+<section class="slide opp-slide stage-slide ty-slide" data-n="18">
+  <div class="meet-glow" aria-hidden="true"><i class="g-drift"></i><i class="g-grain"></i></div>
+  <div class="ty">
+    <iframe class="ty-tako" data-src="tako-loop/index.html?play" title="" aria-hidden="true" tabindex="-1" scrolling="no" style="border:0;background:transparent"></iframe>
+    <h1 class="large-title t ty-h"><span class="en">Thank you</span><span class="zh">谢谢</span></h1>
+    <p class="title-3 t ty-p"><span class="en">The high-fidelity screens and the design tokens are on the other pages of this Figma file.</span><span class="zh">高保真界面和设计令牌位于本 Figma 文件的其他页面。</span></p>
+  </div>
+</section>
+
+
+
+
+</div></div>
+<a class="site-back" href="/work/tiktok-studio/" data-no-swup>‹ Back</a>
+<div class="embed-nav"><button type="button" data-d="-1" aria-label="Previous slide">‹</button><button type="button" data-d="1" aria-label="Next slide">›</button></div>
+<div id="count">1 / 18</div>
+
+<script>
+const slides=[...document.querySelectorAll('.slide')]; let i=0;
+const deck=document.getElementById('deck'), count=document.getElementById('count');
+const stack=document.documentElement.classList.contains('stack'), GAP=16;
+/* Media is deferred (data-src): a slide's videos and Tako iframes load when it is shown, so the page never pays for slides nobody reached. */
+function load(s){s.querySelectorAll('[data-src]').forEach(m=>{m.src=m.dataset.src;m.removeAttribute('data-src')})}
+function fit(){
+  if(stack){const s=innerWidth/1920, h=slides.length*1080+(slides.length-1)*GAP;
+    deck.style.transform='scale('+s+')';document.body.style.height=h*s+'px';
+    parent.postMessage({deckHeight:Math.ceil(h*s)},location.origin);return}
+  const s=Math.min(innerWidth/1920,innerHeight/1080);deck.style.transform='scale('+s+')'}
+function show(n){i=Math.max(0,Math.min(slides.length-1,n));slides.forEach((s,k)=>s.classList.toggle('on',k===i));load(slides[i]);count.textContent=(i+1)+' / '+slides.length;location.hash=i+1}
+function seg(id,fn){const el=document.getElementById(id);el.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  [...el.children].forEach(c=>c.classList.toggle('act',c===b));fn(b.dataset.v)})}
+if(stack){
+  slides.forEach((s,k)=>{s.style.top=k*(1080+GAP)+'px'});
+  /* Each slide starts (entrance, videos) when a fifth of it is on screen, and its videos pause when it leaves. IntersectionObserver measures against the page's viewport, not this tall frame. */
+  const seen=new Set(), play=s=>s.querySelectorAll('video').forEach(v=>{v.removeAttribute('autoplay');const p=v.play();if(p)p.catch(()=>{})});
+  const io=new IntersectionObserver(es=>es.forEach(e=>{
+    const s=e.target;
+    if(e.isIntersecting){seen.add(s);s.classList.add('on');load(s);if(!document.hidden)play(s)}
+    else{seen.delete(s);s.querySelectorAll('video').forEach(v=>v.pause())}
+  }),{threshold:.2});
+  slides.forEach(s=>io.observe(s));
+  /* A hidden tab (or a window moved behind another) pauses everything; coming back resumes only the slides on screen. */
+  document.addEventListener('visibilitychange',()=>{
+    if(document.hidden)slides.forEach(s=>s.querySelectorAll('video').forEach(v=>v.pause()));
+    else seen.forEach(play)});
+} else {
+  seg('lang',v=>{document.body.dataset.lang=v;try{localStorage.setItem('deck-lang',v)}catch(e){}});
+  seg('theme',v=>{document.documentElement.dataset.theme=v;document.body.classList.toggle('dark-stage',v==='dark');try{localStorage.setItem('deck-theme',v)}catch(e){}});
+  addEventListener('keydown',e=>{if(['ArrowRight','ArrowDown',' ','PageDown'].includes(e.key))show(i+1);if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key))show(i-1)});
+  document.querySelectorAll('.embed-nav button').forEach(b=>b.addEventListener('click',()=>show(i+Number(b.dataset.d))));
+}
+addEventListener('resize',fit);fit();
+if(!stack){const h=parseInt(location.hash.slice(1));show(h?h-1:0)}
+</script>
+</body></html>

@@ -1,0 +1,68 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Tako loop</title>
+<style>
+/* The Tako mark (tiktok-studio/docs/reference/tako-mark.md, Components/TakoMark.swift), drawn for a transparent
+   clip: render(t) poses it at t seconds into one loop. Rendered by render.mjs. */
+html,body{margin:0;background:transparent}
+svg{display:block;width:100vw;height:100vh}
+</style></head>
+<body>
+<svg id="m" viewBox="0 0 1 1">
+  <defs>
+    <clipPath id="disc"><circle cx=".5" cy=".5" r=".5"/></clipPath>
+    <filter id="soft" x="-1" y="-1" width="3" height="3"><feGaussianBlur stdDeviation=".06"/></filter>
+    <radialGradient id="face" cx=".5" cy=".5" r=".42" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#000"/><stop offset=".3" stop-color="#000"/><stop offset="1" stop-color="#000" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <g clip-path="url(#disc)">
+    <circle cx=".5" cy=".5" r=".5" fill="#000"/>
+    <!-- Blobs: teal (.33,.05), blue (0,.65), pink (.84,.74); diameters .8, .8, .95; blur .12 of the disc. -->
+    <circle cx=".33" cy=".05" r=".4" fill="#25F4EE" filter="url(#soft)"/>
+    <circle cx="0" cy=".65" r=".4" fill="#0E88C4" filter="url(#soft)"/>
+    <circle cx=".84" cy=".74" r=".475" fill="#FE2C55" filter="url(#soft)"/>
+    <circle cx=".5" cy=".5" r=".5" fill="url(#face)"/>
+  </g>
+  <svg x="0" y="0" width="1" height="1" viewBox="26 0.75 365 365">
+    <path fill="#fff" d="M260.10 283.98 L303.57 295.19 A4 4 0 0 1 305.10 302.16 A153.2 153.2 0 1 1 328.31 278.72 A2.5 2.5 0 0 1 323.95 277.85 L310.77 231.71 A1.5 1.5 0 0 1 310.86 230.67 A112.8 112.8 0 1 0 259.05 284.09 A1.5 1.5 0 0 1 260.10 283.98 Z"/>
+  </svg>
+  <ellipse id="l" fill="#fff"/><ellipse id="r" fill="#fff"/>
+</svg>
+<script>
+// Eye geometry, fractions of the mark (tako-mark.md): diameter 2 x 23.76 / 365, centres (0.38, 0.45) and (0.62, 0.45).
+const D = 2 * 23.76 / 365, LX = (165.63 - 26) / 365, RX = (251.14 - 26) / 365, EY = (164.37 - 0.75) / 365, CLOSED = 0.1;
+const BLINK = 0.12, SHIFT = 0.3, HOLD = 0.8, PAUSE = 0.5, GAP = 0.35;
+const UR = [0.045, -0.035], DL = [-0.045, 0.035], UL = [-0.045, -0.035], DR = [0.045, 0.035];
+// One loop, busier than the app's idle (1.6 s pauses): a blink between every glance, a double blink once.
+const steps = [['p', PAUSE], ['b'], ['p', PAUSE], ['g', UR], ['p', GAP], ['b'], ['p', PAUSE], ['g', DL], ['p', GAP],
+  ['b'], ['p', 0.15], ['b'], ['p', PAUSE], ['g', UL], ['p', GAP], ['b'], ['p', PAUSE], ['g', DR], ['p', PAUSE]];
+const ease = (x) => x < 0.5 ? 2 * x * x : 1 - (-2 * x + 2) ** 2 / 2;
+const len = (s) => s[0] === 'p' ? s[1] : s[0] === 'b' ? BLINK : 2 * SHIFT + HOLD;
+window.LOOP = steps.reduce((a, s) => a + len(s), 0);
+function pose(t) {
+  for (const s of steps) {
+    const L = len(s);
+    if (t < L) {
+      if (s[0] === 'b') { const h = BLINK / 2, k = t < h ? ease(t / h) : 1 - ease((t - h) / h); return {close: k, gx: 0, gy: 0}; }
+      if (s[0] === 'g') { const k = t < SHIFT ? ease(t / SHIFT) : t < SHIFT + HOLD ? 1 : 1 - ease((t - SHIFT - HOLD) / SHIFT); return {close: 0, gx: s[1][0] * k, gy: s[1][1] * k}; }
+      return {close: 0, gx: 0, gy: 0};
+    }
+    t -= L;
+  }
+  return {close: 0, gx: 0, gy: 0};
+}
+window.render = (t) => {
+  const p = pose(t), ry = D / 2 * (1 - (1 - CLOSED) * p.close);
+  for (const [id, x] of [['l', LX], ['r', RX]]) {
+    const e = document.getElementById(id);
+    e.setAttribute('cx', x + p.gx); e.setAttribute('cy', EY + p.gy); e.setAttribute('rx', D / 2); e.setAttribute('ry', ry);
+  }
+};
+render(0);
+// ?play: loop by itself, so the deck can show the mark live (an <iframe>) instead of a video. Transparent in every
+// browser: Safari cannot show a transparent WebM, and render.mjs (no ?play) still steps the frames itself.
+if (location.search.includes('play') && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const t0 = performance.now(); (function tick(now) { render(((now - t0) / 1000) % LOOP); requestAnimationFrame(tick); })(t0);
+}
+</script>
+</body></html>

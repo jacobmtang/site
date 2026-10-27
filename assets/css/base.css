@@ -337,12 +337,13 @@ html, body { overflow-x: clip; }   /* the escaping plane must never cause sidewa
 
 /* Page transitions (Swup, assets/js/site.js).
    Browsers with View Transitions: the page crossfades and shared elements glide. The Maureen phone has
-   view-transition-name: maureen-phone on both the home card and the case study hero, so it moves and scales
+   view-transition-name: maureen-phone (and the TikTok one tiktok-phone) on both the home card and the case study hero, so it moves and scales
    from one to the other (and back). Other browsers: the #swup container fades out and in.
    Reduced motion: no glide, no fade. */
 ::view-transition-old(root), ::view-transition-new(root) { animation-duration: 250ms; }
-::view-transition-group(maureen-phone) { animation-duration: 500ms; animation-timing-function: cubic-bezier(.2, .8, .2, 1); }
-::view-transition-old(maureen-phone), ::view-transition-new(maureen-phone) { height: 100%; }   /* keep the phone's proportions while it scales */
+::view-transition-group(maureen-phone), ::view-transition-group(tiktok-phone) { animation-duration: 500ms; animation-timing-function: cubic-bezier(.2, .8, .2, 1); }
+::view-transition-old(maureen-phone), ::view-transition-new(maureen-phone),
+::view-transition-old(tiktok-phone), ::view-transition-new(tiktok-phone) { height: 100%; }   /* keep the phone's proportions while it scales */
 @supports not (view-transition-name: none) {
   html.is-changing .transition-fade { transition: opacity 250ms ease-out; }
   html.is-animating .transition-fade { opacity: 0; }
