@@ -591,10 +591,6 @@
 @media (prefers-reduced-motion: reduce) { .deck-frame { transition: none; } }
 
 /* A deck on a 1920 x 1080 canvas (TikTok): the same preview at 16:9, and two pills side by side (deck, Figma). */
-.deck-frame[data-w="1920"] { aspect-ratio: 1920 / 1080; }
-.deck-frame[data-w="1920"] iframe { width: 1920px; height: 1080px; }
-.deck-actions { display: flex; flex-wrap: wrap; gap: var(--space-3); margin-top: var(--space-6); }
-.deck-actions .contact-pill { margin-top: 0; }
 
 /* TikTok hero: the arm is cut at the image's left edge, so it fades out sideways (as well as downward) instead of ending in a line. */
 .cs-hero img.hero-feather {
@@ -613,12 +609,6 @@
 .theme-tiktok .contact-pill:not(.deck-pill):hover, .theme-tiktok .contact-pill:not(.deck-pill):focus-visible { background: var(--surface); color: var(--tt-brand); }
 .theme-tiktok .contact-pill:not(.deck-pill):hover .contact-pill-icon, .theme-tiktok .contact-pill:not(.deck-pill):focus-visible .contact-pill-icon { background: var(--tt-brand); color: var(--tt-on-brand); }
 .theme-tiktok .store-link:hover, .theme-tiktok .store-link:focus-visible { background: var(--tt-brand); color: var(--tt-on-brand); }
-/* the deck shown in the page: interactive (the Maureen preview is a link, so its iframe ignores the pointer) */
-.deck-embed { justify-self: stretch; box-shadow: 0 0 0 1px var(--line); }
-.deck-embed .deck-frame iframe { pointer-events: auto; }
 
 /* TikTok: the deck shown full width under the case study, with the hero's side insets, instead of a call-to-action beside a preview. */
 
-/* The deck, all slides stacked at the page's content width (iframe height is set by deck-preview.js; the aspect ratio holds the space until then). */
-.deck-stack { margin-top: var(--space-12); }
-.deck-stack iframe { display: block; width: 100%; aspect-ratio: 1920 / 1080; border: 0; background: transparent; }

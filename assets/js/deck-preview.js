@@ -4,24 +4,6 @@
 // loads once a quarter of the card is on screen, so the slide's entrance plays where it's seen and the page
 // doesn't pay for the deck until then. Registered as a mount (see site.js); the cleanup disconnects both observers and the pageshow listener.
 (window.siteMounts ||= []).push(() => {
-  // Stacked deck (TikTok): one tall iframe holding every slide. It loads when the visitor is within a screen of it, and the deck inside
-  // reports its height (scaled to this width) by postMessage; the slides start themselves as they scroll into view (see the deck copy's script).
-  const stackBox = document.querySelector('.deck-stack');
-  if (stackBox) {
-    const f = stackBox.querySelector('iframe');
-    const onMsg = (e) => {
-      if (e.source !== f.contentWindow || !e.data || !e.data.deckHeight) return;
-      f.style.height = e.data.deckHeight + 'px';
-    };
-    addEventListener('message', onMsg);
-    const sio = new IntersectionObserver(([e]) => {
-      if (!e.isIntersecting) return;
-      if (!f.src) f.src = f.dataset.src;
-      sio.disconnect();
-    }, { rootMargin: '0px 0px 100% 0px' });
-    sio.observe(stackBox);
-    return () => { removeEventListener('message', onMsg); sio.disconnect(); };
-  }
   const box = document.querySelector('.deck-frame');
   if (!box) return;
   const frame = box.querySelector('iframe');

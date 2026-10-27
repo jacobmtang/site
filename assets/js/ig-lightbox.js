@@ -15,7 +15,14 @@
 
   const swapName = (a, b) => { if (a) a.style.viewTransitionName = ''; if (b) b.style.viewTransitionName = 'ig-media'; };
 
+  // A gallery card (data-gallery) opens its own dialog with every page at once; no morph, just the dialog's grow-in.
+  const openGallery = (card) => {
+    const g = document.getElementById('gallery-' + card.dataset.gallery);
+    if (g) g.showModal();
+  };
+
   const open = (card) => {
+    if (card.dataset.gallery) return openGallery(card);
     const thumb = card.querySelector('.yt-thumb');
     const src = card.querySelector('video').dataset.src;
     if (media.getAttribute('src') !== src) media.src = src;
@@ -51,6 +58,17 @@
   dlg.addEventListener('cancel', onCancel);
   dlg.addEventListener('click', onClick);
   btn.addEventListener('click', close);
+  // galleries: the × button, Esc and a click on the backdrop all close the same way, through a view transition where
+  // there is one, so the page fades back into focus instead of snapping.
+  const galleries = [...document.querySelectorAll('.ig-gallery')];
+  const closeGallery = (g) => {
+    if (!g.open) return;
+    const hide = () => g.close();
+    if (canMorph) document.startViewTransition(hide); else hide();
+  };
+  const onGalleryClick = (e) => { const g = e.currentTarget; if (e.target === g || e.target.closest('.ig-close')) closeGallery(g); };
+  const onGalleryCancel = (e) => { e.preventDefault(); closeGallery(e.currentTarget); };
+  galleries.forEach((g) => { g.addEventListener('click', onGalleryClick); g.addEventListener('cancel', onGalleryCancel); });
 
   return () => {
     cards.forEach((c) => c.removeEventListener('click', onCard));
@@ -59,5 +77,6 @@
     btn.removeEventListener('click', close);
     if (dlg.open) dlg.close();
     media.pause();
+    galleries.forEach((g) => { g.removeEventListener('click', onGalleryClick); g.removeEventListener('cancel', onGalleryCancel); if (g.open) g.close(); });
   };
 });

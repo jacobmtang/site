@@ -244,11 +244,11 @@ button.yt-card { padding: 0; border: 0; background: none; font: inherit; text-al
 @media (prefers-color-scheme: dark) { .scramble-ch { color: hsl(var(--h) 85% 64%); } .scramble-glyph { color: hsl(var(--h) 85% 74%); } }
 
 /* infographic lightbox (ig-lightbox.js): the video at up to 1280px over a blurred page, the nav's white close circle
-   at its top right. The clicked card's thumbnail grows into it (a view transition named ig-media). */
+   just above its top-right corner. The clicked card's thumbnail grows into it (a view transition named ig-media). */
 .ig-lightbox { padding: 0; border: 0; background: none; overflow: visible; max-width: none; max-height: none; }
 .ig-lightbox::backdrop { background: rgb(0 0 0 / .35); -webkit-backdrop-filter: blur(24px); backdrop-filter: blur(24px); }
 .ig-media { display: block; width: min(92vw, 1280px, calc(86vh * 16 / 9)); height: auto; aspect-ratio: 16 / 9; border-radius: var(--space-6); background: var(--stack); }
-.ig-close { position: absolute; top: var(--space-3); right: var(--space-3); border: 0; cursor: pointer; }
+.ig-close { position: absolute; top: calc(-1 * (var(--space-10) + var(--space-3))); right: 0; border: 0; cursor: pointer; }   /* above the media, outside it, at its right edge */
 ::view-transition-group(ig-media) { animation-duration: 420ms; animation-timing-function: cubic-bezier(.32, .72, 0, 1); }
 .ig-lightbox:not(.vt)[open] { animation: ig-in 320ms cubic-bezier(.32, .72, 0, 1); }   /* without view transitions: a plain grow-in */
 @keyframes ig-in { from { opacity: 0; scale: .94; } }
@@ -279,4 +279,13 @@ button.yt-card { padding: 0; border: 0; background: none; font: inherit; text-al
     margin-left: 0; margin-right: calc(var(--radius-card) * -1);
     padding: var(--pad-card); padding-right: calc(var(--pad-card) + var(--radius-card));
   }
+}
+
+/* Gallery lightbox (Waypoint 3D assets): the five pages and the Blender scene at once, 3 x 2, up to 1400px wide;
+   on phones one column, the grid scrolling. Same backdrop and close circle as the infographic lightbox. */
+.ig-gallery { width: min(92vw, 1400px); }
+.ig-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-3); max-height: 80vh; overflow: auto; overscroll-behavior: contain; border-radius: var(--space-6); }
+.ig-grid img { display: block; width: 100%; height: auto; aspect-ratio: 16 / 9; border-radius: var(--space-4); background: var(--stack); }
+@media (max-width: 899px) {
+  .ig-grid { grid-template-columns: 1fr; }
 }
